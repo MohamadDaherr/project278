@@ -6,100 +6,212 @@
     <title>Home - Social Media</title>
     <link rel="stylesheet">
     <style>
-      body, html {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-    }
-    
-    .container {
-        display: flex;
-        height: 100vh;
-    }
-    
-    .sidebar, .right-sidebar {
-        width: 20%;
-        padding: 20px;
-        background-color: #f4f4f4;
-    }
-    
-    .sidebar ul, .right-sidebar ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    
-    .feed {
-        width: 60%;
-        padding: 20px;
-    }
-    
-    .create-post, .posts {
-        margin-bottom: 20px;
-    }
-    
-    .create-post textarea, .create-post input, .create-post select {
-        width: 100%;
-        padding: 8px;
-        margin-top: 10px;
-    }
-    
-    .create-post button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 8px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-    
-    .create-post button:hover {
-        background-color: #45a049;
-    }
-    
-    .post {
-        padding: 15px;
-        background-color: #ffffff;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        border-radius: 5px;
-    }
-    
-    .privacy-level {
-        font-size: 12px;
-        color: #888;
-    }
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+            justify-content: space-between;
+        }
+        
+        .sidebar, .right-sidebar {
+            width: 20%;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .sidebar ul, .right-sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .feed {
+            width: 60%;
+            padding: 20px;
+        }
+        
+        .create-post-box {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f8f8f8;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .create-post-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-icon .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4caf50; /* Placeholder color for the profile icon */
+        }
+
+        .create-post-input input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 16px;
+            color: #555;
+            background-color: #f1f1f1;
+        }
+
+        .post-options {
+            display: flex;
+            justify-content: start;
+            gap: 15px;
+        }
+
+        .photo-video-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .photo-video-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group textarea,
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .post-button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .post-button:hover {
+            background-color: #45a049;
+        }
+
+        .post {
+            padding: 15px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/friends">Friends</a></li>
-                <li><a href="/chats">Chats</a></li>
-            </ul>
-        </aside>
+        <div class="sidebar">
+            <aside>
+                <p>Welcome, <strong><%= user.firstName %> <%= user.lastName %></strong></p>
+                <ul>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/friends">Friends</a></li>
+                    <li><a href="/chats">Chats</a></li>
+                </ul>
+            </aside>
+        </div>
 
-        <main class="feed">
-            <!-- Create Post Section -->
-            <section class="create-post">
-                <h2>Create a Post</h2>
-                <form action="/home/create-post" method="POST">
-                    <textarea name="content" placeholder="What's on your mind?" required></textarea>
-                    <input type="text" name="mediaUrl" placeholder="Media URL (optional)">
+        <div class="feed">
+            <!-- New Post Box -->
+            <div class="create-post-box" onclick="openModal()">
+                <div class="create-post-input">
+                    <div class="profile-icon">
+                        <img src="/path/to/your/profile-icon.png" alt="Profile" class="profile-img">
+                    </div>
+                    <input type="text" placeholder="Create Post" readonly>
+                </div>
+            </div>
 
-                    <!-- Privacy Selector -->
-                    <label for="privacy">Privacy:</label>
-                    <select name="privacy" id="privacy">
-                        <option value="public">Public</option>
-                        <option value="friends">Friends Only</option>
-                        <option value="private">Private</option>
-                    </select>
-
-                    <button type="submit">Post</button>
-                </form>
-            </section>
+            <!-- Modal for Creating a Post -->
+            <div id="postModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h3>Create a Post</h3>
+                    <form action="/home/create-post" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <textarea name="content" placeholder="What's on your mind?" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" name="mediaFile" accept="image/*,video/*">
+                        </div>
+                        <div class="form-group">
+                            <label for="privacy">Privacy:</label>
+                            <select name="privacy" id="privacy">
+                                <option value="public">Public</option>
+                                <option value="friends">Friends Only</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="post-button">Post</button>
+                    </form>
+                </div>
+            </div>
 
             <!-- Posts Feed Section -->
             <section class="posts">
@@ -108,18 +220,38 @@
                     <article class="post">
                         <p><strong><%= post.user.firstName %>:</strong> <%= post.content %></p>
                         <% if (post.mediaUrl) { %>
-                            <img src="<%= post.mediaUrl %>" alt="Post media" />
+                            <img src="<%= post.mediaUrl %>"  alt="Post media" style="min-width: 100%; max-width: 100%;" />
                         <% } %>
-                        <p class="privacy-level">Privacy: <%= post.privacy %></p> <!-- Display Privacy Level -->
+                        <p class="privacy-level">Privacy: <%= post.privacy %></p>
                     </article>
                 <% }) %>
             </section>
-        </main>
+        </div>
 
-        <aside class="right-sidebar">
-            <h2>Suggestions</h2>
-            <!-- Suggested friends -->
-        </aside>
+        <div class="right-sidebar">
+            <aside>
+                <h2>Suggestions</h2>
+                <!-- Suggested friends -->
+            </aside>
+        </div>
     </div>
+
+    <!-- JavaScript to handle modal behavior -->
+    <script>
+        function openModal() {
+            document.getElementById("postModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("postModal").style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById("postModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
 </body>
 </html>
