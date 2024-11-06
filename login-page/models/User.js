@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+
 const UserSchema = new mongoose.Schema({
     firstName: { type: String, trim: true },
-    middleName: { type: String, trim: true },
     lastName: { type: String, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true},
+    password: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
-    verificationCode:  {type: String}
+    verificationCode: String,
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Array of friends
 });
 
 

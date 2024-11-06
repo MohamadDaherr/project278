@@ -1,0 +1,125 @@
+<!-- home-page/views/home.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Social Media</title>
+    <link rel="stylesheet">
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    
+    .container {
+        display: flex;
+        height: 100vh;
+    }
+    
+    .sidebar, .right-sidebar {
+        width: 20%;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+    
+    .sidebar ul, .right-sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .feed {
+        width: 60%;
+        padding: 20px;
+    }
+    
+    .create-post, .posts {
+        margin-bottom: 20px;
+    }
+    
+    .create-post textarea, .create-post input, .create-post select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 10px;
+    }
+    
+    .create-post button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    
+    .create-post button:hover {
+        background-color: #45a049;
+    }
+    
+    .post {
+        padding: 15px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    
+    .privacy-level {
+        font-size: 12px;
+        color: #888;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/friends">Friends</a></li>
+                <li><a href="/chats">Chats</a></li>
+            </ul>
+        </aside>
+
+        <main class="feed">
+            <!-- Create Post Section -->
+            <section class="create-post">
+                <h2>Create a Post</h2>
+                <form action="/home/create-post" method="POST">
+                    <textarea name="content" placeholder="What's on your mind?" required></textarea>
+                    <input type="text" name="mediaUrl" placeholder="Media URL (optional)">
+
+                    <!-- Privacy Selector -->
+                    <label for="privacy">Privacy:</label>
+                    <select name="privacy" id="privacy">
+                        <option value="public">Public</option>
+                        <option value="friends">Friends Only</option>
+                        <option value="private">Private</option>
+                    </select>
+
+                    <button type="submit">Post</button>
+                </form>
+            </section>
+
+            <!-- Posts Feed Section -->
+            <section class="posts">
+                <h2>Posts</h2>
+                <% posts.forEach(post => { %>
+                    <article class="post">
+                        <p><strong><%= post.user.firstName %>:</strong> <%= post.content %></p>
+                        <% if (post.mediaUrl) { %>
+                            <img src="<%= post.mediaUrl %>" alt="Post media" />
+                        <% } %>
+                        <p class="privacy-level">Privacy: <%= post.privacy %></p> <!-- Display Privacy Level -->
+                    </article>
+                <% }) %>
+            </section>
+        </main>
+
+        <aside class="right-sidebar">
+            <h2>Suggestions</h2>
+            <!-- Suggested friends -->
+        </aside>
+    </div>
+</body>
+</html>
