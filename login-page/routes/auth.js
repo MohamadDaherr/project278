@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
 
       // Step 5: Send the token as a cookie or in the response
       res.cookie('token', token, { httpOnly: true, maxAge: 3600000 });
-      res.json({ message: 'Login successful', token });
+      res.redirect('/home');
 
   } catch (error) {
       console.error('Login error:', error);
@@ -118,7 +118,6 @@ router.post('/verify', async (req, res) => {
         user.isVerified = true;
         user.verificationCode = undefined;
         await user.save();
-
         res.json({ message: 'Verification successful' });
     } catch (error) {
         console.error('Verification error:', error);
