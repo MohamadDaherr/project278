@@ -2,8 +2,22 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
+const path = require('path');
+const multer = require('multer');
 const Post = require('../models/Post');
 const User = require('../../login-page/models/User');
+
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage });
 
 // Authentication middleware to check for token and decode it
 const isAuthenticated = (req, res, next) => {
@@ -53,11 +67,38 @@ router.get('/', isAuthenticated, async (req, res) => {
             ]
         }).populate('user').sort({ createdAt: -1 });
 
-        res.render('home', { posts });
+        res.render('home', { posts, user: currentUser });
     } catch (error) {
         console.error("Error fetching posts:", error);
         res.status(500).send("Server error");
     }
 });
 
+router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (req, res) => {
+    try {
+        const userId = req.user.userId;
+        const { content, privacy } = req.body;
+        let mediaUrl = '';
+
+        // Check if a file was uploaded
+        if (req.file) {
+            mediaUrl = '/uploads/' + req.file.filename; // Save the file path to mediaUrl
+        }
+
+        // Create a new post with the provided data
+        const newPost = new Post({
+            content,
+            mediaUrl,
+            privacy,
+            user: userId
+        });
+
+        // Save the post to the database
+        await newPost.save();
+        res.redirect('/home'); // Redirect to home page after posting
+    } catch (error) {
+        console.error("Error creating post:", error);
+        res.status(500).send("Server error");
+    }
+});
 module.exports = router;
