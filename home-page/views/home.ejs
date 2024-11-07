@@ -1,4 +1,3 @@
-<!-- home-page/views/home.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +32,45 @@
             width: 60%;
             padding: 20px;
         }
-        
+
+        /* Story Carousel Styling */
+        .story-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .story {
+            width: 80px;
+            flex-shrink: 0;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .story img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .story img:hover {
+            border-color: #4caf50; /* Border color on hover */
+        }
+
+        .story p {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #333;
+        }
+
+        /* Existing Post and Modal Styling */
         .create-post-box {
             width: 100%;
             padding: 15px;
@@ -70,26 +107,6 @@
             background-color: #f1f1f1;
         }
 
-        .post-options {
-            display: flex;
-            justify-content: start;
-            gap: 15px;
-        }
-
-        .photo-video-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .photo-video-button:hover {
-            background-color: #45a049;
-        }
-
         /* Modal Styling */
         .modal {
             display: none;
@@ -123,45 +140,6 @@
             color: black;
             cursor: pointer;
         }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group textarea,
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .post-button {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .post-button:hover {
-            background-color: #45a049;
-        }
-
-        .post {
-            padding: 15px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            margin-bottom: 10px;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
@@ -178,6 +156,20 @@
         </div>
 
         <div class="feed">
+            <!-- Story Carousel -->
+            <section class="story-carousel">
+                <div class="story" onclick="openUploadModal()">
+                    <img src="/path/to/your/profile-icon.png" alt="Your Story">
+                    <p>Your Story</p>
+                </div>
+                <% stories.forEach(story => { %>
+                    <div class="story" onclick="viewStory('<%= story.mediaUrl %>')">
+                        <img src="<%= story.user.profileImage || '/path/to/default-profile.png' %>" alt="<%= story.user.firstName %>">
+                        <p><%= story.user.firstName %></p>
+                    </div>
+                <% }) %>
+            </section>
+
             <!-- New Post Box -->
             <div class="create-post-box" onclick="openModal()">
                 <div class="create-post-input">
@@ -213,6 +205,33 @@
                 </div>
             </div>
 
+            <!-- Modal for Uploading a Story -->
+            <div id="uploadStoryModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeUploadModal()">&times;</span>
+                    <h3>Upload a Story</h3>
+                    <form action="/home/upload-story" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="storyFile">Select a photo or video</label>
+                            <input type="file" name="storyFile" id="storyFile" accept="image/*,video/*" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="storyText">Add a caption (optional)</label>
+                            <textarea name="storyText" id="storyText" rows="3" placeholder="Say something..."></textarea>
+                        </div>
+                        <button type="submit" class="post-button">Upload Story</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal for Viewing a Story -->
+            <div id="storyModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeStoryModal()">&times;</span>
+                    <img id="storyImage" src="" alt="Story Image" style="width: 100%; height: auto; border-radius: 10px;">
+                </div>
+            </div>
+
             <!-- Posts Feed Section -->
             <section class="posts">
                 <h2>Posts</h2>
@@ -220,7 +239,7 @@
                     <article class="post">
                         <p><strong><%= post.user.firstName %>:</strong> <%= post.content %></p>
                         <% if (post.mediaUrl) { %>
-                            <img src="<%= post.mediaUrl %>"  alt="Post media" style="min-width: 100%; max-width: 100%;" />
+                            <img src="<%= post.mediaUrl %>" alt="Post media" style="min-width: 100%; max-width: 100%;" />
                         <% } %>
                         <p class="privacy-level">Privacy: <%= post.privacy %></p>
                     </article>
@@ -246,10 +265,34 @@
             document.getElementById("postModal").style.display = "none";
         }
 
+        function openUploadModal() {
+            document.getElementById("uploadStoryModal").style.display = "block";
+        }
+
+        function closeUploadModal() {
+            document.getElementById("uploadStoryModal").style.display = "none";
+        }
+
+        function viewStory(url) {
+            document.getElementById("storyImage").src = url;
+            document.getElementById("storyModal").style.display = "block";
+        }
+
+        function closeStoryModal() {
+            document.getElementById("storyModal").style.display = "none";
+        }
+
         window.onclick = function(event) {
-            const modal = document.getElementById("postModal");
-            if (event.target === modal) {
-                modal.style.display = "none";
+            const postModal = document.getElementById("postModal");
+            const storyModal = document.getElementById("storyModal");
+            const uploadStoryModal = document.getElementById("uploadStoryModal");
+
+            if (event.target === postModal) {
+                closeModal();
+            } else if (event.target === storyModal) {
+                closeStoryModal();
+            } else if (event.target === uploadStoryModal) {
+                closeUploadModal();
             }
         };
     </script>

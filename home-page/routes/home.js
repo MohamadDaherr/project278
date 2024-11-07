@@ -6,6 +6,7 @@ const path = require('path');
 const multer = require('multer');
 const Post = require('../models/Post');
 const User = require('../../login-page/models/User');
+const Story = require('../models/Story');
 
 
 // Configure multer for file uploads
@@ -56,7 +57,7 @@ router.get('/', isAuthenticated, async (req, res) => {
         console.log("Current user and friends:", currentUser); // Debug log
 
         const friendIds = currentUser.friends.map(friend => friend._id);
-        friendIds.push(userId);
+        friendIds.push(userId); // Include the current user's own ID
 
         // Fetch posts based on friend and privacy settings
         const posts = await Post.find({
@@ -67,12 +68,23 @@ router.get('/', isAuthenticated, async (req, res) => {
             ]
         }).populate('user').sort({ createdAt: -1 });
 
-        res.render('home', { posts, user: currentUser });
+        // Fetch stories from friends and the user within the last 24 hours
+        const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        const stories = await Story.find({
+            user: { $in: friendIds },
+            createdAt: { $gte: oneDayAgo }
+        }).populate('user').sort({ createdAt: -1 });
+
+        console.log("Fetched posts and stories successfully"); // Debug log
+
+        // Render the home page, passing posts, stories, and the current user
+        res.render('home', { posts, stories, user:currentUser });
     } catch (error) {
         console.error("Error fetching posts:", error);
         res.status(500).send("Server error");
     }
 });
+
 
 router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (req, res) => {
     try {
