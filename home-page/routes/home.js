@@ -7,6 +7,8 @@ const multer = require('multer');
 const Post = require('../models/Post');
 const User = require('../../login-page/models/User');
 const Story = require('../models/Story');
+const storyController = require('../controllers/storyController');
+
 
 
 // Configure multer for file uploads
@@ -18,17 +20,16 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
-const upload = multer({ storage });
+
+
 
 // Authentication middleware to check for token and decode it
 const isAuthenticated = (req, res, next) => {
     const token = req.cookies.token;
-
     if (!token) {
         console.log("No token found, redirecting to login");
         return res.redirect('/auth/login');
     }
-
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded; // Attach decoded token (with `userId`) to `req.user`
@@ -40,6 +41,8 @@ const isAuthenticated = (req, res, next) => {
         return res.redirect('/auth/login');
     }
 };
+const upload = multer({ storage });
+router.post('/upload-story', isAuthenticated, upload.single('storyFile'), storyController.createStory);
 
 // Home route with authentication
 router.get('/', isAuthenticated, async (req, res) => {

@@ -18,6 +18,7 @@ const createStory = async (req, res) => {
             user: req.user.userId,
             mediaUrl: `/uploads/stories/${req.file.filename}`,
             text: req.body.text || '',
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
         });
         await newStory.save();
         res.redirect('/home');
