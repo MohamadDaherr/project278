@@ -3,6 +3,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./login-page/routes/auth');
 const homeRoutes = require('./home-page/routes/home');
 const path = require('path');
+
 const cookieParser = require('cookie-parser');
 require('dotenv').config({ path: './.env' });
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 // View engine setup for EJS templates
 app.set('views', [path.join(__dirname, 'login-page/views'), path.join(__dirname, 'home-page/views')]);
