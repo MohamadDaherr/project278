@@ -140,6 +140,37 @@
             color: black;
             cursor: pointer;
         }
+        .search-results {
+            margin-top: 15px;
+        }
+        
+        .user-result {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .user-result img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .user-result p {
+            flex-grow: 1;
+        }
+        
+        .user-result .add-friend-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -148,12 +179,23 @@
             <aside>
                 <p>Welcome, <strong><%= user.firstName %> <%= user.lastName %></strong></p>
                 <ul>
-                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/home/profile">Profile</a></li>
                     <li><a href="/friends">Friends</a></li>
                     <li><a href="/chats">Chats</a></li>
+                    
                 </ul>
+                <h4>Notifications</h4>
+                <ul id="notificationsList"></ul>
+                <button onclick="toggleSearch()">Search Friends</button>
+    <div id="searchTab" style="display: none;">
+        <input type="text" id="searchInput" placeholder="Search users..." oninput="searchUsers()">
+        <ul id="searchResults">
+           
+        </ul>
+    </div>
             </aside>
         </div>
+       
 
         <div class="feed">
             <!-- Story Carousel -->
@@ -294,7 +336,107 @@
             } else if (event.target === uploadStoryModal) {
                 closeUploadModal();
             }
-        };
+        }
+        function openSearchModal() {
+            document.getElementById("searchModal").style.display = "block";
+        }
+        
+        function closeSearchModal() {
+            document.getElementById("searchModal").style.display = "none";
+        }
+        
+        
+        
+        function toggleSearch() {
+            const searchTab = document.getElementById('searchTab');
+            searchTab.style.display = searchTab.style.display === 'none' ? 'block' : 'none';
+        }
+    
+        async function searchUsers() {
+            const query = document.getElementById('searchInput').value;
+            if (!query) return document.getElementById('searchResults').innerHTML = '';
+        
+            try {
+                const response = await fetch(`/home/search-users?query=${query}`);
+                const users = await response.json();
+                
+                console.log("Users received:", users); // Log the received users on the client side
+        
+                const resultsList = document.getElementById('searchResults');
+                resultsList.innerHTML = ''; // Clear previous results
+        
+                users.forEach(user => {
+                    const li = document.createElement('li');
+                    
+                    // Display username or fallback to firstName
+                    li.textContent = user.username ? user.username : user.firstName;
+        
+                    // Create add/remove button based on friend status
+                    const button = document.createElement('button');
+                    button.textContent = user.isFriend ? '-' : '+';
+                    button.onclick = () => user.isFriend ? removeFriend(user._id) : addFriend(user._id);
+        
+                    li.appendChild(button);
+                    resultsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error searching users:", error);
+            }
+        }
+    
+        async function addFriend(userId) {
+            try {
+                const response = await fetch('/friend/friend-request/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ targetUserId: userId })
+                });
+    
+                if (response.ok) {
+                    alert('Friend request sent');
+                    searchUsers(); // Refresh search results
+                }
+            } catch (error) {
+                console.error("Error sending friend request:", error);
+            }
+        }
+    
+        async function removeFriend(userId) {
+            try {
+                const response = await fetch('/friend/friend/remove', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ friendId: userId })
+                });
+    
+                if (response.ok) {
+                    alert('Friend removed');
+                    searchUsers(); // Refresh search results
+                }
+            } catch (error) {
+                console.error("Error removing friend:", error);
+            }
+        }
+    
+        async function loadNotifications() {
+            try {
+                const response = await fetch('/home/notifications');
+                const notifications = await response.json();
+    
+                const notificationsList = document.getElementById('notificationsList');
+                notificationsList.innerHTML = '';
+    
+                notifications.forEach(notification => {
+                    const li = document.createElement('li');
+                    li.textContent = `${notification.type === 'friend-request' ? 'Friend Request' : 'Friend Accepted'} from ${notification.from.username}`;
+                    notificationsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error loading notifications:", error);
+            }
+        }
+    
+        loadNotifications();
     </script>
 </body>
 </html>

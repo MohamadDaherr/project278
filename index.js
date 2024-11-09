@@ -5,8 +5,9 @@ const homeRoutes = require('./home-page/routes/home');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 require('dotenv').config({ path: './.env' });
-
+const profileRoute = require('./home-page/routes/profile');
 const app = express();
+const friendRequestRoutes = require('./home-page/routes/friend');
 
 // Connect to the database
 connectDB();
@@ -22,10 +23,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // View engine setup for EJS templates
 app.set('views', [path.join(__dirname, 'login-page/views'), path.join(__dirname, 'home-page/views')]);
 app.set('view engine', 'ejs');
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Routes
 app.use('/auth', authRoutes); // Authentication routes
 app.use('/home', homeRoutes); // Home page routes
+ // Adjust path as needed
+ app.use('/home/profile', profileRoute);
+ app.use('/friend', friendRequestRoutes);
 
 // Default route
 app.get('/', (req, res) => {

@@ -1,0 +1,320 @@
+<!-- profile.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - <%= user.username %></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+        }
+        
+        .profile-container {
+            width: 100%;
+            max-width: 935px;
+            background-color: #fff;
+            padding: 20px;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #dbdbdb;
+            margin-bottom: 20px;
+        }
+        
+        .profile-photo {
+            flex-shrink: 0;
+            margin-right: 30px;
+        }
+        
+        .profile-photo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 1px solid #dbdbdb;
+        }
+        
+        .profile-info {
+            flex-grow: 1;
+        }
+        
+        .profile-info h2 {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        
+        .edit-profile-btn {
+            padding: 5px 16px;
+            font-size: 14px;
+            color: #0095f6;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .edit-profile-btn:hover {
+            background-color: #fafafa;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 16px;
+            color: #262626;
+            margin-top: 10px;
+        }
+        
+        .profile-stats li {
+            list-style: none;
+            font-weight: 600;
+        }
+        
+        .profile-bio {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .profile-bio p {
+            margin: 4px 0;
+        }
+        
+        .profile-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+        }
+        
+        .modal {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+        
+        /* Tabs Styling */
+        .tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #dbdbdb;
+            padding-bottom: 5px;
+        }
+        
+        .tab-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px;
+            color: #262626;
+        }
+        
+        .tab-button.active {
+            border-bottom: 2px solid #0095f6;
+            color: #0095f6;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        form input[type="file"],
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        form button[type="submit"] {
+            background-color: #0095f6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        form button[type="submit"]:hover {
+            background-color: #007bb5;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-photo">
+                <img src="<%= user.profileImage || '/images/default-profile.png' %>" alt="Profile Photo">
+            </div>
+            <div class="profile-info">
+                <h2><%= user.username %></h2>
+                <button onclick="openEditProfileModal()">Edit Profile</button>
+                <div class="profile-stats">
+                    <p><strong>Posts</strong>: <%= user.postsCount || 0 %></p>
+                </div>
+                <p class="bio"><%= user.bio %></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditProfileModal()">&times;</span>
+            <h3>Edit Profile</h3>
+            
+            <div class="tabs">
+                <button onclick="openTab(event, 'edit-info')" class="tab-button active">Edit Info</button>
+                <button onclick="openTab(event, 'change-photo')" class="tab-button">Change Photo</button>
+            </div>
+    
+            <!-- Edit Info Tab -->
+            <div id="edit-info" class="tab-content active">
+                <form onsubmit="submitEditProfile(event)">
+                    <label for="bio">Bio:</label>
+                    <textarea id="bio" name="bio"><%= user.bio %></textarea>
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+    
+            <!-- Change Photo Tab -->
+            <div id="change-photo" class="tab-content">
+                <form onsubmit="submitProfilePhoto(event)" enctype="multipart/form-data">
+                    <label for="profileImage">Choose a Profile Photo:</label>
+                    <input type="file" id="profileImage" name="profileImage" accept="image/*" required>
+                    
+                    <button type="submit">Upload Photo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function openEditProfileModal() {
+            document.getElementById('editProfileModal').style.display = 'block';
+            openTab(null, 'edit-info');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('editProfileModal').style.display = 'none';
+        }
+
+        function openTab(event, tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+            document.getElementById(tabName).style.display = 'block';
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            if (event) event.currentTarget.classList.add('active');
+        }
+
+        async function submitEditProfile(event) {
+            event.preventDefault();
+            const bio = document.getElementById('bio').value;
+
+            try {
+                const response = await fetch('/home/profile/edit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ bio })
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    document.querySelector('.bio').textContent = data.bio;
+                    closeEditProfileModal();
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+            }
+        }
+        async function submitProfilePhoto(event) {
+            event.preventDefault();
+            const profileImage = document.getElementById('profileImage').files[0];
+        
+            const formData = new FormData();
+            formData.append('profileImage', profileImage);
+        
+            try {
+                const response = await fetch('/home/profile/edit/photo', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.querySelector('.profile-photo img').src = data.profileImage; // Update the profile photo
+                    closeEditProfileModal(); // Close the modal after uploading
+                } else {
+                    console.error("Failed to upload profile photo.");
+                }
+            } catch (error) {
+                console.error("Error uploading profile photo:", error);
+            }
+        }
+        
+    </script>
+</body>
+</html>
