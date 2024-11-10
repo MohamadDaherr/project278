@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
     firstName: { type: String, trim: true },
     lastName: { type: String, trim: true },
-    username: { type: String, required: true, unique: true, trim: true}, // Added username field
+    username: { type: String, required: true, unique: true, trim: true, default:"me"}, // Added username field
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
@@ -13,13 +13,10 @@ const UserSchema = new mongoose.Schema({
     bio: { type: String, default: '' }, // Short bio for the user
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Array of friends// Account privacy
     postsCount: { type: Number, default: 0 },
-    friendRequests: [{
-        from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-        status: { type: String, enum: ['pending', 'accepted', 'declined'], default: 'pending' }
-    }],
+    friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     notifications: [{
         from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-        type: { type: String, enum: ['friend-request', 'friend-accepted'] },
+        type: { type: String, enum: ['friend-request', 'friend-accepted','friend-declined'] },
         read: { type: Boolean, default: false }
     }] 
 }, { timestamps: true }); // Add timestamps to track creation and update times
