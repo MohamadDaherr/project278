@@ -488,15 +488,15 @@ input[type="file"] {
                 </a>
                 <ul>
                     <li>
-                        <a href="#" class="create-post-link" onclick="openModal()">Create Post</a>
+                        <a href="#" class="create-post-link" onclick="openModal()">Create Post</a></li>
                         <li><a href="/friends" onclick="loadFriends()">Friends</a></li>
                         <h4>Your Friends</h4>
                         <ul id="friendsList"></ul>
                         <li><a href="/chats">Chats</a></li>
-                </ul>
-            </aside>
-            <h4>Notifications</h4>
-            <ul id="notificationsList"></ul>
+                    </ul>
+                </aside>
+                <h4>Notifications</h4>
+                <ul id="notificationsList"></ul>
                 <button onclick="toggleSearch()">Search Friends</button>
     <div id="searchTab" style="display: none;">
         <input type="text" id="searchInput" placeholder="Search users..." oninput="searchUsers()">
@@ -669,9 +669,6 @@ input[type="file"] {
         function closeSearchModal() {
             document.getElementById("searchModal").style.display = "none";
         }
-        
-        
-        
         function toggleSearch() {
             const searchTab = document.getElementById('searchTab');
             searchTab.style.display = searchTab.style.display === 'none' ? 'block' : 'none';
@@ -883,6 +880,7 @@ input[type="file"] {
             const rightSidebar = document.getElementById("right-sidebar");
             rightSidebar.classList.toggle("collapsed");
         }
+        loadFriends();
     </script>
 </body>
 </html>
