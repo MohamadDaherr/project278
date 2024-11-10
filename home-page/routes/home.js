@@ -28,7 +28,6 @@ router.post('/upload-story', isAuthenticated, upload.single('storyFile'), storyC
 router.get('/', isAuthenticated, async (req, res) => {
     try {
         const userId = req.user.userId; // Extract `userId` from `req.user`
-        console.log("Fetching user with ID:", userId); // Debug log
 
         // Find the current user and their friends
         const currentUser = await User.findById(userId).populate('friends');
@@ -37,7 +36,6 @@ router.get('/', isAuthenticated, async (req, res) => {
             return res.status(404).send("User not found");
         }
 
-        console.log("Current user and friends:", currentUser); // Debug log
 
         const friendIds = currentUser.friends.map(friend => friend._id);
         friendIds.push(userId); // Include the current user's own ID
@@ -59,7 +57,6 @@ router.get('/', isAuthenticated, async (req, res) => {
         }).populate('user').sort({ createdAt: -1 });
 
         console.log("Fetched posts and stories successfully"); // Debug log
-
         // Render the home page, passing posts, stories, and the current user
         res.render('home', { posts, stories, user: currentUser });
     } catch (error) {
@@ -90,6 +87,7 @@ router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (
 
         // Save the post to the database
         await newPost.save();
+
         res.redirect('/home'); // Redirect to home page after posting
     } catch (error) {
         console.error("Error creating post:", error);
