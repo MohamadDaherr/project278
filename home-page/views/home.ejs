@@ -5,32 +5,200 @@
     <title>Home - Social Media</title>
     <link rel="stylesheet">
     <style>
-        body, html {
+        /* Global Styles */
+        body,
+        html {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            overflow-x: hidden;
+            /* Prevents horizontal scrolling */
         }
-        
+
         .container {
             display: flex;
             height: 100vh;
+            padding: 10px 0;
             justify-content: space-between;
         }
-        
-        .sidebar, .right-sidebar {
-            width: 20%;
-            padding: 20px;
-            background-color: #f4f4f4;
+
+        /* Media Query to Collapse Sidebars on Smaller Screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .right-sidebar {
+                transform: translateX(100%);
+            }
+
+            /* Adjust main feed width for small screens */
+            .feed {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
         }
 
-        .sidebar ul, .right-sidebar ul {
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .right-sidebar {
+                transform: translateX(100%);
+            }
+
+            .feed {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+
+        /* Sidebar Styling with White Glow */
+        .sidebar,
+        .right-sidebar {
+            width: 15%;
+            /* Smaller width */
+            height: calc(100vh - 20px);
+            /* Full viewport height, accounting for padding */
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 12px rgba(99, 99, 99, 0.4), 0 0 15px rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
+            position: fixed;
+            /* Fixes position to the viewport */
+            transition: transform 0.3s ease;
+        }
+        .sidebar ul li a.create-post-link{
+            box-shadow: 0 4px 12px rgba(99, 99, 99, 0.4), 0 0 15px rgba(255, 255, 255, 0.6);
+            background-color: #79afff;
+            color: white;
+        }
+        .sidebar ul li a.create-post-link:hover {          
+            /* Change to white on hover */
+            /* Text color to blue on hover */
+            transform: translateY(-5px);
+            /* Pop out effect */
+            box-shadow: 0 4px 12px rgba(99, 99, 99, 0.4), 0 0 15px rgba(255, 255, 255, 0.6);
+            /* Enhanced shadow on hover */
+        }
+
+        /* Left Sidebar Positioned Fixed */
+        .sidebar {
+            top: 10px;
+            left: 10px;
+        }
+
+        /* Right Sidebar Positioned Fixed */
+        .right-sidebar {
+            top: 10px;
+            right: 10px;
+        }
+
+        /* Sidebar Toggle Button */
+        .toggle-button {
+            position: absolute;
+            top: 50%;
+            right: -15px;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-button:hover {
+            background-color: #f0f2f5;
+        }
+
+        /* Collapsed Sidebar State */
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .right-sidebar.collapsed {
+            transform: translateX(100%);
+        }
+
+        /* Sidebar Items Styling */
+        .profile-link,
+        .sidebar ul li a {
+            background-color: #ffffff;
+            color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            display: block;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .profile-link:hover,
+        .sidebar ul li a:hover {
+            background-color: #79afff;
+        }
+
+        /* Sidebar List Styling */
+        .sidebar ul,
+        .right-sidebar ul {
             list-style-type: none;
             padding: 0;
+            margin: 0;
         }
-        
+
+        .sidebar ul li,
+        .right-sidebar ul li {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        /* Profile Section Styling */
+        .profile-link {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-picture {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Feed Section */
         .feed {
             width: 60%;
+            /* Increased width to accommodate smaller sidebars */
             padding: 20px;
+            margin-left: 20%;
+            /* Leaves space for fixed left sidebar */
+            margin-right: 20%;
+            /* Leaves space for fixed right sidebar */
         }
 
         /* Story Carousel Styling */
@@ -38,30 +206,46 @@
             display: flex;
             overflow-x: auto;
             gap: 15px;
-            padding: 10px 0;
-            background-color: #ffffff;
-            border-bottom: 1px solid #ddd;
+            padding: 20px;
             margin-bottom: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
 
         .story {
-            width: 80px;
+            width: 60px;
             flex-shrink: 0;
             text-align: center;
             cursor: pointer;
+            transition: transform 0.2s;
         }
 
-        .story img {
-            width: 80px;
-            height: 80px;
+        .story:hover {
+            transform: scale(1.1);
+        }
+
+        .story-image-wrapper {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            object-fit: cover;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border: 3px solid transparent;
             transition: border-color 0.3s;
         }
 
-        .story img:hover {
-            border-color: #4caf50; /* Border color on hover */
+        .story img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .story:hover .story-image-wrapper {
+            border-color: #79afff;
         }
 
         .story p {
@@ -70,41 +254,73 @@
             color: #333;
         }
 
-        /* Existing Post and Modal Styling */
+        /* Create Post Box Styling */
         .create-post-box {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #f8f8f8;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            padding: 20px;
             margin-bottom: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
             cursor: pointer;
+        }
+
+        .create-post-box:hover {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
         }
 
         .create-post-input {
             display: flex;
             align-items: center;
-            gap: 10px;
+            width: 100%;
         }
 
-        .profile-icon .profile-img {
+        .profile-img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: #4caf50; /* Placeholder color for the profile icon */
+            margin-right: 10px;
+            background-color: #4caf50;
         }
 
         .create-post-input input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 12px;
             border-radius: 20px;
+            border: 1px solid #ddd;
             font-size: 16px;
             color: #555;
             background-color: #f1f1f1;
+        }
+
+        /* Post Section Styling */
+        .posts h2 {
+            font-size: 20px;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .post {
+            background-color: #ffffff;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .post img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .privacy-level {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
         }
 
         /* Modal Styling */
@@ -117,73 +333,166 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-content {
             background-color: #ffffff;
-            margin: 10% auto;
             padding: 20px;
             border-radius: 8px;
             width: 80%;
             max-width: 500px;
+            position: relative;
         }
 
         .close {
-            color: #aaa;
-            float: right;
+            position: absolute;
+            right: 20px;
+            top: 10px;
             font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
+            color: #aaa;
             cursor: pointer;
         }
-        .search-results {
-            margin-top: 15px;
+
+        .close:hover {
+            color: black;
         }
-        
-        .user-result {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+
+        /* Post Button Styling */
+        .post-button {
+            width: 100%;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .user-result img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        
-        .user-result p {
-            flex-grow: 1;
-        }
-        
-        .user-result .add-friend-btn {
-            background-color: #4CAF50;
+            background-color: #4caf50;
             color: white;
-            padding: 5px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
+
+        .post-button:hover {
+            background-color: #388e3c;
+        }
+
+        /* Right Sidebar Toggle Button */
+        .right-toggle-button {
+            position: absolute;
+            top: 50%;
+            left: -15px;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .right-toggle-button:hover {
+            background-color: #f0f2f5;
+        }
+
+        /* Collapsed Right Sidebar State */
+        .right-sidebar.collapsed {
+            transform: translateX(100%);
+        }
+
+        #caption {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+#caption:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Hide the original file input */
+input[type="file"] {
+    display: none;
+}
+
+/* Container styling */
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Style for the custom upload button */
+.upload-button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.upload-button:hover {
+    background-color: #0056b3;
+}
+
+/* Style for the file name display */
+#file-name {
+    font-size: 14px;
+    color: #666;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
+            <button class="toggle-button" onclick="toggleSidebar()">&#9776;</button>
             <aside>
-                <p>Welcome, <strong><%= user.firstName %> <%= user.lastName %></strong></p>
+                <a href="/home/profile" class="profile-link">
+                    <div class="profile-picture">
+                        <img src="<%= user.profileImage || '/path/to/default-profile.png' %>" alt="Profile Picture">
+                    </div>
+                    <div class="profile-name">
+                        <%= user.firstName %>
+                            <%= user.lastName %>
+                    </div>
+                </a>
                 <ul>
-                    <li><a href="/home/profile">Profile</a></li>
-                    <li><a href="/friends">Friends</a></li>
-                    <li><a href="/chats">Chats</a></li>
-                    
+                    <li>
+                        <a href="#" class="create-post-link" onclick="openModal()">Create Post</a>
+                        <li><a href="/friends">Friends</a></li>
+                        <li><a href="/chats">Chats</a></li>
                 </ul>
+            </aside>
                 <h4>Notifications</h4>
                 <ul id="notificationsList"></ul>
                 <button onclick="toggleSearch()">Search Friends</button>
@@ -193,7 +502,6 @@
            
         </ul>
     </div>
-            </aside>
         </div>
        
 
@@ -201,52 +509,24 @@
             <!-- Story Carousel -->
             <section class="story-carousel">
                 <div class="story" onclick="openUploadModal()">
-                    <img src="/path/to/your/profile-icon.png" alt="Your Story">
+                    <div class="story-image-wrapper">
+                        <img src="/path/to/your/profile-icon.png" alt="Your Story">
+                    </div>
                     <p>Your Story</p>
                 </div>
-                <% stories.forEach(story => { %>
+
+                <% stories.forEach(story=> { %>
                     <div class="story" onclick="viewStory('<%= story.mediaUrl %>')">
-                        <img src="<%= story.user.profileImage || '/path/to/default-profile.png' %>" alt="<%= story.user.firstName %>">
-                        <p><%= story.user.firstName %></p>
+                        <img src="<%= story.user.profileImage || '/path/to/default-profile.png' %>"
+                            alt="<%= story.user.firstName %>">
+                        <p>
+                            <%= story.user.firstName %>
+                        </p>
                     </div>
-                <% }) %>
+                    <% }) %>
             </section>
-
-            <!-- New Post Box -->
-            <div class="create-post-box" onclick="openModal()">
-                <div class="create-post-input">
-                    <div class="profile-icon">
-                        <img src="/path/to/your/profile-icon.png" alt="Profile" class="profile-img">
-                    </div>
-                    <input type="text" placeholder="Create Post" readonly>
-                </div>
-            </div>
-
             <!-- Modal for Creating a Post -->
-            <div id="postModal" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <h3>Create a Post</h3>
-                    <form action="/home/create-post" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <textarea name="content" placeholder="What's on your mind?" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <input type="file" name="mediaFile" accept="image/*,video/*">
-                        </div>
-                        <div class="form-group">
-                            <label for="privacy">Privacy:</label>
-                            <select name="privacy" id="privacy">
-                                <option value="public">Public</option>
-                                <option value="friends">Friends Only</option>
-                                <option value="private">Private</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="post-button">Post</button>
-                    </form>
-                </div>
-            </div>
-
+            
             <!-- Modal for Uploading a Story -->
             <div id="uploadStoryModal" class="modal">
                 <div class="modal-content">
@@ -265,7 +545,7 @@
                     </form>
                 </div>
             </div>
-
+            
             <!-- Modal for Viewing a Story -->
             <div id="storyModal" class="modal">
                 <div class="modal-content">
@@ -273,34 +553,77 @@
                     <img id="storyImage" src="" alt="Story Image" style="width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
-
+            
             <!-- Posts Feed Section -->
             <section class="posts">
                 <h2>Posts</h2>
-                <% posts.forEach(post => { %>
+                <% posts.forEach(post=> { %>
                     <article class="post">
-                        <p><strong><%= post.user.firstName %>:</strong> <%= post.content %></p>
+                        <p><strong>
+                                <%= post.user.firstName %>:
+                            </strong>
+                            <%= post.caption %>
+                        </p>
                         <% if (post.mediaUrl) { %>
-                            <img src="<%= post.mediaUrl %>" alt="Post media" style="min-width: 100%; max-width: 100%;" />
-                        <% } %>
-                        <p class="privacy-level">Privacy: <%= post.privacy %></p>
+                            <img src="<%= post.mediaUrl %>" alt="Post media">
+                            <% } %>
+                                <p class="privacy-level">Privacy: <%= post.privacy %>
+                                </p>
                     </article>
-                <% }) %>
+                    <% }) %>
             </section>
         </div>
-
-        <div class="right-sidebar">
-            <aside>
-                <h2>Suggestions</h2>
-                <!-- Suggested friends -->
-            </aside>
+                
+                <div class="right-sidebar" id="right-sidebar">
+                    <button class="right-toggle-button" onclick="toggleRightSidebar()">&#9776;</button>
+                    <aside>
+                        <h2>Suggestions</h2>
+                        <!-- Suggested friends -->
+                    </aside>
+                </div>
+            <div id="postModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h3>Create a Post</h3>
+                    <form action="/home/create-post" method="POST" enctype="multipart/form-data">
+                        
+                        <div class="form-group">
+                            <!-- <input type="file" name="mediaFile" accept="image/,video/"></input> -->
+                            <div class="custom-file-upload">
+                                <label for="mediaFile" class="upload-button">Choose File</label>
+                                <span id="file-name">No file chosen</span>
+                                <input type="file" name="mediaFile" accept="image/,video/" id="mediaFile" onchange="updateFileName()">
+                            </div>
+                            
+                            
+                        </div>
+                        <div class="form-group">
+                            <textarea name="content" placeholder="Write a Caption" id="caption"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="privacy">Privacy:</label>
+                            <select name="privacy" id="privacy">
+                                <option value="public">Public</option>
+                                <option value="friends">Friends Only</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="post-button">Post</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
+        
 
     <!-- JavaScript to handle modal behavior -->
     <script>
+        function updateFileName() {
+            const fileInput = document.getElementById("mediaFile");
+            const fileName = document.getElementById("file-name");
+            fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
+        }
         function openModal() {
-            document.getElementById("postModal").style.display = "block";
+            document.getElementById("postModal").style.display = "flex";
         }
 
         function closeModal() {
@@ -308,7 +631,7 @@
         }
 
         function openUploadModal() {
-            document.getElementById("uploadStoryModal").style.display = "block";
+            document.getElementById("uploadStoryModal").style.display = "flex";
         }
 
         function closeUploadModal() {
@@ -317,7 +640,7 @@
 
         function viewStory(url) {
             document.getElementById("storyImage").src = url;
-            document.getElementById("storyModal").style.display = "block";
+            document.getElementById("storyModal").style.display = "flex";
         }
 
         function closeStoryModal() {
@@ -437,6 +760,14 @@
         }
     
         loadNotifications();
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("collapsed");
+        }
+        function toggleRightSidebar() {
+            const rightSidebar = document.getElementById("right-sidebar");
+            rightSidebar.classList.toggle("collapsed");
+        }
     </script>
 </body>
 </html>

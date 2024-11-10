@@ -69,7 +69,7 @@ router.get('/signup', (req, res) => {
 
 // POST /auth/signup - Handle signup form submission
 router.post('/signup', async (req, res) => {
-    const { firstName, middleName, lastName, email, password } = req.body;
+    const { firstName, lastName, username, email, password } = req.body;
 
     try {
         const existingUser = await User.findOne({ email });
@@ -80,7 +80,7 @@ router.post('/signup', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-        const user = new User({ firstName, middleName, lastName, email, password: hashedPassword, verificationCode });
+        const user = new User({ firstName, lastName,username, email, password: hashedPassword, verificationCode });
         await user.save();
 
         // Send email with verification code (using nodemailer)

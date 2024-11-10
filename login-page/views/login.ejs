@@ -5,93 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f9fdf8;
-            font-family: Arial, sans-serif;
-            background-image: url('/nature.jpg');
-            background-size: cover;
+ body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f9fdf8;
+    font-family: Arial, sans-serif;
+    background-image: url('/uploads/images/pic3.jpg');
+    background-size: cover;
     background-repeat: no-repeat;
-        }
-        
-        .login-container {
-            width: 350px;
-            background-color: #f1f8f4;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        
-        .login-container h2 {
-            color: #4caf50;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #c8e6c9;
-            border-radius: 5px;
-            background-color: #f0f8ff;
-            color: #333;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #4caf50;
-        }
-        
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 20px;
-        }
-        
-        .remember-forgot a {
-            color: #4caf50;
-            text-decoration: none;
-        }
-        
-        .login-button {
-            width: 100%;
-            background-color: #4caf50;
-            border: none;
-            color: #fff;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .login-button:hover {
-            background-color: #45a049;
-        }
-        
-        .signup-link {
-            font-size: 14px;
-            color: #888;
-            margin-top: 15px;
-        }
-        
-        .signup-link a {
-            color: #4caf50;
-            text-decoration: none;
-        }
+}
+
+.login-container {
+    width: 350px;
+    background-color: rgba(241, 248, 244, 0.6); /* Slightly less transparent */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.2), /* Softer outer glow */
+                0px 0px 10px rgba(255, 255, 255, 0.4); /* Softer inner glow */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-container h2 {
+    color: #007bff; /* Blue color */
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 12px 12px 45px; /* Increase padding for icon space */
+    font-size: 16px; /* Slightly increase font size */
+    border: 1px solid #c8e6c9;
+    border-radius: 5px;
+    background-color: #f0f8ff;
+    color: #333;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft black shadow */
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow on focus */
+}
+
+
+/* Icon styling */
+.form-group .icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #007bff;
+}
+
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.remember-forgot a {
+    color: #007bff;
+    text-decoration: none;
+}
+.remember-forgot a:hover {
+    color: #000000;
+    text-decoration: none;
+}
+
+/* Blue login button */
+.login-button {
+    width: 100%;
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Slightly enlarges the button */
+}
+
+.signup-link {
+    font-size: 14px;
+    color: #000000;
+    margin-top: 15px;
+}
+
+.signup-link a {
+    color: #007bff;
+    text-decoration: none;
+}
+.signup-link a:hover {
+    color: black;
+}
+
     </style>
 </head>
 <body>
@@ -99,14 +128,16 @@
         <h2>Login</h2>
         <form action="/auth/login" method="POST">
             <div class="form-group">
+                <i class="fas fa-user icon"></i>
                 <input type="email" id="email" name="email" placeholder="Email" required>
             </div>
             <div class="form-group">
+                <i class="fas fa-lock icon"></i>
                 <input type="password" id="password" name="password" placeholder="Password" required>
             </div>
             <div class="remember-forgot">
                 <a href="/auth/forgot-password">Forgot Password?</a>
-              </div>
+            </div>
             <button type="submit" class="login-button">Login</button>
         </form>
         <p class="signup-link">Don't have an account? <a href="/auth/signup">Sign Up</a></p>
