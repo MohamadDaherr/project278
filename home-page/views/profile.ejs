@@ -212,15 +212,38 @@
                 <img src="<%= user.profileImage || '/images/default-profile.png' %>" alt="Profile Photo">
             </div>
             <div class="profile-info">
-                <h2><%= user.username %></h2>
+                <h2><%= user.firstName %> <%=user.lastName %></h2>
+                <br>
+                <h4><%= user.username %></h4>
                 <button onclick="openEditProfileModal()">Edit Profile</button>
                 <div class="profile-stats">
                     <p><strong>Posts</strong>: <%= user.postsCount || 0 %></p>
+                    <p><strong>Friends</strong>: <%= user.friends.length || 0 %></p>
                 </div>
+                <br>
                 <p class="bio"><%= user.bio %></p>
             </div>
         </div>
+
+        <div class="profile-gallery">
+            <% posts.forEach(post => { %>
+                <div class="gallery-item" onclick="openPostModal('<%= post._id %>')">
+                    <img src="<%= post.mediaUrl %>" alt="User's Post">
+                </div>
+            <% }) %>
+        </div>
+        
     </div>
+
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePostModal()">&times;</span>
+            <div id="postDetails">
+                <!-- Post details will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+    
     
     <!-- Edit Profile Modal -->
     <div id="editProfileModal" style="display: none;">
@@ -312,6 +335,92 @@
                 }
             } catch (error) {
                 console.error("Error uploading profile photo:", error);
+            }
+        }
+
+        async function openPostModal(postId) {
+            document.getElementById('postModal').style.display = 'flex';
+
+            try {
+                const response = await fetch(`/home/profile/posts/${postId}`);
+                const data = await response.json();
+
+                const postDetails = document.getElementById('postDetails');
+                postDetails.innerHTML = `
+                    <img src="${data.mediaUrl}" alt="Post Media" style="width: 100%; border-radius: 8px;">
+                    <div class="post-actions">
+                        <span onclick="toggleLike(event, '${data._id}')" class="like-icon">❤️</span>
+                        <span id="likes-count-${data._id}">${data.likes.length}</span>
+                        
+                        <span onclick="openCommentSection('${data._id}')" class="comment-icon">💬</span>
+                    </div>
+
+                    <div id="commentSection-${data._id}" class="commentSection" style="display: none;">
+                        <h4>Comments</h4>
+                        <ul id="comments-list-${data._id}">
+                            ${data.comments.map(comment => `<li><strong>${comment.user.username}:</strong> ${comment.text}</li>`).join('')}
+                        </ul>
+                        <input type="text" id="new-comment-${data._id}" placeholder="Add a comment..." />
+                        <button onclick="addComment('${data._id}')">Post</button>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error("Error loading post details:", error);
+            }
+        }
+
+        function closePostModal() {
+            document.getElementById('postModal').style.display = 'none';
+        }
+
+        async function toggleLike(event, postId) {
+            event.stopPropagation();
+            try {
+                const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+                const data = await response.json();
+                document.getElementById(`likes-count-${postId}`).textContent = data.likesCount;
+            } catch (error) {
+                console.error("Error toggling like:", error);
+            }
+        }
+
+        function openCommentSection(postId) {
+            document.getElementById(`commentSection-${postId}`).style.display = 'block';
+            loadComments(postId);
+        }
+
+        async function loadComments(postId) {
+            try {
+                const response = await fetch(`/posts/${postId}`);
+                const data = await response.json();
+                
+                const commentsList = document.getElementById(`comments-list-${postId}`);
+                commentsList.innerHTML = data.comments.map(comment => `
+                    <li><strong>${comment.user.username}</strong>: ${comment.text}</li>
+                `).join('');
+            } catch (error) {
+                console.error("Error loading comments:", error);
+            }
+        }
+
+        async function addComment(postId) {
+            const commentText = document.getElementById(`new-comment-${postId}`).value;
+            if (!commentText) return;
+
+            try {
+                const response = await fetch(`/posts/${postId}/comment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: commentText })
+                });
+                
+                const data = await response.json();
+                const commentsList = document.getElementById(`comments-list-${postId}`);
+                commentsList.innerHTML += `<li><strong>${data.user.username}</strong>: ${data.text}</li>`;
+                document.getElementById(`new-comment-${postId}`).value = '';
+            } catch (error) {
+                console.error("Error adding comment:", error);
             }
         }
         

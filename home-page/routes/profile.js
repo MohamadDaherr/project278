@@ -1,5 +1,5 @@
 // routes/profile.js
-
+ 
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -54,7 +54,7 @@ router.post('/edit', isAuthenticated, async (req, res) => {
     
     if (!updatedUser) return res.status(404).send("User not found");
 
-    res.json({ bio: updatedUser.bio });
+    res.json({ bio: updatedUser.bio});
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).send("Server error");
@@ -83,6 +83,16 @@ router.post('/edit/photo', isAuthenticated, upload.single('profileImage'), async
   } catch (error) {
       console.error("Error updating profile photo:", error);
       res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.get('/posts/:postId', async (req, res) => {
+  try {
+      const post = await Post.findById(req.params.postId).populate('likes').populate('comments.user');
+      res.json(post);
+  } catch (err) {
+      console.error(err);
+      res.status(500).send("Error fetching post details.");
   }
 });
 

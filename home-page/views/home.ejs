@@ -706,7 +706,7 @@ input[type="file"] {
                 console.error("Error searching users:", error);
             }
         }
-    
+        
         async function addFriend(userId) {
             try {
                 const response = await fetch('/friend/friend-request/send', {
