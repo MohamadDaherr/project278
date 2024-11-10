@@ -8,6 +8,7 @@ require('dotenv').config({ path: './.env' });
 const profileRoute = require('./home-page/routes/profile');
 const app = express();
 const friendRequestRoutes = require('./home-page/routes/friend');
+const notificationRoutes = require('./home-page/routes/notifications');
 
 // Connect to the database
 connectDB();
@@ -31,6 +32,7 @@ app.use('/home', homeRoutes); // Home page routes
  // Adjust path as needed
  app.use('/home/profile', profileRoute);
  app.use('/friend', friendRequestRoutes);
+ app.use('/notifications', notificationRoutes);
 
 // Default route
 app.get('/', (req, res) => {

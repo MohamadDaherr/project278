@@ -489,12 +489,14 @@ input[type="file"] {
                 <ul>
                     <li>
                         <a href="#" class="create-post-link" onclick="openModal()">Create Post</a>
-                        <li><a href="/friends">Friends</a></li>
+                        <li><a href="/friends" onclick="loadFriends()">Friends</a></li>
+                        <h4>Your Friends</h4>
+                        <ul id="friendsList"></ul>
                         <li><a href="/chats">Chats</a></li>
                 </ul>
             </aside>
-                <h4>Notifications</h4>
-                <ul id="notificationsList"></ul>
+            <h4>Notifications</h4>
+            <ul id="notificationsList"></ul>
                 <button onclick="toggleSearch()">Search Friends</button>
     <div id="searchTab" style="display: none;">
         <input type="text" id="searchInput" placeholder="Search users..." oninput="searchUsers()">
@@ -709,18 +711,24 @@ input[type="file"] {
     
         async function addFriend(userId) {
             try {
-                const response = await fetch('/friend/friend-request/send', {
+                const response = await fetch('/friend/send-request', { // Updated endpoint
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ targetUserId: userId })
                 });
-    
+        
                 if (response.ok) {
-                    alert('Friend request sent');
-                    searchUsers(); // Refresh search results
+                    const result = await response.json();
+                    alert(result.message); // Show message from server (e.g., "Friend request sent")
+                    searchUsers(); // Refresh search results to update the + or - button
+                    loadNotifications(); // Refresh notifications to reflect the new friend request sent
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message || 'Failed to send friend request.');
                 }
             } catch (error) {
                 console.error("Error sending friend request:", error);
+                alert("An error occurred while sending the friend request.");
             }
         }
     
@@ -734,10 +742,35 @@ input[type="file"] {
     
                 if (response.ok) {
                     alert('Friend removed');
-                    searchUsers(); // Refresh search results
+                    searchUsers();
+                    loadFriends(); // Refresh search results
                 }
             } catch (error) {
                 console.error("Error removing friend:", error);
+            }
+        }
+        async function loadFriends() {
+            try {
+                const response = await fetch('/friend/list');
+                const friends = await response.json();
+        
+                const friendsList = document.getElementById('friendsList');
+                friendsList.innerHTML = ''; // Clear previous list
+        
+                friends.forEach(friend => {
+                    const li = document.createElement('li');
+                    li.textContent = friend.username || `${friend.firstName} ${friend.lastName}`;
+        
+                    // Button for removing friend
+                    const removeButton = document.createElement('button');
+                    removeButton.textContent = '-';
+                    removeButton.onclick = () => removeFriend(friend._id);
+        
+                    li.appendChild(removeButton);
+                    friendsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error loading friends:", error);
             }
         }
     
@@ -745,20 +778,102 @@ input[type="file"] {
             try {
                 const response = await fetch('/home/notifications');
                 const notifications = await response.json();
-    
+        
                 const notificationsList = document.getElementById('notificationsList');
-                notificationsList.innerHTML = '';
-    
+                notificationsList.innerHTML = ''; // Clear previous notifications
+        
                 notifications.forEach(notification => {
                     const li = document.createElement('li');
-                    li.textContent = `${notification.type === 'friend-request' ? 'Friend Request' : 'Friend Accepted'} from ${notification.from.username}`;
+        
+                    // Use username or firstName from the notification 'from' field or fallback to "Unknown User"
+                    const senderName = notification.from?.username || notification.from?.firstName || "Unknown User";
+        
+                    // Determine notification message based on type
+                    if (notification.type === 'friend-request') {
+                        li.textContent = `Friend Request from ${senderName}`;
+        
+                        // Add Accept and Decline buttons for friend requests
+                        const acceptButton = document.createElement('button');
+                        acceptButton.textContent = 'Accept';
+                        acceptButton.onclick = () => handleAcceptRequest(notification.from._id);
+        
+                        const declineButton = document.createElement('button');
+                        declineButton.textContent = 'Decline';
+                        declineButton.onclick = () => handleDeclineRequest(notification.from._id);
+        
+                        li.appendChild(acceptButton);
+                        li.appendChild(declineButton);
+                    } else if (notification.type === 'friend-accepted') {
+                        li.textContent = `Friend Request from ${senderName} is accepted `;
+                    } else if (notification.type === 'friend-declined') {
+                        li.textContent = `Friend Request from ${senderName} was declined `;
+                    }
+        
+                    notificationsList.appendChild(li);
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.onclick = () => deleteNotification(notification._id);
+        
+                    li.appendChild(deleteButton);
                     notificationsList.appendChild(li);
                 });
             } catch (error) {
                 console.error("Error loading notifications:", error);
             }
         }
-    
+        async function deleteNotification(notificationId) {
+            try {
+                const response = await fetch(`/friend/delete-notification/${notificationId}`, {
+                    method: 'DELETE',
+                });
+        
+                if (response.ok) {
+                    alert("Notification deleted");
+                    loadNotifications(); // Reload notifications after deletion
+                } else {
+                    console.error("Failed to delete notification");
+                }
+            } catch (error) {
+                console.error("Error deleting notification:", error);
+            }
+        }
+        
+        
+        async function handleAcceptRequest(requesterId) {
+            try {
+                const response = await fetch('/friend/accept-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ requesterId })
+                });
+        
+                if (response.ok) {
+                    alert('Friend request accepted');
+                    loadNotifications();
+                    searchUsers(); // Refresh friends list if needed
+                }
+            } catch (error) {
+                console.error("Error accepting friend request:", error);
+            }
+        }
+        
+        async function handleDeclineRequest(requesterId) {
+            try {
+                const response = await fetch('/friend/decline-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ requesterId })
+                });
+        
+                if (response.ok) {
+                    alert('Friend request declined');
+                    loadNotifications();
+                }
+            } catch (error) {
+                console.error("Error declining friend request:", error);
+            }
+        }
+        
         loadNotifications();
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
