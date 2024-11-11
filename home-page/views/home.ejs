@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Home - Social Media</title>
     <link rel="stylesheet">
     <style>
         /* Global Styles */
+        ::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}
         body,
         html {
             margin: 0;
@@ -16,10 +20,14 @@
             /* Prevents horizontal scrolling */
         }
 
+        .search {
+            display: block;
+        }
+
         .container {
             display: flex;
             height: 100vh;
-            padding: 10px 0;
+            padding: 10px 10px;
             justify-content: space-between;
         }
 
@@ -72,12 +80,14 @@
             /* Fixes position to the viewport */
             transition: transform 0.3s ease;
         }
-        .sidebar ul li a.create-post-link{
+
+        .sidebar ul li a.create-post-link {
             box-shadow: 0 4px 12px rgba(99, 99, 99, 0.4), 0 0 15px rgba(255, 255, 255, 0.6);
             background-color: #79afff;
             color: white;
         }
-        .sidebar ul li a.create-post-link:hover {          
+
+        .sidebar ul li a.create-post-link:hover {
             /* Change to white on hover */
             /* Text color to blue on hover */
             transform: translateY(-5px);
@@ -90,12 +100,14 @@
         .sidebar {
             top: 10px;
             left: 10px;
+
         }
 
         /* Right Sidebar Positioned Fixed */
         .right-sidebar {
             top: 10px;
             right: 10px;
+            padding-left: 7px;
         }
 
         /* Sidebar Toggle Button */
@@ -363,17 +375,24 @@
         .post-button {
             width: 100%;
             padding: 10px;
-            background-color: #4caf50;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
+            /* Add transform transition */
         }
 
         .post-button:hover {
-            background-color: #388e3c;
+            background-color: #0056b3;
+            /* Slightly darker shade of blue */
+            transform: translateY(-3px);
+            /* Moves the button up slightly to create a "pop" effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Adds a shadow to enhance the lift effect */
         }
+
 
         /* Right Sidebar Toggle Button */
         .right-toggle-button {
@@ -405,73 +424,252 @@
         }
 
         #caption {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    resize: none;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-    color: #333;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
-}
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease;
+        }
 
-#caption:focus {
-    border-color: #007bff;
-    outline: none;
-    background-color: #fff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
+        #caption:focus {
+            border-color: #007bff;
+            outline: none;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
 
-/* Hide the original file input */
-input[type="file"] {
-    display: none;
-}
+        /* Hide the original file input */
+        input[type="file"] {
+            display: none;
+        }
 
-/* Container styling */
-.custom-file-upload {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 8px 10px;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+        /* Container styling */
+        .custom-file-upload {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 8px 10px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-/* Style for the custom upload button */
-.upload-button {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-    text-align: center;
-}
+        /* Style for the custom upload button */
+        .upload-button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
 
-.upload-button:hover {
-    background-color: #0056b3;
-}
+        .upload-button:hover {
+            background-color: #0056b3;
+        }
 
-/* Style for the file name display */
-#file-name {
-    font-size: 14px;
-    color: #666;
-    flex-grow: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        /* Style for the file name display */
+        #file-name {
+            font-size: 14px;
+            color: #666;
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* From Uiverse.io by Yaya12085 */
+        .radio-inputs {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 0.5rem;
+            background-color: #EEE;
+            box-sizing: border-box;
+            box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+            padding: 0.25rem;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        .radio-inputs .privacy {
+            flex: 1 1 auto;
+            text-align: center;
+        }
+
+        .radio-inputs .privacy input {
+            display: none;
+        }
+
+        .radio-inputs .privacy .name {
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            border: none;
+            padding: .5rem 0;
+            color: rgba(51, 65, 85, 1);
+            transition: all .15s ease-in-out;
+        }
+
+        .radio-inputs .privacy input:checked+.name {
+            background-color: #fff;
+            font-weight: 600;
+        }
+
+        .notifications-link {
+            cursor: pointer;
+        }
+
+        #searchTab{
+            cursor: pointer;
+        }
+        .button {
+            color: #007bff;
+            outline: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: absolute;
+            /* Set the button to absolute positioning */
+            bottom: 30px;
+            /* Position at the bottom of the sidebar with some padding */
+            left: 5%;
+            /* Center horizontally within the sidebar */
+        }
 
 
+
+        .icon {
+            width: 30px;
+            /* Adjusting width directly for SVG scaling */
+            height: 30px;
+        }
+
+        /* Remove bullets from the notification list */
+        #notificationsList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        /* Style each notification item */
+        #notificationsList li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button styling for Accept, Decline, and Delete */
+        #notificationsList li button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Accept button style */
+        #notificationsList li button.accept-button {
+            background-color: #007bff;
+            /* Green */
+            color: white;
+        }
+
+        #notificationsList li button.accept-button:hover {
+            background-color: #006adb;
+        }
+
+        /* Decline button style */
+        #notificationsList li button.decline-button {
+            background-color: #f44336;
+            /* Red */
+            color: white;
+        }
+
+        #notificationsList li button.decline-button:hover {
+            background-color: #d30400;
+        }
+
+        /* Delete button style */
+        #notificationsList li button.delete-button {
+            background-color: grey;
+            /* Blue */
+            color: white;
+        }
+
+        #notificationsList li button.delete-button:hover {
+            background-color: rgb(90, 90, 90);
+        }
+
+        /* From Uiverse.io by alexruix */
+        .group {
+            display: flex;
+            line-height: 28px;
+            align-items: center;
+            position: relative;
+            max-width: 500px;
+        }
+
+        .input {
+            width: 100%;
+            height: 40px;
+            line-height: 28px;
+            padding: 0 1rem;
+            padding-left: 2.5rem;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            outline: none;
+            background-color: #f3f3f4;
+            color: #0d0c22;
+            transition: .3s ease;
+        }
+
+        .input::placeholder {
+            color: #9e9ea7;
+        }
+
+        .input:focus,
+        input:hover {
+            outline: none;
+            border-color: #007bff;
+            background-color: #fff;
+            box-shadow: 0 0 0 4px #8ec5ff;
+        }
+
+        .icon {
+            position: absolute;
+            left: 1rem;
+            fill: #9e9ea7;
+            width: 1rem;
+            height: 1rem;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar" id="sidebar">
@@ -488,24 +686,32 @@ input[type="file"] {
                 </a>
                 <ul>
                     <li>
-                        <a href="#" class="create-post-link" onclick="openModal()">Create Post</a></li>
-                        <li><a href="/friends" onclick="loadFriends()">Friends</a></li>
-                        <h4>Your Friends</h4>
-                        <ul id="friendsList"></ul>
-                        <li><a href="/chats">Chats</a></li>
-                    </ul>
-                </aside>
-                <h4>Notifications</h4>
-                <ul id="notificationsList"></ul>
-                <button onclick="toggleSearch()">Search Friends</button>
-    <div id="searchTab" style="display: none;">
-        <input type="text" id="searchInput" placeholder="Search users..." oninput="searchUsers()">
-        <ul id="searchResults">
-           
-        </ul>
-    </div>
+                        <a href="#" class="create-post-link" onclick="openModal()">Create Post</a>
+                    <li> <a href="/friends">Friends</a></li>
+                    <li><a href="/chats">Chats</a></li>
+                    <li href="/home/notifications" class="notifications-link"> <a onclick="openNotificationModal()"
+                            id="notify">Notifications</a></li>
+                    <li href="/friend/list" class="search" id="searchTab"><a onclick="openSearchModal()">Search
+                            Friends</a></li>
+
+
+                </ul>
+            </aside>
+
+
+
+            <!-- <ul id="searchResults"></ul> -->
+
+            <button class="button" onclick="scrollToTopAndRefresh()">
+                <svg class="icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024"
+                    height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z">
+                    </path>
+                </svg>
+            </button>
         </div>
-       
+
 
         <div class="feed">
             <!-- Story Carousel -->
@@ -519,43 +725,72 @@ input[type="file"] {
 
                 <% stories.forEach(story=> { %>
                     <div class="story" onclick="viewStory('<%= story.mediaUrl %>')">
-                        <img src="<%= story.user.profileImage || '/path/to/default-profile.png' %>"
-                            alt="<%= story.user.firstName %>">
+                        <div class="story-image-wrapper">
+                            <img src="<%= story.user.profileImage || '/path/to/default-profile.png' %>"
+                                alt="<%= story.user.firstName %>">
+                        </div>
                         <p>
                             <%= story.user.firstName %>
                         </p>
                     </div>
                     <% }) %>
             </section>
+
+
+
+
             <!-- Modal for Creating a Post -->
-            
-            <!-- Modal for Uploading a Story -->
             <div id="uploadStoryModal" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closeUploadModal()">&times;</span>
-                    <h3>Upload a Story</h3>
+                    <h3>Upload Story</h3>
                     <form action="/home/upload-story" method="POST" enctype="multipart/form-data">
+
                         <div class="form-group">
-                            <label for="storyFile">Select a photo or video</label>
-                            <input type="file" name="storyFile" id="storyFile" accept="image/*,video/*" required>
+                            <!-- <input type="file" name="mediaFile" accept="image/,video/"></input> -->
+                            <div class="custom-file-upload">
+                                <label for="storyFile" class="upload-button">Choose File</label>
+                                <span id="file-name">No file chosen</span>
+                                <input type="file" name="storyFile" accept="image/,video/" id="storyFile"
+                                    onchange="updateFileNamen()">
+                            </div>
+
+
                         </div>
+
                         <div class="form-group">
-                            <label for="storyText">Add a caption (optional)</label>
-                            <textarea name="storyText" id="storyText" rows="3" placeholder="Say something..."></textarea>
+                            <!-- <label for="privacy">Privacy: <br></label> -->
+
+                            <div for="privacy" class="radio-inputs">
+                                <label class="privacy">
+                                    <input type="radio" name="radio" checked="">
+                                    <span class="name">Public</span>
+                                </label>
+                                <label class="privacy">
+                                    <input type="radio" name="radio">
+                                    <span class="name">Private</span>
+                                </label>
+
+
+                            </div>
                         </div>
-                        <button type="submit" class="post-button">Upload Story</button>
+                        <br>
+                        <button type="submit" class="post-button">Upload</button>
                     </form>
                 </div>
             </div>
-            
+
+
+
             <!-- Modal for Viewing a Story -->
             <div id="storyModal" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closeStoryModal()">&times;</span>
-                    <img id="storyImage" src="" alt="Story Image" style="width: 100%; height: auto; border-radius: 10px;">
+                    <img id="storyImage" src="" alt="Story Image"
+                        style="width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
-            
+
             <!-- Posts Feed Section -->
             <section class="posts">
                 <h2>Posts</h2>
@@ -575,55 +810,120 @@ input[type="file"] {
                     <% }) %>
             </section>
         </div>
-                
-                <div class="right-sidebar" id="right-sidebar">
-                    <button class="right-toggle-button" onclick="toggleRightSidebar()">&#9776;</button>
-                    <aside>
-                        <h2>Suggestions</h2>
-                        <!-- Suggested friends -->
-                    </aside>
-                </div>
-            <div id="postModal" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <h3>Create a Post</h3>
-                    <form action="/home/create-post" method="POST" enctype="multipart/form-data">
-                        
-                        <div class="form-group">
-                            <!-- <input type="file" name="mediaFile" accept="image/,video/"></input> -->
-                            <div class="custom-file-upload">
-                                <label for="mediaFile" class="upload-button">Choose File</label>
-                                <span id="file-name">No file chosen</span>
-                                <input type="file" name="mediaFile" accept="image/,video/" id="mediaFile" onchange="updateFileName()">
-                            </div>
-                            
-                            
+
+        <div class="right-sidebar" id="right-sidebar">
+            <button class="right-toggle-button" onclick="toggleRightSidebar()">&#9776;</button>
+            <aside>
+                <h2>Suggestions</h2>
+                <!-- Suggested friends -->
+            </aside>
+        </div>
+        <div id="postModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3>Create a Post</h3>
+                <form action="/home/create-post" method="POST" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <!-- <input type="file" name="mediaFile" accept="image/,video/"></input> -->
+                        <div class="custom-file-upload">
+                            <label for="mediaFile" class="upload-button">Choose File</label>
+                            <span id="file-nam">No file chosen</span>
+                            <input type="file" name="mediaFile" accept="image/,video/" id="mediaFile"
+                                onchange="updateFileName()">
                         </div>
-                        <div class="form-group">
-                            <textarea name="content" placeholder="Write a Caption" id="caption"></textarea>
+
+
+                    </div>
+                    <div class="form-group">
+                        <textarea name="content" placeholder="Write a Caption" id="caption"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="privacy">Privacy: <br></label> -->
+
+                        <div for="privacy" class="radio-inputs">
+                            <label class="privacy">
+                                <input type="radio" name="radio" checked="">
+                                <span class="name">Public</span>
+                            </label>
+                            <label class="privacy">
+                                <input type="radio" name="radio">
+                                <span class="name">Private</span>
+                            </label>
+
+                            <label class="privacy">
+                                <input type="radio" name="radio">
+                                <span class="name">Friends</span>
+                            </label>
                         </div>
-                        <div class="form-group">
-                            <label for="privacy">Privacy:</label>
-                            <select name="privacy" id="privacy">
-                                <option value="public">Public</option>
-                                <option value="friends">Friends Only</option>
-                                <option value="private">Private</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="post-button">Post</button>
-                    </form>
-                </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="post-button">Post</button>
+                </form>
             </div>
         </div>
-        
+    </div>
+
+
+    <!-- Notification Modal -->
+    <div id="notification-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNotificationModal()">&times;</span>
+            <h3>Notifications</h3>
+
+            <ul id="notificationsList">
+                <!-- JavaScript will populate notifications here -->
+
+            </ul>
+
+        </div>
+    </div>
+
+    <div id="search-modal" class="modal">
+        <div class="modal-content">
+            <h3>Search Friends:</h3>
+            <div class="group">
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+                    <g>
+                        <path
+                            d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
+                        </path>
+                    </g>
+                </svg>
+                <input placeholder="Search" type="search" class="input" id="tab" oninput="searchUsers()">
+            </div>
+            <span class="close" onclick="closeSearchModal()">&times;</span>
+
+            <ul id="searchResults">
+                <!-- JavaScript will populate notifications here -->
+
+            </ul>
+
+        </div>
+    </div>
 
     <!-- JavaScript to handle modal behavior -->
     <script>
+        function scrollToTopAndRefresh() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+                location.reload();
+            }, 500); // Delay to ensure smooth scroll completes before refreshing
+        }
+
         function updateFileName() {
             const fileInput = document.getElementById("mediaFile");
+            const fileName = document.getElementById("file-nam");
+            fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
+        }
+
+        function updateFileNamen() {
+            const fileInput = document.getElementById("storyFile");
             const fileName = document.getElementById("file-name");
             fileName.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : "No file chosen";
         }
+
+
         function openModal() {
             document.getElementById("postModal").style.display = "flex";
         }
@@ -649,7 +949,7 @@ input[type="file"] {
             document.getElementById("storyModal").style.display = "none";
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const postModal = document.getElementById("postModal");
             const storyModal = document.getElementById("storyModal");
             const uploadStoryModal = document.getElementById("uploadStoryModal");
@@ -662,42 +962,59 @@ input[type="file"] {
                 closeUploadModal();
             }
         }
+        window.onclick = function (event) {
+            const modal = document.getElementById("notification-modal");
+            if (event.target === modal) {
+                closeNotificationModal();
+            }
+        }
+
+
         function openSearchModal() {
-            document.getElementById("searchModal").style.display = "block";
+            document.getElementById("search-modal").style.display = "flex";
+            
+           
         }
-        
+
         function closeSearchModal() {
-            document.getElementById("searchModal").style.display = "none";
+            document.getElementById("search-modal").style.display = "none";
+            document.getElementById('tab').value = ''; // Clear search input
+            document.getElementById('searchResults').innerHTML = ''; // Clear previous search results
         }
-        function toggleSearch() {
-            const searchTab = document.getElementById('searchTab');
-            searchTab.style.display = searchTab.style.display === 'none' ? 'block' : 'none';
+
+        function openNotificationModal() {
+            document.getElementById("notification-modal").style.display = "flex";
         }
-    
-        async function searchUsers() {
-            const query = document.getElementById('searchInput').value;
-            if (!query) return document.getElementById('searchResults').innerHTML = '';
+
+        function closeNotificationModal() {
+            document.getElementById("notification-modal").style.display = "none";
+        }
+
         
+        async function searchUsers() {
+            const query = document.getElementById('tab').value;
+            if (!query) return document.getElementById('searchResults').innerHTML = '';
+
             try {
                 const response = await fetch(`/home/search-users?query=${query}`);
                 const users = await response.json();
-                
+
                 console.log("Users received:", users); // Log the received users on the client side
-        
+
                 const resultsList = document.getElementById('searchResults');
                 resultsList.innerHTML = ''; // Clear previous results
-        
+
                 users.forEach(user => {
                     const li = document.createElement('li');
-                    
+
                     // Display username or fallback to firstName
                     li.textContent = user.username ? user.username : user.firstName;
-        
+
                     // Create add/remove button based on friend status
                     const button = document.createElement('button');
                     button.textContent = user.isFriend ? '-' : '+';
                     button.onclick = () => user.isFriend ? removeFriend(user._id) : addFriend(user._id);
-        
+
                     li.appendChild(button);
                     resultsList.appendChild(li);
                 });
@@ -705,7 +1022,7 @@ input[type="file"] {
                 console.error("Error searching users:", error);
             }
         }
-        
+
         async function addFriend(userId) {
             try {
                 const response = await fetch('/friend/send-request', { // Updated endpoint
@@ -713,7 +1030,7 @@ input[type="file"] {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ targetUserId: userId })
                 });
-        
+
                 if (response.ok) {
                     const result = await response.json();
                     alert(result.message); // Show message from server (e.g., "Friend request sent")
@@ -728,7 +1045,7 @@ input[type="file"] {
                 alert("An error occurred while sending the friend request.");
             }
         }
-    
+
         async function removeFriend(userId) {
             try {
                 const response = await fetch('/friend/friend/remove', {
@@ -736,7 +1053,7 @@ input[type="file"] {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ friendId: userId })
                 });
-    
+
                 if (response.ok) {
                     alert('Friend removed');
                     searchUsers();
@@ -750,19 +1067,19 @@ input[type="file"] {
             try {
                 const response = await fetch('/friend/list');
                 const friends = await response.json();
-        
+
                 const friendsList = document.getElementById('friendsList');
                 friendsList.innerHTML = ''; // Clear previous list
-        
+
                 friends.forEach(friend => {
                     const li = document.createElement('li');
                     li.textContent = friend.username || `${friend.firstName} ${friend.lastName}`;
-        
+
                     // Button for removing friend
                     const removeButton = document.createElement('button');
                     removeButton.textContent = '-';
                     removeButton.onclick = () => removeFriend(friend._id);
-        
+
                     li.appendChild(removeButton);
                     friendsList.appendChild(li);
                 });
@@ -770,34 +1087,34 @@ input[type="file"] {
                 console.error("Error loading friends:", error);
             }
         }
-    
+
         async function loadNotifications() {
             try {
-                const response = await fetch('/home/notifications');
+                const response = await fetch('/home/notifications'); // Ensure this endpoint returns notification data
                 const notifications = await response.json();
-        
+
                 const notificationsList = document.getElementById('notificationsList');
                 notificationsList.innerHTML = ''; // Clear previous notifications
-        
+
                 notifications.forEach(notification => {
                     const li = document.createElement('li');
-        
-                    // Use username or firstName from the notification 'from' field or fallback to "Unknown User"
                     const senderName = notification.from?.username || notification.from?.firstName || "Unknown User";
-        
+
                     // Determine notification message based on type
                     if (notification.type === 'friend-request') {
                         li.textContent = `Friend Request from ${senderName}`;
-        
+
                         // Add Accept and Decline buttons for friend requests
                         const acceptButton = document.createElement('button');
                         acceptButton.textContent = 'Accept';
+                        acceptButton.className = 'accept-button';
                         acceptButton.onclick = () => handleAcceptRequest(notification.from._id);
-        
+
                         const declineButton = document.createElement('button');
                         declineButton.textContent = 'Decline';
+                        declineButton.className = 'decline-button';
                         declineButton.onclick = () => handleDeclineRequest(notification.from._id);
-        
+
                         li.appendChild(acceptButton);
                         li.appendChild(declineButton);
                     } else if (notification.type === 'friend-accepted') {
@@ -805,12 +1122,13 @@ input[type="file"] {
                     } else if (notification.type === 'friend-declined') {
                         li.textContent = `Friend Request from ${senderName} was declined `;
                     }
-        
-                    notificationsList.appendChild(li);
+
+                    // Add Delete button for each notification
                     const deleteButton = document.createElement('button');
                     deleteButton.textContent = 'Delete';
+                    deleteButton.className = 'delete-button';
                     deleteButton.onclick = () => deleteNotification(notification._id);
-        
+
                     li.appendChild(deleteButton);
                     notificationsList.appendChild(li);
                 });
@@ -823,9 +1141,8 @@ input[type="file"] {
                 const response = await fetch(`/friend/delete-notification/${notificationId}`, {
                     method: 'DELETE',
                 });
-        
+
                 if (response.ok) {
-                    alert("Notification deleted");
                     loadNotifications(); // Reload notifications after deletion
                 } else {
                     console.error("Failed to delete notification");
@@ -834,8 +1151,7 @@ input[type="file"] {
                 console.error("Error deleting notification:", error);
             }
         }
-        
-        
+
         async function handleAcceptRequest(requesterId) {
             try {
                 const response = await fetch('/friend/accept-request', {
@@ -843,7 +1159,7 @@ input[type="file"] {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ requesterId })
                 });
-        
+
                 if (response.ok) {
                     alert('Friend request accepted');
                     loadNotifications();
@@ -853,7 +1169,7 @@ input[type="file"] {
                 console.error("Error accepting friend request:", error);
             }
         }
-        
+
         async function handleDeclineRequest(requesterId) {
             try {
                 const response = await fetch('/friend/decline-request', {
@@ -861,7 +1177,7 @@ input[type="file"] {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ requesterId })
                 });
-        
+
                 if (response.ok) {
                     alert('Friend request declined');
                     loadNotifications();
@@ -870,7 +1186,7 @@ input[type="file"] {
                 console.error("Error declining friend request:", error);
             }
         }
-        
+
         loadNotifications();
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
@@ -883,4 +1199,5 @@ input[type="file"] {
         loadFriends();
     </script>
 </body>
+
 </html>
