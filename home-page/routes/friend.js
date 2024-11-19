@@ -3,7 +3,7 @@
 const express = require('express');
 const path = require('path');
 const router = express.Router();
-const User = require('../../login-page/models/User');// Adjust path as needed
+const User = require('../../models/User');// Adjust path as needed
 const isAuthenticated = require('../middleware/authMiddleware');
 
 // Send a friend request

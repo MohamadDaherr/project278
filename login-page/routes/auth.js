@@ -3,7 +3,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const User = require('../models/User'); // Ensure the User model is set up correctly
+const User = require('../../models/User'); // Ensure the User model is set up correctly
 
 const router = express.Router();
 
@@ -160,35 +160,6 @@ router.post('/forgot-password', async (req, res) => {
 });
 
 
-// GET /auth/verify-reset - Render the page to enter verification code
-// router.get('/verify-reset', (req, res) => {
-//   const email = req.query.email;
-//   res.render('verify-reset', { email });
-// });
-
-// // POST /auth/verify-reset - Verify the code and display the new password input if successful
-// router.post('/verify-reset', async (req, res) => {
-//   const { email, verificationCode } = req.body;
-
-//   try {
-//       const user = await User.findOne({ email });
-//       console.log("User document:", user); // Log the entire user document
-//       console.log("Stored verification code:", user.verificationCode); // Log the specific verification code
-
-//       if (!user || user.verificationCode !== verificationCode) {
-//           return res.status(400).send('Invalid verification code');
-//       }
-
-//       // Clear the verification code after it's verified
-//       user.verificationCode = undefined;
-//       await user.save();
-
-//       res.render('reset-password', { email });
-//   } catch (error) {
-//       console.error('Verification error:', error);
-//       res.status(500).send('Server error');
-//   }
-// });
 
 
 

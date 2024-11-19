@@ -24,15 +24,7 @@ const UserSchema = new mongoose.Schema({
 
 
 
-// UserSchema.pre('save', function (next) {
-//     // Only update followingCount if following array has been modified
-//     if (this.isModified('friends')) {
-//         this.followingCount = this.friends.length;
-//     }
-//     next();
-// });
 
-// Method to compare input password with hashed password in database
 UserSchema.methods.comparePassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
