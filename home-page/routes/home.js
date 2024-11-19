@@ -4,9 +4,9 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const path = require('path');
 const multer = require('multer');
-const Post = require('../models/Post');
-const User = require('../../login-page/models/User');
-const Story = require('../models/Story');
+const Post = require('../../models/Post');
+const User = require('../../models/User');
+const Story = require('../../models/Story');
 const storyController = require('../controllers/storyController');
 const isAuthenticated = require('../middleware/authMiddleware');
 

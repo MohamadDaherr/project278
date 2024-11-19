@@ -4,8 +4,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const router = express.Router();
-const User = require('../../login-page/models/User'); // Adjust path as needed
-const Post = require('../models/Post'); // Adjust path as needed
+const User = require('../../models/User'); // Adjust path as needed
+const Post = require('../../models/Post'); // Adjust path as needed
 const isAuthenticated = require('../middleware/authMiddleware'); // Ensure this middleware checks if a user is logged in
 
 // Configure multer for profile image uploads

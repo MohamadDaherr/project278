@@ -10,6 +10,7 @@ const app = express();
 const friendRequestRoutes = require('./home-page/routes/friend');
 
 const posts = require('./home-page/routes/posts');
+const storiesRoutes = require('./home-page/routes/stories');
 
 const notificationRoutes = require('./home-page/routes/notifications');
 
@@ -39,7 +40,7 @@ app.use('/home', homeRoutes); // Home page routes
  app.use('/posts', posts);
 
  app.use('/notifications', notificationRoutes);
-
+ app.use('/stories', storiesRoutes);
 
 // Default route
 app.get('/', (req, res) => {

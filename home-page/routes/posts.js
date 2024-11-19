@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/Post');
-const User = require('../../login-page/models/User');
+const Post = require('../../models/Post');
+const User = require('../../models/User');
 const isAuthenticated = require('../middleware/authMiddleware');
 
 // Route to toggle like on a post
