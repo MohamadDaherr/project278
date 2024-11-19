@@ -7,7 +7,7 @@ const multer = require('multer');
 const Post = require('../../models/Post');
 const User = require('../../models/User');
 const Story = require('../../models/Story');
-const storyController = require('../controllers/storyController');
+const storyController = require('../routes/stories');
 const isAuthenticated = require('../middleware/authMiddleware');
 
 

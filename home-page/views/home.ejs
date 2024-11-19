@@ -651,7 +651,7 @@ html {
             <section class="story-carousel">
                 <div class="story" onclick="openUploadModal()">
                     <div class="story-image-wrapper">
-                        <img src="/path/to/your/profile-icon.png" alt="Your Story">
+                        <img src="<%= user.profileImage %>" alt="Your Story">
                     </div>
                     <p>Your Story</p>
                 </div>
@@ -707,7 +707,7 @@ html {
             <div id="storyModal" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closeStoryModal()">&times;</span>
-                    <img id="storyImage" src="" alt="Story Image"
+                    <img id="storyImage" src="<%= stories.mediaUrl %>" alt="Story Image"
                         style="width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
