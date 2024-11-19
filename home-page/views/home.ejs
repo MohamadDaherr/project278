@@ -6,215 +6,203 @@
     <title>Home - Social Media</title>
     <link rel="stylesheet">
     <style>
-        /* Global Styles */
-        ::-webkit-scrollbar {
+ /* Global Styles */
+::-webkit-scrollbar {
     display: none; /* Hide the scrollbar */
 }
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffffff;
-            overflow-x: hidden;
-            /* Prevents horizontal scrolling */
-        }
 
-        .search {
-            display: block;
-        }
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e0ecff;
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+}
 
-        .container {
-            display: flex;
-            height: 100vh;
-            padding: 10px 10px;
-            justify-content: space-between;
-        }
+.search {
+    display: block;
+}
 
-        /* Media Query to Collapse Sidebars on Smaller Screens */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
+.container {
+    display: flex;
+    height: 100vh;
+    padding: 10px 10px;
+    justify-content: space-between;
+}
 
-            .right-sidebar {
-                transform: translateX(100%);
-            }
+/* Media Query to Collapse Sidebars on Smaller Screens */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
 
-            /* Adjust main feed width for small screens */
-            .feed {
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
+    .right-sidebar {
+        transform: translateX(100%);
+    }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
+    .feed {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
 
-            .right-sidebar {
-                transform: translateX(100%);
-            }
+/* Sidebar Styling */
+.right-sidebar
+{
+    width: 15%; /* Sidebar width */
+    height: calc(100vh - 20px); /* Full viewport height minus padding */
+    padding: 20px;
+    background-color: #ffffff; /* Solid white background */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 10px; /* Rounded corners */
+    position: fixed; /* Fix sidebar position */
+    transition: transform 0.3s ease;
+}
 
-            .feed {
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
+/* Left Sidebar Positioned Fixed */
 
-        /* Sidebar Styling with White Glow */
-        .sidebar,
-        .right-sidebar {
-            width: 15%;
-            /* Smaller width */
-            height: calc(100vh - 20px);
-            /* Full viewport height, accounting for padding */
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 4px 12px rgba(99, 99, 99, 0.4), 0 0 15px rgba(255, 255, 255, 0.6);
-            border-radius: 10px;
-            position: fixed;
-            /* Fixes position to the viewport */
-            transition: transform 0.3s ease;
-        }
 
-        .sidebar ul li a.create-post-link {
-            box-shadow: 0 4px 12px rgba(99, 99, 99, 0.4), 0 0 15px rgba(255, 255, 255, 0.6);
-            background-color: #79afff;
-            color: white;
-        }
+.sidebar {
+    width: 240px; /* Fixed width to match the profile link */
+    
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #ffffff; /* Same background as the profile link */
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); Same shadow as the profile link */
+    border-radius: 20px; /* Same rounded corners as the profile link */
+    position: fixed; /* Fix sidebar position */
+    transition: transform 0.3s ease;
+    top: 220px; /* Place it below the profile link */
+    left: 10px;
+}
 
-        .sidebar ul li a.create-post-link:hover {
-            /* Change to white on hover */
-            /* Text color to blue on hover */
-            transform: translateY(-5px);
-            /* Pop out effect */
-            box-shadow: 0 4px 12px rgba(99, 99, 99, 0.4), 0 0 15px rgba(255, 255, 255, 0.6);
-            /* Enhanced shadow on hover */
-        }
 
-        /* Left Sidebar Positioned Fixed */
-        .sidebar {
-            top: 10px;
-            left: 10px;
+/* Right Sidebar Positioned Fixed */
+.right-sidebar {
+    top: 10px;
+    right: 10px;
+    padding-left: 7px;
+}
 
-        }
 
-        /* Right Sidebar Positioned Fixed */
-        .right-sidebar {
-            top: 10px;
-            right: 10px;
-            padding-left: 7px;
-        }
 
-        /* Sidebar Toggle Button */
-        .toggle-button {
-            position: absolute;
-            top: 50%;
-            right: -15px;
-            transform: translateY(-50%);
-            width: 30px;
-            height: 30px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-        }
 
-        .toggle-button:hover {
-            background-color: #f0f2f5;
-        }
+/* Sidebar Items Styling */
+.sidebar ul,
+.right-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
 
-        /* Collapsed Sidebar State */
-        .sidebar.collapsed {
-            transform: translateX(-100%);
-        }
+.sidebar ul li,
+.right-sidebar ul li {
+    /* margin: 10px 0; */
+    font-weight: bold;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 20px;
+    padding-right: 20px;
+   position: relative;
+    padding-left: 25px; /* Add space for the left bar */
+}
 
-        .right-sidebar.collapsed {
-            transform: translateX(100%);
-        }
 
-        /* Sidebar Items Styling */
-        .profile-link,
-        .sidebar ul li a {
-            background-color: #ffffff;
-            color: #333;
-            padding: 10px;
-            border-radius: 8px;
-            display: block;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
 
-        .profile-link:hover,
-        .sidebar ul li a:hover {
-            background-color: #79afff;
-        }
+.sidebar ul li a {
+    background-color: transparent; /* No individual background */
+    color: #333; /* Text color */
+    padding: 15px;
+    border-radius: 8px;
+    display: block;
+    
+    text-decoration: none;
+    transition: color 0.3s; /* Smooth color transition */
+}
 
-        /* Sidebar List Styling */
-        .sidebar ul,
-        .right-sidebar ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
+.sidebar ul li a:hover {
+    color: #007bff; /* Highlight text color on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
 
-        .sidebar ul li,
-        .right-sidebar ul li {
-            margin: 10px 0;
-            font-weight: bold;
-        }
 
-        /* Profile Section Styling */
-        .profile-link {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
 
-        .profile-picture {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 10px;
-        }
 
-        .profile-picture img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+/* Profile Section Styling */
+.profile-link {
+    width: 200px; /* Fixed width to match the sidebar */
+    background-color: #ffffff; /* Same background as the sidebar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Same shadow as the sidebar */
+    border-radius: 10px; /* Same rounded corners as the sidebar */
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 10px; /* Position above the sidebar */
+    left: 10px;
+ padding: 20px;
+}
 
-        .profile-name {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
+.profile-link:hover {
+    background-color: #f0f2f5;
+}
 
-        /* Feed Section */
-        .feed {
-            width: 60%;
-            /* Increased width to accommodate smaller sidebars */
-            padding: 20px;
-            margin-left: 20%;
-            /* Leaves space for fixed left sidebar */
-            margin-right: 20%;
-            /* Leaves space for fixed right sidebar */
-        }
+.create-post-link {
+    padding: 20px;
+    width: 200px; /* Fixed width to match the sidebar */
+    background-color: #007bff; /* Same background as the sidebar */
+    box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5); /* Same shadow as the sidebar */
+    border-radius: 30px; /* Same rounded corners as the sidebar */
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 130px; /* Position above the sidebar */
+    left: 10px;
+}
 
-        /* Story Carousel Styling */
-        .story-carousel {
+.create-post-link:hover {
+    background-color: rgb(0, 0, 170);
+    transform: scale(1.05); /* Scale the button slightly larger */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Add a shadow to give depth */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth animation */
+}
+
+
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Feed Section */
+.feed {
+    width: 60%;
+    padding: 20px;
+    margin-left: 20%; /* Leaves space for fixed left sidebar */
+    margin-right: 20%; /* Leaves space for fixed right sidebar */
+}
+
+/* Story Carousel Styling */
+.story-carousel {
             display: flex;
             overflow-x: auto;
             gap: 15px;
@@ -236,6 +224,7 @@
         .story:hover {
             transform: scale(1.1);
         }
+
 
         .story-image-wrapper {
             width: 60px;
@@ -266,113 +255,47 @@
             color: #333;
         }
 
-        /* Create Post Box Styling */
-        .create-post-box {
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
 
-        .create-post-box:hover {
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}        .create-post-box:hover {
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
         }
 
-        .create-post-input {
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-            background-color: #4caf50;
-        }
-
-        .create-post-input input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
-            font-size: 16px;
-            color: #555;
-            background-color: #f1f1f1;
-        }
-
-        /* Post Section Styling */
-        .posts h2 {
-            font-size: 20px;
-            color: #333;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .post {
-            background-color: #ffffff;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-
-        .post img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-
-        .privacy-level {
-            font-size: 12px;
-            color: #888;
-            margin-top: 10px;
-        }
-
-        /* Modal Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 500px;
-            position: relative;
-        }
-
-        .close {
-            position: absolute;
-            right: 20px;
-            top: 10px;
-            font-size: 28px;
-            color: #aaa;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: black;
-        }
-
-        /* Post Button Styling */
-        .post-button {
+  /* Post Button Styling */
+  .post-button {
             width: 100%;
             padding: 10px;
             background-color: #007bff;
@@ -386,7 +309,6 @@
 
         .post-button:hover {
             background-color: #0056b3;
-            /* Slightly darker shade of blue */
             transform: translateY(-3px);
             /* Moves the button up slightly to create a "pop" effect */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -394,34 +316,8 @@
         }
 
 
-        /* Right Sidebar Toggle Button */
-        .right-toggle-button {
-            position: absolute;
-            top: 50%;
-            left: -15px;
-            transform: translateY(-50%);
-            width: 30px;
-            height: 30px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-        }
 
-        .right-toggle-button:hover {
-            background-color: #f0f2f5;
-        }
-
-        /* Collapsed Right Sidebar State */
-        .right-sidebar.collapsed {
-            transform: translateX(100%);
-        }
+   
 
         #caption {
             width: 100%;
@@ -617,7 +513,7 @@
         /* Delete button style */
         #notificationsList li button.delete-button {
             background-color: grey;
-            /* Blue */
+       
             color: white;
         }
 
@@ -667,52 +563,89 @@
             width: 1rem;
             height: 1rem;
         }
+
+
+
+
+      
+        /* Post Section Styling */
+        .posts h2 {
+            font-size: 20px;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .post {
+            background-color: #ffffff;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .post img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .privacy-level {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+        }
+
+        .sidebar ul li.active::before {
+    content: ""; /* Adds an empty content block */
+    position: absolute; /* Positions the pseudo-element relative to the li */
+    left: 0; /* Align it to the left of the li */
+    top: 0; /* Start from the top of the li */
+    height: 100%; /* Match the full height of the li */
+    width: 5px; /* Width of the blue bar */
+    background-color: #007bff; /* Blue color for the bar */
+    border-radius: 4px 0 0 4px; /* Optional: rounded edges */
+}
+
+
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="sidebar" id="sidebar">
-            <button class="toggle-button" onclick="toggleSidebar()">&#9776;</button>
+            <a href="/home/profile" class="profile-link">
+                <div class="profile-picture">
+                    <img src="<%= user.profileImage || '/path/to/default-profile.png' %>" alt="Profile Picture">
+                </div>
+                <div class="profile-name">
+                    <%= user.firstName %>
+                        <%= user.lastName %>
+                </div>
+            </a>
+            
+            <a href="#" class="create-post-link" onclick="openModal()" >Create Post</a>
+
+        <div class="sidebar">
+            
             <aside>
-                <a href="/home/profile" class="profile-link">
-                    <div class="profile-picture">
-                        <img src="<%= user.profileImage || '/path/to/default-profile.png' %>" alt="Profile Picture">
-                    </div>
-                    <div class="profile-name">
-                        <%= user.firstName %>
-                            <%= user.lastName %>
-                    </div>
-                </a>
+              
                 <ul>
-                    <li>
-                        <a href="#" class="create-post-link" onclick="openModal()">Create Post</a>
-                    <li> <a href="/friends">Friends</a></li>
-                    <li><a href="/chats">Chats</a></li>
-                    <li href="/home/notifications" class="notifications-link"> <a onclick="openNotificationModal()"
-                            id="notify">Notifications</a></li>
-                    <li href="/friend/list" class="search" id="searchTab"><a onclick="openSearchModal()">Search
-                            Friends</a></li>
+                
+                    <li><a href="/home" id="home-link">Home</a></li>
 
-
+                    <li id="friends"> <a href="/friends" id="fr">Friends</a></li>
+                    <li id="chats"><a href="/chats" id="ch">Chats</a></li>
+                    <li href="/home/notifications" class="notifications-link"> 
+                        <a onclick="openNotificationModal()" id="notify">Notifications</a>
+                    </li>
+                    <li href="/friend/list" class="search" id="searchTab">
+                        <a  onclick="openSearchModal()" id="search">Search Friends</a>
+                    </li>
                 </ul>
             </aside>
-
-
-
-            <!-- <ul id="searchResults"></ul> -->
-
-            <button class="button" onclick="scrollToTopAndRefresh()">
-                <svg class="icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024"
-                    height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z">
-                    </path>
-                </svg>
-            </button>
         </div>
-
-
+    
         <div class="feed">
             <!-- Story Carousel -->
             <section class="story-carousel">
@@ -722,7 +655,7 @@
                     </div>
                     <p>Your Story</p>
                 </div>
-
+    
                 <% stories.forEach(story=> { %>
                     <div class="story" onclick="viewStory('<%= story.mediaUrl %>')">
                         <div class="story-image-wrapper">
@@ -735,32 +668,24 @@
                     </div>
                     <% }) %>
             </section>
-
-
-
-
+    
             <!-- Modal for Creating a Post -->
             <div id="uploadStoryModal" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closeUploadModal()">&times;</span>
                     <h3>Upload Story</h3>
                     <form action="/home/upload-story" method="POST" enctype="multipart/form-data">
-
+    
                         <div class="form-group">
-                            <!-- <input type="file" name="mediaFile" accept="image/,video/"></input> -->
                             <div class="custom-file-upload">
                                 <label for="storyFile" class="upload-button">Choose File</label>
                                 <span id="file-name">No file chosen</span>
                                 <input type="file" name="storyFile" accept="image/,video/" id="storyFile"
                                     onchange="updateFileNamen()">
                             </div>
-
-
                         </div>
-
+    
                         <div class="form-group">
-                            <!-- <label for="privacy">Privacy: <br></label> -->
-
                             <div for="privacy" class="radio-inputs">
                                 <label class="privacy">
                                     <input type="radio" name="radio" checked="">
@@ -770,8 +695,6 @@
                                     <input type="radio" name="radio">
                                     <span class="name">Private</span>
                                 </label>
-
-
                             </div>
                         </div>
                         <br>
@@ -779,9 +702,7 @@
                     </form>
                 </div>
             </div>
-
-
-
+    
             <!-- Modal for Viewing a Story -->
             <div id="storyModal" class="modal">
                 <div class="modal-content">
@@ -790,7 +711,7 @@
                         style="width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
-
+    
             <!-- Posts Feed Section -->
             <section class="posts">
                 <h2>Posts</h2>
@@ -810,9 +731,8 @@
                     <% }) %>
             </section>
         </div>
-
+    
         <div class="right-sidebar" id="right-sidebar">
-            <button class="right-toggle-button" onclick="toggleRightSidebar()">&#9776;</button>
             <aside>
                 <h2>Suggestions</h2>
                 <!-- Suggested friends -->
@@ -823,24 +743,19 @@
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h3>Create a Post</h3>
                 <form action="/home/create-post" method="POST" enctype="multipart/form-data">
-
+    
                     <div class="form-group">
-                        <!-- <input type="file" name="mediaFile" accept="image/,video/"></input> -->
                         <div class="custom-file-upload">
                             <label for="mediaFile" class="upload-button">Choose File</label>
                             <span id="file-nam">No file chosen</span>
                             <input type="file" name="mediaFile" accept="image/,video/" id="mediaFile"
                                 onchange="updateFileName()">
                         </div>
-
-
                     </div>
                     <div class="form-group">
                         <textarea name="content" placeholder="Write a Caption" id="caption"></textarea>
                     </div>
                     <div class="form-group">
-                        <!-- <label for="privacy">Privacy: <br></label> -->
-
                         <div for="privacy" class="radio-inputs">
                             <label class="privacy">
                                 <input type="radio" name="radio" checked="">
@@ -850,7 +765,7 @@
                                 <input type="radio" name="radio">
                                 <span class="name">Private</span>
                             </label>
-
+    
                             <label class="privacy">
                                 <input type="radio" name="radio">
                                 <span class="name">Friends</span>
@@ -863,7 +778,7 @@
             </div>
         </div>
     </div>
-
+    
 
     <!-- Notification Modal -->
     <div id="notification-modal" class="modal">
@@ -953,6 +868,8 @@
             const postModal = document.getElementById("postModal");
             const storyModal = document.getElementById("storyModal");
             const uploadStoryModal = document.getElementById("uploadStoryModal");
+            const notification = document.getElementById("notification-modal");
+            const search=document.getElementById("search-modal");
 
             if (event.target === postModal) {
                 closeModal();
@@ -961,36 +878,56 @@
             } else if (event.target === uploadStoryModal) {
                 closeUploadModal();
             }
-        }
-        window.onclick = function (event) {
-            const modal = document.getElementById("notification-modal");
-            if (event.target === modal) {
+            else if (event.target === notification) {
                 closeNotificationModal();
-            }
         }
-
-
-        function openSearchModal() {
-            document.getElementById("search-modal").style.display = "flex";
-            
-           
+        else if (event.target === search) {
+                closeSearchModal();
         }
+    }
+  
 
-        function closeSearchModal() {
-            document.getElementById("search-modal").style.display = "none";
-            document.getElementById('tab').value = ''; // Clear search input
-            document.getElementById('searchResults').innerHTML = ''; // Clear previous search results
-        }
+    function openSearchModal() {
+    document.getElementById("search-modal").style.display = "flex";
+    setActiveBackground('search'); // Highlight "Search Friends"
+}
+function closeSearchModal() {
+    document.getElementById("search-modal").style.display = "none";
+    resetStyles(); // Reset styles for all elements
+}
 
         function openNotificationModal() {
-            document.getElementById("notification-modal").style.display = "flex";
-        }
+    document.getElementById("notification-modal").style.display = "flex";
+    setActiveBackground('notify'); // Highlight "Notifications"
+}
 
-        function closeNotificationModal() {
-            document.getElementById("notification-modal").style.display = "none";
-        }
+function closeNotificationModal() {
+    document.getElementById("notification-modal").style.display = "none";
+    resetStyles(); // Reset styles for all elements
+}
 
-        
+function setActiveBackground(targetId) {
+    const sidebarItems = document.querySelectorAll('.sidebar ul li');
+
+    // Remove the active class from all items
+    // sidebarItems.forEach(item => item.classList.remove('active'));
+
+    // Add the active class to the selected item's parent <li>
+    const targetLi = document.getElementById(targetId)?.parentElement;
+    if (targetLi) {
+        targetLi.classList.add('active');
+    }
+}
+
+function resetStyles() {
+    // Simply remove the 'active' class from all items
+    const sidebarItems = document.querySelectorAll('.sidebar ul li');
+    sidebarItems.forEach(item => item.classList.remove('active'));
+}
+
+
+
+
         async function searchUsers() {
             const query = document.getElementById('tab').value;
             if (!query) return document.getElementById('searchResults').innerHTML = '';
@@ -1187,15 +1124,6 @@
             }
         }
 
-        loadNotifications();
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            sidebar.classList.toggle("collapsed");
-        }
-        function toggleRightSidebar() {
-            const rightSidebar = document.getElementById("right-sidebar");
-            rightSidebar.classList.toggle("collapsed");
-        }
         loadFriends();
     </script>
 </body>
