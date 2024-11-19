@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../login-page/models/User');
+const User = require('../../models/User');
 const isAuthenticated = require('../middleware/authMiddleware');
 
 // Get notifications
