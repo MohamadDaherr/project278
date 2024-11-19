@@ -1,9 +1,9 @@
 // home-page/routes/stories.js
 const express = require('express');
-const router = express.Router();
-const Story = require('../../models/Story');
 const multer = require('multer');
-
+const path = require('path');
+const Story = require('../../models/Story');
+const router = express.Router();
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public/uploads/stories');
@@ -30,7 +30,6 @@ router.createStory = async (req, res) => {
     }
 };
 
-// Fetch stories
 router.getStories = async (req, res) => {
     try {
         const stories = await Story.find({ expiresAt: { $gte: new Date() } }).populate('user');
@@ -40,5 +39,4 @@ router.getStories = async (req, res) => {
         res.status(500).send("Server error");
     }
 };
-
 module.exports = router;
