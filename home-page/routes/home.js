@@ -40,14 +40,24 @@ router.get('/', isAuthenticated, async (req, res) => {
         const friendIds = currentUser.friends.map(friend => friend._id);
         friendIds.push(userId); // Include the current user's own ID
 
-        // Fetch posts based on friend and privacy settings
+        // Fetch posts based on friends and privacy settings
         const posts = await Post.find({
             $or: [
-                { user: { $in: friendIds }, privacy: { $in: ['friends', 'public'] } },
-                { privacy: 'public' },
-                { user: userId, privacy: 'private' }
+                { user: { $in: friendIds }, privacy: { $in: ['friends', 'public'] } }, // Friends' public or 'friends' posts
+                { privacy: 'public' }, // Public posts from any user
+                { user: userId, privacy: 'private' } // Current user's private posts
             ]
-        }).populate('user').sort({ createdAt: -1 });
+        })
+            .populate('user', 'username profileImage') // Populate the post author details
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    select: 'username profileImage' // Populate commenter details
+                }
+            })
+            .populate('likes.user', 'username profileImage') // Populate like details
+            .sort({ createdAt: -1 }); // Sort by newest posts first
 
         // Fetch stories from friends and the user within the last 24 hours
         const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -80,9 +90,11 @@ router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (
         // Create a new post with the provided data
         const newPost = new Post({
             content,
-            mediaUrl,
+            mediaUrl, 
             privacy,
-            user: userId
+            user: userId,
+            likes: [], // Initialize likes as an empty array
+            comments: [], // Initialize comments as an empty array
         });
 
         // Save the post to the database
