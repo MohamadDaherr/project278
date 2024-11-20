@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-
+const { Schema } = mongoose;
 const postSchema = new Schema({
-    content: { type: String, required: true },
+    content: { type: String},
     mediaUrl: { type: String },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Author of the post
     likes: [

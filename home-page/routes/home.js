@@ -9,6 +9,7 @@ const User = require('../../models/User');
 const Story = require('../../models/Story');
 const storyController = require('../routes/stories');
 const isAuthenticated = require('../middleware/authMiddleware');
+const Notification = require('../../models/Notification');
 
 
 // Configure multer for file uploads
@@ -179,16 +180,17 @@ router.get('/notifications', isAuthenticated, async (req, res) => {
     const userId = req.user.userId;
 
     try {
-        const user = await User.findById(userId).populate('notifications.from', 'firstName').lean();
-        const unreadNotifications = user.notifications.filter(n => !n.read);
+        const notifications = await Notification.find({ to: userId })
+            .populate('from', 'username firstName lastName') // Sender details
+            .sort({ createdAt: -1 }) // Latest notifications first
+            .lean();
 
-        res.json(unreadNotifications);
+        res.json(notifications);
     } catch (error) {
         console.error("Error fetching notifications:", error);
         res.status(500).json({ message: 'Server error' });
     }
 });
-
 // Profile route in home.js or a profile-specific route file
 // router.get('/profile', isAuthenticated, async (req, res) => {
 //     try {

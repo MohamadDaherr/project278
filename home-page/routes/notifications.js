@@ -1,27 +1,43 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../models/User');
+const Notification = require('../../models/Notification');
 const isAuthenticated = require('../middleware/authMiddleware');
 
-// Get notifications
-router.get('/notifications', isAuthenticated, async (req, res) => {
-  const userId = req.user.userId;
+// Fetch all notifications for the logged-in user
+router.get('/', isAuthenticated, async (req, res) => {
+    const userId = req.user.userId;
 
-  try {
-      const user = await User.findById(userId)
-          .populate('notifications.from', 'username firstName') // Ensure we get `username` and `firstName` from the sender
-          .lean();
+    try {
+        const notifications = await Notification.find({ to: userId })
+            .populate('from', 'username firstName lastName') // Sender details
+            .populate('post', 'content') // Post details for likes or comments
+            .populate('story', 'mediaUrl') // Story details for likes
+            .populate('comment', 'content') // Comment details
+            .populate('reply', 'content') // Reply details
+            .sort({ createdAt: -1 }) // Latest notifications first
+            .lean();
 
-      if (!user) return res.status(404).json({ message: "User not found" });
+        res.json(notifications);
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+// Delete a notification
+router.delete('/notifications/:notificationId', isAuthenticated, async (req, res) => {
+    const { notificationId } = req.params;
 
-      // Filter notifications that are unread
-      const unreadNotifications = user.notifications.filter(notification => !notification.read);
+    try {
+        const deletedNotification = await Notification.findByIdAndDelete(notificationId);
+        if (!deletedNotification) {
+            return res.status(404).json({ message: "Notification not found" });
+        }
 
-      res.json(unreadNotifications);
-  } catch (error) {
-      console.error("Error fetching notifications:", error);
-      res.status(500).json({ message: 'Server error' });
-  }
+        res.status(200).json({ message: "Notification deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting notification:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
 
 module.exports = router;
