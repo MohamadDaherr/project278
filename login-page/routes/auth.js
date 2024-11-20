@@ -49,9 +49,9 @@ router.post('/login', async (req, res) => {
       }
 
       // Step 4: If email and password match, generate a token
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '9h' });
       // Step 5: Send the token as a cookie or in the response
+      
       res.cookie('token', token, { httpOnly: true, maxAge: 3600000 });
       res.redirect('/home');
 

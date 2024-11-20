@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 
 const isAuthenticated = (req, res, next) => {
-    const token = req.cookies.token;
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
     if (!token) {
         console.log("No token found, redirecting to login");

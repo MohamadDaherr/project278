@@ -1040,18 +1040,20 @@ function resetStyles() {
             }
         }
 
-        async function removeFriend(userId) {
+        async function removeFriend(friendId) {
             try {
-                const response = await fetch('/friend/friend/remove', {
+                const response = await fetch('/friend/remove', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ friendId: userId })
+                    body: JSON.stringify({ friendId }),
                 });
-
+        
                 if (response.ok) {
-                    alert('Friend removed');
-                    searchUsers();
-                    loadFriends(); // Refresh search results
+                    alert('Friend removed successfully');
+                    await loadFriends(); // Refresh friends list
+                } else {
+                    const errorData = await response.json();
+                    console.error("Failed to remove friend:", errorData.message);
                 }
             } catch (error) {
                 console.error("Error removing friend:", error);
@@ -1082,47 +1084,71 @@ function resetStyles() {
             }
         }
 
-        async function loadNotifications() {
+        async function loadNotifications() { 
             try {
-                const response = await fetch('/home/notifications'); // Ensure this endpoint returns notification data
-                const notifications = await response.json();
-
+                const response = await fetch('/home/notifications'); // Fetch notifications from backend
+                const notifications = await response.json(); // Parse response data
+        
                 const notificationsList = document.getElementById('notificationsList');
                 notificationsList.innerHTML = ''; // Clear previous notifications
-
+        
                 notifications.forEach(notification => {
                     const li = document.createElement('li');
                     const senderName = notification.from?.username || notification.from?.firstName || "Unknown User";
-
-                    // Determine notification message based on type
-                    if (notification.type === 'friend-request') {
-                        li.textContent = `Friend Request from ${senderName}`;
-
-                        // Add Accept and Decline buttons for friend requests
-                        const acceptButton = document.createElement('button');
-                        acceptButton.textContent = 'Accept';
-                        acceptButton.className = 'accept-button';
-                        acceptButton.onclick = () => handleAcceptRequest(notification.from._id);
-
-                        const declineButton = document.createElement('button');
-                        declineButton.textContent = 'Decline';
-                        declineButton.className = 'decline-button';
-                        declineButton.onclick = () => handleDeclineRequest(notification.from._id);
-
-                        li.appendChild(acceptButton);
-                        li.appendChild(declineButton);
-                    } else if (notification.type === 'friend-accepted') {
-                        li.textContent = `Friend Request from ${senderName} is accepted `;
-                    } else if (notification.type === 'friend-declined') {
-                        li.textContent = `Friend Request from ${senderName} was declined `;
+        
+                    // Handle different notification types
+                    switch (notification.type) {
+                        case 'friend-request':
+                            li.textContent = `Friend Request from ${senderName}`;
+                            const acceptButton = document.createElement('button');
+                            acceptButton.textContent = 'Accept';
+                            acceptButton.className = 'accept-button';
+                            acceptButton.onclick = () => handleAcceptRequest(notification._id);
+                            
+                            const declineButton = document.createElement('button');
+                            declineButton.textContent = 'Decline';
+                            declineButton.className = 'decline-button';
+                            declineButton.onclick = () => handleDeclineRequest(notification._id);
+                            
+                            li.appendChild(acceptButton);
+                            li.appendChild(declineButton);
+                            break;
+        
+                        case 'friend-accepted':
+                            li.textContent = `Friend Request accepted by ${senderName}`;
+                            break;
+        
+                        case 'friend-declined':
+                            li.textContent = `Friend Request declined by ${senderName}`;
+                            break;
+        
+                        case 'post-like':
+                            li.textContent = `${senderName} liked your post`;
+                            break;
+        
+                        case 'story-like':
+                            li.textContent = `${senderName} liked your story`;
+                            break;
+        
+                        case 'comment':
+                            li.textContent = `${senderName} commented on your post`;
+                            break;
+        
+                        case 'comment-like':
+                            li.textContent = `${senderName} liked your comment`;
+                            break;
+        
+                        default:
+                            li.textContent = `Unknown notification type from ${senderName}`;
+                            break;
                     }
-
-                    // Add Delete button for each notification
+        
+                    // Add delete button for all notifications
                     const deleteButton = document.createElement('button');
                     deleteButton.textContent = 'Delete';
                     deleteButton.className = 'delete-button';
                     deleteButton.onclick = () => deleteNotification(notification._id);
-
+        
                     li.appendChild(deleteButton);
                     notificationsList.appendChild(li);
                 });
@@ -1130,56 +1156,64 @@ function resetStyles() {
                 console.error("Error loading notifications:", error);
             }
         }
+        
+        
         async function deleteNotification(notificationId) {
             try {
-                const response = await fetch(`/friend/delete-notification/${notificationId}`, {
+                const response = await fetch(`/notifications/${notificationId}`, {
                     method: 'DELETE',
                 });
-
+        
                 if (response.ok) {
-                    loadNotifications(); // Reload notifications after deletion
+                    alert("Notification deleted successfully");
+                    await loadNotifications(); // Reload notifications after deletion
                 } else {
-                    console.error("Failed to delete notification");
+                    const errorData = await response.json();
+                    console.error("Failed to delete notification:", errorData.message);
                 }
             } catch (error) {
                 console.error("Error deleting notification:", error);
             }
         }
-
-        async function handleAcceptRequest(requesterId) {
+        
+        async function handleAcceptRequest(notificationId) {
             try {
                 const response = await fetch('/friend/accept-request', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ requesterId })
+                    body: JSON.stringify({ notificationId }),
                 });
-
+        
                 if (response.ok) {
-                    alert('Friend request accepted');
-                    loadNotifications();
-                    searchUsers(); // Refresh friends list if needed
+                    alert("Friend request accepted successfully");
+                    await loadNotifications();
+                    await loadFriends(); // Reload friends list
                 }
             } catch (error) {
                 console.error("Error accepting friend request:", error);
             }
         }
-
-        async function handleDeclineRequest(requesterId) {
+        
+        async function handleDeclineRequest(notificationId) {
             try {
                 const response = await fetch('/friend/decline-request', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ requesterId })
+                    body: JSON.stringify({ notificationId }),
                 });
-
+        
                 if (response.ok) {
-                    alert('Friend request declined');
-                    loadNotifications();
+                    alert("Friend request declined successfully");
+                    await loadNotifications();
                 }
             } catch (error) {
                 console.error("Error declining friend request:", error);
             }
         }
+        
+        // Call the loadNotifications function on page load
+        loadNotifications();
+        
 
         loadFriends();
 
@@ -1247,6 +1281,7 @@ function resetStyles() {
                 console.error("Error adding comment:", error);
             }
         }
+
 
 
     </script>

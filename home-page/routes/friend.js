@@ -1,100 +1,91 @@
-// routes/friend.js
-
 const express = require('express');
-const path = require('path');
 const router = express.Router();
-const User = require('../../models/User');// Adjust path as needed
+const User = require('../../models/User');
+const Notification = require('../../models/Notification');
 const isAuthenticated = require('../middleware/authMiddleware');
 
-// Send a friend request
-// friend.js
+// Send friend request
 router.post('/send-request', isAuthenticated, async (req, res) => {
     const { targetUserId } = req.body;
     const userId = req.user.userId;
 
     try {
+        if (userId === targetUserId) {
+            return res.status(400).json({ message: "You cannot send a friend request to yourself" });
+        }
+
         const currentUser = await User.findById(userId);
         const targetUser = await User.findById(targetUserId);
 
-        if (!currentUser || !targetUser) return res.status(404).json({ message: "User not found" });
-
-        // Check if already friends
-        if (currentUser.friends.includes(targetUserId)) {
-            return res.status(400).json({ message: "Already friends" });
+        if (!currentUser || !targetUser) {
+            return res.status(404).json({ message: "User not found" });
         }
 
-        // Check if there's a declined request or a pending one
-        const existingRequest = targetUser.notifications.find(
-            notification => notification.from.toString() === userId && notification.type === 'friend-request'
-        );
+        if (currentUser.friends.includes(targetUserId)) {
+            return res.status(400).json({ message: "You are already friends" });
+        }
+
+        const existingRequest = await Notification.findOne({
+            from: userId,
+            to: targetUserId,
+            type: 'friend-request',
+        });
 
         if (existingRequest) {
-            return res.status(400).json({ message: "Request already sent" });
+            return res.status(400).json({ message: "Friend request already sent" });
         }
 
-        // Clear any previous declined requests
-        targetUser.notifications = targetUser.notifications.filter(
-            notification => !(notification.from.toString() === userId && notification.type === 'friend-declined')
-        );
-
-        // Add the friend request and notification
         targetUser.friendRequests.push(userId);
-        targetUser.notifications.push({ from: userId, type: 'friend-request', status: 'pending' });
-
         await targetUser.save();
+
+        await Notification.create({
+            from: userId,
+            to: targetUserId,
+            type: 'friend-request',
+        });
+
         res.status(200).json({ message: "Friend request sent" });
     } catch (error) {
         console.error("Error sending friend request:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
-router.delete('/delete-notification/:notificationId', isAuthenticated, async (req, res) => {
-    const { notificationId } = req.params;
+
+// Accept Friend Request
+router.post('/accept-request', isAuthenticated, async (req, res) => {
+    const { notificationId } = req.body;
     const userId = req.user.userId;
 
     try {
-        // Find the user and remove the notification by ID
-        const user = await User.findById(userId);
-        user.notifications = user.notifications.filter(
-            (notification) => notification._id.toString() !== notificationId
-        );
-        
-        await user.save();
-        res.status(200).json({ message: "Notification deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting notification:", error);
-        res.status(500).json({ message: "Server error" });
-    }
-});
+        const notification = await Notification.findById(notificationId);
 
+        if (!notification || notification.type !== 'friend-request') {
+            return res.status(404).json({ message: "Friend request not found" });
+        }
 
+        const requesterId = notification.from.toString();
 
-// Respond to a friend request
-router.post('/accept-request', isAuthenticated, async (req, res) => {
-    const { requesterId } = req.body; // ID of the user who sent the friend request
-    const userId = req.user.userId; // ID of the user who received the friend request
-
-    try {
         const currentUser = await User.findById(userId);
         const requester = await User.findById(requesterId);
 
-        if (!currentUser || !requester) return res.status(404).json({ message: "User not found" });
+        if (!currentUser || !requester) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
-        // Add each other as friends
         currentUser.friends.push(requesterId);
         requester.friends.push(userId);
 
-        // Update notifications for both users
-        currentUser.notifications = currentUser.notifications.map(notification => {
-            if (notification.from.toString() === requesterId && notification.type === 'friend-request') {
-                return { ...notification, type: 'friend-accepted', status: 'accepted' };
-            }
-            return notification;
-        });
-        requester.notifications.push({ from: userId, type: 'friend-accepted', status: 'accepted' });
-
+        currentUser.friendRequests = currentUser.friendRequests.filter(id => id.toString() !== requesterId);
         await currentUser.save();
         await requester.save();
+
+        await Notification.create({
+            from: userId,
+            to: requesterId,
+            type: 'friend-accepted',
+        });
+
+        await Notification.findByIdAndDelete(notificationId);
 
         res.status(200).json({ message: "Friend request accepted" });
     } catch (error) {
@@ -103,27 +94,36 @@ router.post('/accept-request', isAuthenticated, async (req, res) => {
     }
 });
 
+// Decline Friend Request
 router.post('/decline-request', isAuthenticated, async (req, res) => {
-    const { requesterId } = req.body; // ID of the user who sent the friend request
-    const userId = req.user.userId; // ID of the user who received the friend request
+    const { notificationId } = req.body;
+    const userId = req.user.userId;
 
     try {
+        const notification = await Notification.findById(notificationId);
+
+        if (!notification || notification.type !== 'friend-request') {
+            return res.status(404).json({ message: "Friend request not found" });
+        }
+
+        const requesterId = notification.from.toString();
+
         const currentUser = await User.findById(userId);
+        if (!currentUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
-        if (!currentUser) return res.status(404).json({ message: "User not found" });
-
-        // Remove the requester's ID from the friendRequests array
         currentUser.friendRequests = currentUser.friendRequests.filter(id => id.toString() !== requesterId);
+        await currentUser.save();
 
-        // Update the notification to indicate the request was declined
-        currentUser.notifications = currentUser.notifications.map(notification => {
-            if (notification.from.toString() === requesterId && notification.type === 'friend-request') {
-                return { ...notification, type: 'friend-declined', status: 'declined' };
-            }
-            return notification;
+        await Notification.create({
+            from: userId,
+            to: requesterId,
+            type: 'friend-declined',
         });
 
-        await currentUser.save();
+        await Notification.findByIdAndDelete(notificationId);
+
         res.status(200).json({ message: "Friend request declined" });
     } catch (error) {
         console.error("Error declining friend request:", error);
@@ -132,35 +132,34 @@ router.post('/decline-request', isAuthenticated, async (req, res) => {
 });
 
 
-
-// Remove a friend
-router.post('/friend/remove', isAuthenticated, async (req, res) => {
+router.post('/remove', isAuthenticated, async (req, res) => {
     const { friendId } = req.body;
     const userId = req.user.userId;
 
     try {
-        // Remove friend from both users' friend lists
-        await User.findByIdAndUpdate(userId, { $pull: { friends: friendId } });
-        await User.findByIdAndUpdate(friendId, { $pull: { friends: userId } });
+        // Find both users
+        const currentUser = await User.findById(userId);
+        const friendUser = await User.findById(friendId);
 
-        res.status(200).json({ message: 'Friend removed' });
-    } catch (error) {
-        console.error('Error removing friend:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-router.get('/list', isAuthenticated, async (req, res) => {
-    try {
-        const userId = req.user.userId;
-        const user = await User.findById(userId).populate('friends', 'username firstName lastName');
-        
-        if (!user) {
+        if (!currentUser || !friendUser) {
             return res.status(404).json({ message: "User not found" });
         }
-        
-        res.json(user.friends);
+
+        // Check if they are friends
+        if (!currentUser.friends.includes(friendId) || !friendUser.friends.includes(userId)) {
+            return res.status(400).json({ message: "You are not friends with this user" });
+        }
+
+        // Remove each other from the friends list
+        currentUser.friends = currentUser.friends.filter(id => id.toString() !== friendId);
+        friendUser.friends = friendUser.friends.filter(id => id.toString() !== userId);
+
+        await currentUser.save();
+        await friendUser.save();
+
+        res.status(200).json({ message: "Friend removed successfully" });
     } catch (error) {
-        console.error("Error fetching friends list:", error);
+        console.error("Error removing friend:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
