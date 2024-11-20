@@ -337,12 +337,12 @@
                 console.error("Error uploading profile photo:", error);
             }
         }
-
+ 
         async function openPostModal(postId) {
             document.getElementById('postModal').style.display = 'flex';
 
             try {
-                const response = await fetch(`/home/profile/posts/${postId}`);
+                const response = await fetch(`/posts/${postId}`);
                 const data = await response.json();
 
                 const postDetails = document.getElementById('postDetails');
@@ -350,25 +350,24 @@
                     <img src="${data.mediaUrl}" alt="Post Media" style="width: 100%; border-radius: 8px;">
                     <div class="post-actions">
                         <span onclick="toggleLike(event, '${data._id}')" class="like-icon">❤️</span>
-                        <span id="likes-count-${data._id}">${data.likes.length}</span>
-                        
-                        <span onclick="openCommentSection('${data._id}')" class="comment-icon">💬</span>
+                        <span id="likes-count-${data._id}">${data.likesCount || 0}</span>
+                        <span onclick="openCommentSection('${data._id}')" class="comment-icon">💬 ${data.comments.length} Comment</span>
                     </div>
 
                     <div id="commentSection-${data._id}" class="commentSection" style="display: none;">
                         <h4>Comments</h4>
                         <ul id="comments-list-${data._id}">
-                            ${data.comments.map(comment => `<li><strong>${comment.user.username}:</strong> ${comment.text}</li>`).join('')}
+                            <!-- Comments will be dynamically loaded -->
                         </ul>
                         <input type="text" id="new-comment-${data._id}" placeholder="Add a comment..." />
                         <button onclick="addComment('${data._id}')">Post</button>
                     </div>
                 `;
-
             } catch (error) {
                 console.error("Error loading post details:", error);
             }
         }
+
 
         function closePostModal() {
             document.getElementById('postModal').style.display = 'none';
@@ -379,50 +378,65 @@
             try {
                 const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
                 const data = await response.json();
+
+                // Update the like count
                 document.getElementById(`likes-count-${postId}`).textContent = data.likesCount;
+                
             } catch (error) {
                 console.error("Error toggling like:", error);
             }
-        }
+}
 
-        function openCommentSection(postId) {
-            document.getElementById(`commentSection-${postId}`).style.display = 'block';
-            loadComments(postId);
-        }
 
-        async function loadComments(postId) {
-            try {
-                const response = await fetch(`/posts/${postId}`);
-                const data = await response.json();
-                
-                const commentsList = document.getElementById(`comments-list-${postId}`);
-                commentsList.innerHTML = data.comments.map(comment => `
-                    <li><strong>${comment.user.username}</strong>: ${comment.text}</li>
-                `).join('');
-            } catch (error) {
-                console.error("Error loading comments:", error);
-            }
-        }
+function openCommentSection(postId) {
+    document.getElementById(`commentSection-${postId}`).style.display = 'block';
+    loadComments(postId); // Dynamically load the comments when the section is opened
+}
 
-        async function addComment(postId) {
-            const commentText = document.getElementById(`new-comment-${postId}`).value;
-            if (!commentText) return;
+async function loadComments(postId) {
+    try {
+        const response = await fetch(`/posts/${postId}`);
+        const data = await response.json();
 
-            try {
-                const response = await fetch(`/posts/${postId}/comment`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: commentText })
-                });
-                
-                const data = await response.json();
-                const commentsList = document.getElementById(`comments-list-${postId}`);
-                commentsList.innerHTML += `<li><strong>${data.user.username}</strong>: ${data.text}</li>`;
-                document.getElementById(`new-comment-${postId}`).value = '';
-            } catch (error) {
-                console.error("Error adding comment:", error);
-            }
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+        commentsList.innerHTML = data.comments.map(comment => `
+            <li>
+                <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
+                     alt="${comment.user.username}'s profile image" 
+                     style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
+                <strong>${comment.user.username}:</strong> ${comment.content}
+            </li>
+        `).join('');
+    } catch (error) {
+        console.error("Error loading comments:", error);
+    }
+}
+
+
+
+async function addComment(postId) {
+    const commentText = document.getElementById(`new-comment-${postId}`).value.trim();
+    if (!commentText) return;
+
+    try {
+        const response = await fetch(`/posts/${postId}/comment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: commentText })
+        });
+
+        if (response.ok) {
+            loadComments(postId); // Reload comments after posting a new one
+            document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
+        } else {
+            console.error("Error adding comment:", await response.text());
         }
+    } catch (error) {
+        console.error("Error adding comment:", error);
+    }
+}
+
+
         
     </script>
 </body>

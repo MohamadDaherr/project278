@@ -608,7 +608,29 @@ html {
     border-radius: 4px 0 0 4px; /* Optional: rounded edges */
 }
 
+.post-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+    }
 
+    .like-icon, .comment-icon {
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .like-icon:hover, .comment-icon:hover {
+        opacity: 0.7;
+    }
+
+    .commentSection {
+        margin-top: 10px;
+        border-top: 1px solid #dbdbdb;
+        padding-top: 10px;
+        max-height: 200px;
+        overflow-y: auto;
+    }
     </style>
 </head>
 
@@ -715,21 +737,50 @@ html {
             <!-- Posts Feed Section -->
             <section class="posts">
                 <h2>Posts</h2>
-                <% posts.forEach(post=> { %>
+                <% posts.forEach(post => { %>
                     <article class="post">
-                        <p><strong>
-                                <%= post.user.firstName %>:
-                            </strong>
-                            <%= post.caption %>
+                        <!-- Post Author and Caption -->
+                        <p>
+                            <strong><%= post.user.username %></strong>
+                            <p><%= post.content %></p>
+                            
                         </p>
+                        <p class="privacy-level">Privacy: <%= post.privacy %></p>
+                        <p class="date">
+                            Posted on: <%= new Date(post.createdAt).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                            }) %>
+                        </p>
+            
+                        <!-- Post Media -->
                         <% if (post.mediaUrl) { %>
                             <img src="<%= post.mediaUrl %>" alt="Post media">
-                            <% } %>
-                                <p class="privacy-level">Privacy: <%= post.privacy %>
-                                </p>
+                        <% } %>
+            
+                        <!-- Like and Comment Buttons -->
+                        <div class="post-actions">
+                            <span class="like-icon" onclick="toggleLike(event, '<%= post._id %>')">❤️</span>
+                            <span id="likes-count-<%= post._id %>"><%= post.likes.length %> Likes</span>
+            
+                            <span class="comment-icon" onclick="openCommentSection('<%= post._id %>')">💬</span>
+                            <span><%= post.comments.length %> Comments</span>
+                        </div>
+            
+                        <!-- Comment Section -->
+                        <div id="commentSection-<%= post._id %>" class="commentSection" style="display: none;">
+                            <h4>Comments</h4>
+                            <ul id="comments-list-<%= post._id %>">
+                                <!-- Comments will be dynamically loaded -->
+                            </ul>
+                            <input type="text" id="new-comment-<%= post._id %>" placeholder="Add a comment..." />
+                            <button onclick="addComment('<%= post._id %>')">Post</button>
+                        </div>
                     </article>
-                    <% }) %>
+                <% }) %>
             </section>
+            
         </div>
     
         <div class="right-sidebar" id="right-sidebar">
@@ -944,14 +995,20 @@ function resetStyles() {
                 users.forEach(user => {
                     const li = document.createElement('li');
 
+                    const img = document.createElement('img');
+                    img.src=user.profileImage;
+                    
                     // Display username or fallback to firstName
-                    li.textContent = user.username ? user.username : user.firstName;
-
+                    const usernameSpan = document.createElement('span');
+                    usernameSpan.textContent = user.username;
+                    
                     // Create add/remove button based on friend status
                     const button = document.createElement('button');
                     button.textContent = user.isFriend ? '-' : '+';
                     button.onclick = () => user.isFriend ? removeFriend(user._id) : addFriend(user._id);
 
+                    li.appendChild(img);
+                    li.appendChild(usernameSpan);
                     li.appendChild(button);
                     resultsList.appendChild(li);
                 });
@@ -1159,7 +1216,74 @@ function resetStyles() {
         
 
         loadFriends();
-        
+
+        async function toggleLike(event, postId) {
+            event.stopPropagation();
+            try {
+                const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+                const data = await response.json();
+
+                // Update the like count
+                document.getElementById(`likes-count-${postId}`).textContent = `${data.likesCount} Likes`;
+            } catch (error) {
+                console.error("Error toggling like:", error);
+            }
+        }
+
+        function openCommentSection(postId) {
+            const commentSection = document.getElementById(`commentSection-${postId}`);
+            
+            if (commentSection.style.display === 'none' || commentSection.style.display === '') {
+                // Load comments only if the section is being opened
+                loadComments(postId);
+                commentSection.style.display = 'block';
+            } else {
+                // Toggle visibility to close the comment section
+                commentSection.style.display = 'none';
+            }
+        }
+
+        async function loadComments(postId) {
+            try {
+                const response = await fetch(`/posts/${postId}`);
+                const data = await response.json();
+
+                const commentsList = document.getElementById(`comments-list-${postId}`);
+                commentsList.innerHTML = data.comments.map(comment => `
+                    <li>
+                        <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
+                            alt="${comment.user.username}'s profile image" 
+                            style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
+                        <strong>${comment.user.username}:</strong> ${comment.content}
+                    </li>
+                `).join('');
+            } catch (error) {
+                console.error("Error loading comments:", error);
+            }
+        }
+
+        async function addComment(postId) {
+            const commentText = document.getElementById(`new-comment-${postId}`).value.trim();
+            if (!commentText) return;
+
+            try {
+                const response = await fetch(`/posts/${postId}/comment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: commentText }),
+                });
+
+                if (response.ok) {
+                    loadComments(postId); // Reload comments after posting a new one
+                    document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
+                }
+            } catch (error) {
+                console.error("Error adding comment:", error);
+            }
+        }
+
+
+
     </script>
 </body>
 
