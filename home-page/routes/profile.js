@@ -84,16 +84,34 @@ router.post('/edit/photo', isAuthenticated, upload.single('profileImage'), async
       console.error("Error updating profile photo:", error);
       res.status(500).json({ message: 'Server error' });
   }
-});
+}); 
 
 router.get('/posts/:postId', async (req, res) => {
   try {
-      const post = await Post.findById(req.params.postId).populate('likes').populate('comments.user');
+      const post = await Post.findById(req.params.postId)
+          .populate({
+              path: 'comments',
+              populate: {
+                  path: 'user',
+                  select: 'username profileImage' // Select only the fields you need
+              }
+          })
+          .populate({
+              path: 'likes.user',
+              select: 'username profileImage' // Select relevant fields for likes
+          })
+          .populate('user', 'username profileImage'); // Populate the author of the post
+
+      if (!post) {
+          return res.status(404).json({ message: 'Post not found' });
+      }
+
       res.json(post);
   } catch (err) {
-      console.error(err);
+      console.error("Error fetching post details:", err);
       res.status(500).send("Error fetching post details.");
   }
 });
+
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const ActiveFriendSchema = new mongoose.Schema({
     user: {

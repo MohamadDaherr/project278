@@ -1,6 +1,6 @@
 // models/Story.js
 const mongoose = require('mongoose');
-
+const { Schema } = mongoose;
 const storySchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     mediaUrl: { type: String, required: true },

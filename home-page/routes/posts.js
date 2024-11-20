@@ -2,76 +2,125 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Post');
 const User = require('../../models/User');
+const Comment = require('../../models/comments');
 const isAuthenticated = require('../middleware/authMiddleware');
 
 // Route to toggle like on a post
 router.post('/:postId/like', isAuthenticated, async (req, res) => {
-  const { postId } = req.params;
-  const userId = req.user.userId; // Ensure req.user is populated with userId from auth middleware
+    const { postId } = req.params;
+    const userId = req.user.userId; // Ensure req.user is populated with userId from auth middleware
 
-  try {
-      const post = await Post.findById(postId);
-      if (!post) return res.status(404).json({ message: 'Post not found' });
+    try {
+        const post = await Post.findById(postId);
+        if (!post) return res.status(404).json({ message: 'Post not found' });
 
-      const isLiked = post.likes.includes(userId);
-      if (isLiked) {
-          // Unlike the post
-          post.likes = post.likes.filter(id => id.toString() !== userId);
-      } else {
-          // Like the post
-          post.likes.push(userId);
-      }
+        const existingLikeIndex = post.likes.findIndex(like => like.user.toString() === userId);
 
-      await post.save();
-      res.json({ likesCount: post.likes.length, isLiked: !isLiked });
-  } catch (error) {
-      console.error("Error toggling like:", error);
-      res.status(500).json({ message: "Server error" });
-  }
+        if (existingLikeIndex !== -1) {
+            // User has already liked the post, remove the like
+            post.likes.splice(existingLikeIndex, 1);
+        } else {
+            // Add a new like
+            post.likes.push({ user: userId, date: new Date() });
+        }
+
+        await post.save();
+
+        res.json({
+            likesCount: post.likes.length,
+            isLiked: existingLikeIndex === -1 // Return true if liked, false if unliked
+        });
+    } catch (error) {
+        console.error("Error toggling like:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
+
 
 // Route to add a comment to a post
 router.post('/:postId/comment', isAuthenticated, async (req, res) => {
-  const { postId } = req.params;
-  const userId = req.user.userId; // Ensure req.user is populated with userId from auth middleware
-  const { text } = req.body;
+    const { postId } = req.params;
+    const userId = req.user.userId; // Ensure req.user is populated with userId from auth middleware
+    const { content } = req.body; // Use 'content' to align with the Comment schema
 
-  try {
-      const post = await Post.findById(postId);
-      if (!post) return res.status(404).json({ message: 'Post not found' });
+    try {
+        const post = await Post.findById(postId);
+        if (!post) return res.status(404).json({ message: 'Post not found' });
 
-      const comment = { user: userId, text, createdAt: new Date() };
-      post.comments.push(comment);
-      await post.save();
+        // Create the comment in the Comment collection
+        const newComment = new Comment({
+            content,
+            user: userId,
+            post: postId,
+            createdAt: new Date()
+        });
+        await newComment.save();
 
-      const populatedComment = await post.populate('comments.user', 'username').execPopulate();
-      res.json({ user: { username: populatedComment.comments.slice(-1)[0].user.username }, text });
-  } catch (error) {
-      console.error("Error adding comment:", error);
-      res.status(500).json({ message: "Server error" });
-  }
+        // Add the comment's ObjectId to the post's comments array
+        post.comments.push(newComment._id);
+        await post.save();
+
+        // Populate the user field in the comment for the response
+        const populatedComment = await Comment.findById(newComment._id).populate('user', 'username profileImage');
+
+        res.json({
+            content: populatedComment.content,
+            user: {
+                username: populatedComment.user.username,
+                profileImage: populatedComment.user.profileImage
+            }
+        });
+    } catch (error) {
+        console.error("Error adding comment:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
+
+
+
+
 
 // Route to fetch post details (likes and comments)
 router.get('/:postId', isAuthenticated, async (req, res) => {
-  try {
-      const post = await Post.findById(req.params.postId)
-          .populate('likes', 'username')
-          .populate('comments.user', 'username');
+    try {
+        const post = await Post.findById(req.params.postId)
+            .populate('user', 'username profileImage') // Populate the post author
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user',
+                    select: 'username profileImage' // Populate user details in comments
+                }
+            })
+            .populate('likes.user', 'username profileImage'); // Populate like details
 
-      if (!post) return res.status(404).json({ message: 'Post not found' });
+        if (!post) return res.status(404).json({ message: 'Post not found' });
 
-      res.json({
-          likesCount: post.likes.length,
-          commentsCount: post.comments.length,
-          isLiked: post.likes.some(like => like._id.toString() === req.user.userId),
-          likedBy: post.likes,
-          comments: post.comments,
-      });
-  } catch (error) {
-      console.error("Error fetching post details:", error);
-      res.status(500).json({ message: "Server error" });
-  }
+        res.json({
+            _id: post._id,
+            mediaUrl: post.mediaUrl,
+            likesCount: post.likes.length,
+            commentsCount: post.comments.length,
+            isLiked: post.likes.some(like => like.user.toString() === req.user.userId),
+            likedBy: post.likes.map(like => ({
+                username: like.user.username,
+                profileImage: like.user.profileImage,
+            })),
+            comments: post.comments.map(comment => ({
+                content: comment.content,
+                user: {
+                    username: comment.user.username,
+                    profileImage: comment.user.profileImage,
+                },
+            })),
+        });
+    } catch (error) {
+        console.error("Error fetching post details:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
+
+
+
 
 module.exports = router;
