@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const ActiveFriendSchema = new mongoose.Schema({
+const ActiveFriendSchema = new Schema({
     user: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
     friend: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
@@ -19,11 +19,7 @@ const ActiveFriendSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    postCount: {
-        type: Number,
-        default: 0,
-    },
-    storyCount: {
+    dislikeCount: {
         type: Number,
         default: 0,
     },

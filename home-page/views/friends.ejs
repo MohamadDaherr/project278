@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Friends Insights</title>
+    <script src="/path/to/your/javascript.js" defer></script>
+</head>
+<body>
+    <div>
+        <h1>Friends Insights</h1>
+        <div>
+          
+          <input type="text" id="searchBar" placeholder="Search friends..." oninput="searchFriends()" />
+          <button id="top-contributors-btn" onclick="loadTopContributors()">Top Contributors</button>
+          <button id="active-friends-btn" onclick="loadActiveFriends()">Active Friends</button>
+      </div>
+      <ul id="friendsList"></ul>
+      
+    </div>
+    <script>
+      let currentFriendsList = []; // Store the current list for searching
+
+// Load Top Contributors
+async function loadTopContributors() {
+    try {
+        const response = await fetch('/friend/top-contributors');
+        currentFriendsList = await response.json(); // Update current list
+        renderFriendsList(currentFriendsList);
+    } catch (error) {
+        console.error("Error loading top contributors:", error);
+    }
+}
+
+// Load Active Friends
+async function loadActiveFriends() {
+    try {
+        const response = await fetch('/friend/active-friends');
+        currentFriendsList = await response.json(); // Update current list
+        renderFriendsList(currentFriendsList);
+    } catch (error) {
+        console.error("Error loading active friends:", error);
+    }
+}
+
+// Render the Friends List
+function renderFriendsList(friends) {
+  const friendsList = document.getElementById('friendsList');
+  friendsList.innerHTML = ''; // Clear previous entries
+
+  friends.forEach(friend => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+          <img src="${friend.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" width="30" height="30">
+          ${friend.friend.username} 
+          <button onclick="removeFriend('${friend.friend._id}')">Remove</button>
+      `;
+      friendsList.appendChild(li);
+  });
+}
+async function fetchFriends(endpoint) {
+  try {
+      const response = await fetch(endpoint);
+      const friends = await response.json();
+
+      const friendsList = document.getElementById('friendsList');
+      friendsList.innerHTML = ''; // Clear previous list
+
+      friends.forEach(friend => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+              <img src="${friend.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" width="30" height="30">
+              ${friend.friend.username}
+              <button onclick="removeFriend('${friend.friend._id}')">Remove</button>
+          `;
+          friendsList.appendChild(li);
+      });
+  } catch (error) {
+      console.error("Error fetching friends:", error);
+  }
+}
+
+document.getElementById('activeFriendsBtn').addEventListener('click', () => {
+  fetchFriends('/friend/active-friends');
+});
+
+document.getElementById('topContributorsBtn').addEventListener('click', () => {
+  fetchFriends('/friend/top-contributors');
+});
+
+// Search in the Current List
+function searchFriends() {
+  const query = document.getElementById('searchBar').value.toLowerCase();
+  const filteredFriends = currentFriendsList.filter(friend =>
+      friend.friend.username.toLowerCase().includes(query)
+  );
+  renderFriendsList(filteredFriends);
+}
+// Remove Friend
+async function removeFriend(friendId) {
+    try {
+        const response = await fetch('/friend/remove', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ friendId }),
+        });
+
+        if (response.ok) {
+            alert("Friend removed successfully");
+            searchFriends(); // Refresh the filtered list
+        } else {
+            console.error("Failed to remove friend");
+        }
+    } catch (error) {
+        console.error("Error removing friend:", error);
+    }
+}
+
+    
+    </script>
+</body>
+
+</html>

@@ -10,6 +10,7 @@ const Story = require('../../models/Story');
 const storyController = require('../routes/stories');
 const isAuthenticated = require('../middleware/authMiddleware');
 const Notification = require('../../models/Notification');
+const Contributor = require('../../models/Contributor');
 
 
 // Configure multer for file uploads
@@ -91,7 +92,7 @@ router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (
         // Create a new post with the provided data
         const newPost = new Post({
             content,
-            mediaUrl, 
+            mediaUrl,
             privacy,
             user: userId,
             likes: [], // Initialize likes as an empty array
@@ -101,12 +102,20 @@ router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (
         // Save the post to the database
         await newPost.save();
 
+        // Update the Contributor schema
+        await Contributor.findOneAndUpdate(
+            { user: userId, friend: userId }, // Ensure the user is updating their own contributor record
+            { $inc: { sharedPostCount: 1 } }, // Increment the shared post count
+            { upsert: true, new: true } // Create a record if it doesn't exist
+        );
+
         res.redirect('/home'); // Redirect to home page after posting
     } catch (error) {
         console.error("Error creating post:", error);
         res.status(500).send("Server error");
     }
 });
+
 router.get('/search-users', isAuthenticated, async (req, res) => {
     const { query } = req.query;
     const userId = req.user.userId;

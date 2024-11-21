@@ -656,7 +656,11 @@ html {
                 
                     <li><a href="/home" id="home-link">Home</a></li>
 
-                    <li id="friends"> <a href="/friends" id="fr">Friends</a></li>
+                    <li id="friends"> 
+                        <a href="/friend" id="fr">Friends</a>
+                    </li>
+                    
+                    
                     <li id="chats"><a href="/chats" id="ch">Chats</a></li>
                     <li href="/home/notifications" class="notifications-link"> 
                         <a onclick="openNotificationModal()" id="notify">Notifications</a>
@@ -830,7 +834,7 @@ html {
         </div>
     </div>
     
-
+   
     <!-- Notification Modal -->
     <div id="notification-modal" class="modal">
         <div class="modal-content">
@@ -921,6 +925,7 @@ html {
             const uploadStoryModal = document.getElementById("uploadStoryModal");
             const notification = document.getElementById("notification-modal");
             const search=document.getElementById("search-modal");
+            const friends=document.getElementById("friends-modal")
 
             if (event.target === postModal) {
                 closeModal();
@@ -935,6 +940,7 @@ html {
         else if (event.target === search) {
                 closeSearchModal();
         }
+       
     }
   
 
@@ -956,6 +962,9 @@ function closeNotificationModal() {
     document.getElementById("notification-modal").style.display = "none";
     resetStyles(); // Reset styles for all elements
 }
+
+
+
 
 function setActiveBackground(targetId) {
     const sidebarItems = document.querySelectorAll('.sidebar ul li');

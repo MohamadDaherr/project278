@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../../models/Post');
 const User = require('../../models/User');
-const Comment = require('../../models/comments');
 const isAuthenticated = require('../middleware/authMiddleware');
+const Notification = require('../../models/Notification');
+const Comment = require('../../models/comments');
+const ActiveFriend = require('../../models/ActiveFriend');
 
 // Route to toggle like on a post
 router.post('/:postId/like', isAuthenticated, async (req, res) => {
@@ -14,7 +16,8 @@ router.post('/:postId/like', isAuthenticated, async (req, res) => {
         const post = await Post.findById(postId);
         if (!post) return res.status(404).json({ message: 'Post not found' });
 
-        const existingLikeIndex = post.likes.findIndex(like => like.user.toString() === userId);
+        // Check if user already liked the post
+        const existingLikeIndex = post.likes.findIndex(like => like.user?.toString() === userId);
 
         if (existingLikeIndex !== -1) {
             // User has already liked the post, remove the like
@@ -22,13 +25,22 @@ router.post('/:postId/like', isAuthenticated, async (req, res) => {
         } else {
             // Add a new like
             post.likes.push({ user: userId, date: new Date() });
+            // Notify post owner if the liker is not the owner
+            if (post.user && post.user.toString() !== userId) {
+                await Notification.create({
+                    from: userId,
+                    to: post.user,
+                    type: 'post-like',
+                    post: postId,
+                });
+            }
         }
 
         await post.save();
 
         res.json({
             likesCount: post.likes.length,
-            isLiked: existingLikeIndex === -1 // Return true if liked, false if unliked
+            isLiked: existingLikeIndex === -1, // Return true if liked, false if unliked
         });
     } catch (error) {
         console.error("Error toggling like:", error);
@@ -36,6 +48,10 @@ router.post('/:postId/like', isAuthenticated, async (req, res) => {
     }
 });
 
+
+
+
+  
 
 // Route to add a comment to a post
 router.post('/:postId/comment', isAuthenticated, async (req, res) => {
@@ -52,13 +68,35 @@ router.post('/:postId/comment', isAuthenticated, async (req, res) => {
             content,
             user: userId,
             post: postId,
-            createdAt: new Date()
+            createdAt: new Date(),
         });
         await newComment.save();
 
         // Add the comment's ObjectId to the post's comments array
         post.comments.push(newComment._id);
         await post.save();
+        const activeFriend = await ActiveFriend.findOne({ user: post.user, friend: userId });
+        if (activeFriend) {
+            activeFriend.commentCount += 1;
+            await activeFriend.save();
+        } else {
+            await ActiveFriend.create({
+                user: post.user,
+                friend: userId,
+                commentCount: 1,
+            });
+        }
+
+        // Notify the post owner if the commenter is not the owner
+        if (post.user && post.user.toString() !== userId) {
+            await Notification.create({
+                from: userId,
+                to: post.user,
+                type: 'comment', // Notification type for comments
+                post: postId,
+                comment: newComment._id,
+            });
+        }
 
         // Populate the user field in the comment for the response
         const populatedComment = await Comment.findById(newComment._id).populate('user', 'username profileImage');
@@ -67,14 +105,15 @@ router.post('/:postId/comment', isAuthenticated, async (req, res) => {
             content: populatedComment.content,
             user: {
                 username: populatedComment.user.username,
-                profileImage: populatedComment.user.profileImage
-            }
+                profileImage: populatedComment.user.profileImage,
+            },
         });
     } catch (error) {
         console.error("Error adding comment:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
+
 
 
 
@@ -119,8 +158,5 @@ router.get('/:postId', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
-
-
-
 
 module.exports = router;
