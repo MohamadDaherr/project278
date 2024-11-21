@@ -16,6 +16,7 @@ const notificationRoutes = require('./home-page/routes/notifications');
 const commentRoutes = require('./home-page/routes/comments');
 
 
+
 // Connect to the database
 connectDB();
 
