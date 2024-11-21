@@ -10,18 +10,33 @@ const commentSchema = new Schema({
           date: { type: Date, default: Date.now } // Date of the like
       }
   ],
-  replies: [
+  dislikes: [
       {
+          user: { type: Schema.Types.ObjectId, ref: 'User' }, // User who liked the comment
+          date: { type: Date, default: Date.now } // Date of the like
+      }
+  ],
+  replies: [ 
+    new Schema(
+        {
           content: { type: String, required: true },
-          user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Author of the reply
+          user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
           likes: [
-              {
-                  user: { type: Schema.Types.ObjectId, ref: 'User' }, // User who liked the reply
-                  date: { type: Date, default: Date.now } // Date of the like
-              }
+            {
+              user: { type: Schema.Types.ObjectId, ref: 'User' },
+              date: { type: Date, default: Date.now }
+            }
+          ],
+          dislikes: [
+            {
+              user: { type: Schema.Types.ObjectId, ref: 'User' },
+              date: { type: Date, default: Date.now }
+            }
           ],
           createdAt: { type: Date, default: Date.now }
-      }
+        },
+        { _id: true } // Explicitly enable `_id` for subdocuments
+      )
   ], // Recursive replies
   createdAt: { type: Date, default: Date.now }
 });

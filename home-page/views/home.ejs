@@ -767,6 +767,9 @@ html {
                         <div class="post-actions">
                             <span class="like-icon" onclick="toggleLike(event, '<%= post._id %>')">❤️</span>
                             <span id="likes-count-<%= post._id %>"><%= post.likes.length %> Likes</span>
+
+                            <span class="like-icon" onclick="toggledisLike(event, '<%= post._id %>')">❤️</span>
+                            <span id="dislikes-count-<%= post._id %>"><%= post.dislikes.length %> DisLikes</span>
             
                             <span class="comment-icon" onclick="openCommentSection('<%= post._id %>')">💬</span>
                             <span><%= post.comments.length %> Comments</span>
@@ -1238,6 +1241,18 @@ function resetStyles() {
                 console.error("Error toggling like:", error);
             }
         }
+        async function toggledisLike(event, postId) {
+            event.stopPropagation();
+            try {
+                const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
+                const data = await response.json();
+
+                // Update the like count
+                document.getElementById(`dislikes-count-${postId}`).textContent = `${data.dislikesCount} DisLikes`;
+            } catch (error) {
+                console.error("Error toggling like:", error);
+            }
+        }
 
         function openCommentSection(postId) {
             const commentSection = document.getElementById(`commentSection-${postId}`);
@@ -1253,23 +1268,54 @@ function resetStyles() {
         }
 
         async function loadComments(postId) {
-            try {
-                const response = await fetch(`/posts/${postId}`);
-                const data = await response.json();
+  try {
+    const response = await fetch(`/posts/${postId}`);
+    const data = await response.json();
 
-                const commentsList = document.getElementById(`comments-list-${postId}`);
-                commentsList.innerHTML = data.comments.map(comment => `
-                    <li>
-                        <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
-                            alt="${comment.user.username}'s profile image" 
-                            style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
-                        <strong>${comment.user.username}:</strong> ${comment.content}
-                    </li>
-                `).join('');
-            } catch (error) {
-                console.error("Error loading comments:", error);
-            }
-        }
+    const commentsList = document.getElementById(`comments-list-${postId}`);
+    commentsList.innerHTML = data.comments.map((comment) => `
+      <li>
+        <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
+             alt="${comment.user.username}'s profile image" 
+             style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
+        <strong>${comment.user.username}:</strong> ${comment.content}
+        <span>
+          <button onclick="toggleCommentLike('${comment._id}')">❤️</button>
+          <span id="comment-likes-${comment._id}">${comment.likesCount}</span>
+          <button onclick="toggleCommentdisLike('${comment._id}')">❤️</button>
+          <span id="comment-dislikes-${comment._id}">${comment.dislikesCount}</span>
+        </span>
+        <button onclick="toggleReplyBox('${comment._id}')">Reply</button>
+
+        <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
+          <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply...">
+          <button onclick="addReply('${comment._id}')">Post Reply</button>
+        </div>
+
+        <ul id="replies-list-${comment._id}" class="replies-list" style="margin-top: 10px; padding-left: 20px;">
+          ${comment.replies.map((reply) => `
+            <li>
+              <img src="${reply.user.profileImage || '/images/default-profile.png'}" 
+                   alt="${reply.user.username}'s profile image" 
+                   style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
+              <strong>${reply.user.username}:</strong> ${reply.content}
+              <span>
+                <button onclick="toggleReplyLike('${comment._id}', '${reply._id}')">❤️</button>
+                <span id="reply-likes-${reply._id}">${reply.likesCount}</span>
+                <button onclick="toggleReplydisLike('${comment._id}', '${reply._id}')">❤️</button>
+                <span id="reply-dislikes-${reply._id}">${reply.dislikesCount}</span>
+              </span>
+            </li>
+          `).join('')}
+        </ul>
+      </li>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading comments:', error);
+  }
+}
+
+
 
         async function addComment(postId) {
             const commentText = document.getElementById(`new-comment-${postId}`).value.trim();
@@ -1292,6 +1338,119 @@ function resetStyles() {
         }
 
 
+        function toggleReplyBox(commentId) {
+            const replyBox = document.getElementById(`reply-box-${commentId}`);
+            replyBox.style.display = replyBox.style.display === 'none' || replyBox.style.display === '' ? 'block' : 'none';
+        }
+
+        async function addReply(commentId) {
+  const replyInput = document.getElementById(`new-reply-${commentId}`);
+  const replyText = replyInput.value.trim();
+
+  if (!replyText) return;
+
+  try {
+    const response = await fetch(`/comments/${commentId}/reply`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: replyText }),
+    });
+
+    if (response.ok) {
+      const newReply = await response.json(); // Get the newly created reply data
+      replyInput.value = ''; // Clear the input field
+
+      // Dynamically add the new reply to the DOM
+      const repliesList = document.getElementById(`replies-list-${commentId}`);
+      if (repliesList) {
+        const replyHTML = `
+          <li id="reply-${newReply._id}">
+            <img src="${newReply.user.profileImage || '/images/default-profile.png'}" 
+                 alt="${newReply.user.username}'s profile image" 
+                 style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
+            <strong>${newReply.user.username}:</strong> ${newReply.content}
+            <span>
+              <button onclick="toggleReplyLike('${commentId}', '${newReply._id}')">❤️</button>
+              <span id="reply-likes-${newReply._id}">0</span>
+              <button onclick="toggleReplydisLike('${commentId}', '${newReply._id}')">❤️</button>
+              <span id="reply-dislikes-${newReply._id}">0</span>
+            </span>
+          </li>
+        `;
+        repliesList.insertAdjacentHTML('beforeend', replyHTML); // Add the new reply to the list
+        
+      }
+    } else {
+      console.error('Error adding reply:', await response.text());
+    }
+  } catch (error) {
+    console.error('Error adding reply:', error);
+  }
+}
+
+
+
+        async function toggleCommentLike(commentId) {
+            try {
+                const response = await fetch(`/comments/${commentId}/like`, { method: 'POST' });
+                const data = await response.json();
+
+                // Update the like count dynamically
+                const likeCountElement = document.getElementById(`comment-likes-${commentId}`);
+                if (likeCountElement) {
+                    likeCountElement.textContent = data.likesCount;
+                }
+            } catch (error) {
+                console.error("Error toggling comment like:", error);
+            }
+        }
+        async function toggleCommentdisLike(commentId) {
+            try {
+                const response = await fetch(`/comments/${commentId}/dislike`, { method: 'POST' });
+                const data = await response.json();
+
+                // Update the like count dynamically
+                const dislikeCountElement = document.getElementById(`comment-dislikes-${commentId}`);
+                if (dislikeCountElement) {
+                    dislikeCountElement.textContent = data.dislikesCount;
+                }
+            } catch (error) {
+                console.error("Error toggling comment dislike:", error);
+            }
+        }
+
+        async function toggleReplyLike(commentId, replyIndex) {
+            try {
+        console.log("mohammad",replyIndex);
+
+                const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/like`, { method: 'POST' });
+                const data = await response.json();
+
+                // Update the like count dynamically
+                const likeCountElement = document.getElementById(`reply-likes-${replyIndex}`);
+                if (likeCountElement) {
+                    likeCountElement.textContent = data.likesCount;
+                }
+            } catch (error) {
+                console.error("Error toggling reply like:", error);
+            }
+        }
+        async function toggleReplydisLike(commentId, replyIndex) {
+            try {
+        console.log("mohammad",replyIndex);
+
+                const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/dislike`, { method: 'POST' });
+                const data = await response.json();
+
+                // Update the like count dynamically
+                const dislikeCountElement = document.getElementById(`reply-dislikes-${replyIndex}`);
+                if (dislikeCountElement) {
+                    dislikeCountElement.textContent = data.dislikesCount;
+                }
+            } catch (error) {
+                console.error("Error toggling reply Dislike:", error);
+            }
+        }
 
     </script>
 </body>
