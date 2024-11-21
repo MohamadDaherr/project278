@@ -95,6 +95,7 @@ router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (
             privacy,
             user: userId,
             likes: [], // Initialize likes as an empty array
+            dislikes: [], // Initialize likes as an empty array
             comments: [], // Initialize comments as an empty array
         });
 

@@ -13,6 +13,7 @@ const posts = require('./home-page/routes/posts');
 const storiesRoutes = require('./home-page/routes/stories');
 
 const notificationRoutes = require('./home-page/routes/notifications');
+const commentRoutes = require('./home-page/routes/comments');
 
 
 // Connect to the database
@@ -41,6 +42,7 @@ app.use('/home', homeRoutes); // Home page routes
 
  app.use('/notifications', notificationRoutes);
  app.use('/stories', storiesRoutes);
+ app.use('/comments', commentRoutes);
 
 // Default route
 app.get('/', (req, res) => {

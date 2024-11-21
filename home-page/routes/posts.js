@@ -35,6 +35,35 @@ router.post('/:postId/like', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+router.post('/:postId/dislike', isAuthenticated, async (req, res) => {
+    const { postId } = req.params;
+    const userId = req.user.userId; // Ensure req.user is populated with userId from auth middleware
+
+    try {
+        const post = await Post.findById(postId);
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+
+        const existingdisLikeIndex = post.dislikes.findIndex(dislike => dislike.user.toString() === userId);
+
+        if (existingdisLikeIndex !== -1) {
+            // User has already liked the post, remove the like
+            post.dislikes.splice(existingdisLikeIndex, 1);
+        } else {
+            // Add a new like
+            post.dislikes.push({ user: userId, date: new Date() });
+        }
+
+        await post.save();
+
+        res.json({
+            dislikesCount: post.dislikes.length,
+            isdisLiked: existingdisLikeIndex === -1 // Return true if liked, false if unliked
+        });
+    } catch (error) {
+        console.error("Error toggling like:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
 
 
 // Route to add a comment to a post
@@ -84,41 +113,62 @@ router.post('/:postId/comment', isAuthenticated, async (req, res) => {
 router.get('/:postId', isAuthenticated, async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId)
-            .populate('user', 'username profileImage') // Populate the post author
+            .populate('user', 'username profileImage') // Populate post owner
             .populate({
                 path: 'comments',
-                populate: {
-                    path: 'user',
-                    select: 'username profileImage' // Populate user details in comments
-                }
-            })
-            .populate('likes.user', 'username profileImage'); // Populate like details
+                populate: [
+                    {
+                        path: 'user',
+                        select: 'username profileImage', // Populate user details for comments
+                    },
+                    {
+                        path: 'replies.user',
+                        select: 'username profileImage', // Populate user details for replies
+                    },
+                ],
+            });
 
-        if (!post) return res.status(404).json({ message: 'Post not found' });
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
 
         res.json({
             _id: post._id,
             mediaUrl: post.mediaUrl,
             likesCount: post.likes.length,
             commentsCount: post.comments.length,
-            isLiked: post.likes.some(like => like.user.toString() === req.user.userId),
-            likedBy: post.likes.map(like => ({
-                username: like.user.username,
-                profileImage: like.user.profileImage,
+            isLiked: post.likes.some((like) => like.user?.toString() === req.user.userId),
+            likedBy: post.likes.map((like) => ({
+                username: like.user?.username || 'Unknown',
+                profileImage: like.user?.profileImage || '/images/default-profile.png',
             })),
-            comments: post.comments.map(comment => ({
+            comments: post.comments.map((comment) => ({
+                _id: comment._id,
                 content: comment.content,
+                likesCount: comment.likes.length,
+                dislikesCount: comment.dislikes.length,
                 user: {
-                    username: comment.user.username,
-                    profileImage: comment.user.profileImage,
+                    username: comment.user?.username || 'Unknown',
+                    profileImage: comment.user?.profileImage || '/images/default-profile.png',
                 },
+                replies: comment.replies.map((reply) => ({
+                    _id: reply._id,
+                    content: reply.content,
+                    likesCount: reply.likes.length,
+                    dislikesCount: reply.dislikes.length,
+                    user: {
+                        username: reply.user?.username || 'Unknown',
+                        profileImage: reply.user?.profileImage || '/images/default-profile.png',
+                    },
+                })),
             })),
         });
     } catch (error) {
         console.error("Error fetching post details:", error);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 
 
