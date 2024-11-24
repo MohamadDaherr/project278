@@ -32,6 +32,16 @@ router.get('/', isAuthenticated, async (req, res) => {
     const posts = await Post.find({ user: userId }).sort({ createdAt: -1 }).lean();
     const postsCount = posts.length;
 
+    const formattedDateOfBirth = user.dateOfBirth
+      ? new Date(user.dateOfBirth).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : 'Not provided';
+
+    // Add formatted dateOfBirth to the user object
+    user.formattedDateOfBirth = formattedDateOfBirth;
     // Send data to be rendered on profile page
     res.render('profile', {
       user: {
@@ -49,17 +59,27 @@ router.get('/', isAuthenticated, async (req, res) => {
 // Route to edit bio
 router.post('/edit', isAuthenticated, async (req, res) => {
   try {
-    const { bio } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(req.user.userId, { bio }, { new: true });
-    
-    if (!updatedUser) return res.status(404).send("User not found");
+      const { bio, dateOfBirth, gender, address } = req.body;
+      const updatedUser = await User.findByIdAndUpdate(
+          req.user.userId,
+          { bio, dateOfBirth, gender, address },
+          { new: true }
+      );
+      
+      if (!updatedUser) return res.status(404).send("User not found");
 
-    res.json({ bio: updatedUser.bio});
+      res.json({
+          bio: updatedUser.bio,
+          dateOfBirth: updatedUser.dateOfBirth,
+          gender: updatedUser.gender,
+          address: updatedUser.address
+      });
   } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).send("Server error");
+      console.error("Error updating profile:", error);
+      res.status(500).send("Server error");
   }
 });
+
 
 // Route to change profile photo
 router.post('/edit/photo', isAuthenticated, upload.single('profileImage'), async (req, res) => {
@@ -110,6 +130,43 @@ router.get('/posts/:postId', async (req, res) => {
   } catch (err) {
       console.error("Error fetching post details:", err);
       res.status(500).send("Error fetching post details.");
+  }
+});
+
+router.get('/user/:userId', isAuthenticated, async (req, res) => {
+  try {
+      const userId = req.user.userId; // Logged-in user
+      const viewedUserId = req.params.userId;
+
+      // Find the viewed user's details
+      const viewedUser = await User.findById(viewedUserId).select('username profileImage bio friends');
+      if (!viewedUser) {
+          return res.status(404).send('User not found');
+      }
+
+      // Check friendship status
+      const isFriend = viewedUser.friends.includes(userId);
+      const isOwner = userId === viewedUserId;
+
+      // Filter posts based on privacy
+      const posts = await Post.find({
+          user: viewedUserId,
+          $or: [
+              { privacy: 'public' },
+              { privacy: 'friends', user: userId, friends: { $in: [userId] } },
+              { user: userId } // Owner can see their private posts
+          ],
+      }).sort({ createdAt: -1 });
+
+      res.render('viewuserprofile', {
+          viewedUser,
+          isFriend,
+          isOwner,
+          posts,
+      });
+  } catch (error) {
+      console.error('Error loading user profile:', error);
+      res.status(500).send('Server error');
   }
 });
 
