@@ -223,6 +223,13 @@
                 <br>
                 <p class="bio"><%= user.bio %></p>
             </div>
+            <ul>
+            <li><button id="deactivateAccount">Deactivate Account</button>
+            </li>
+            <li><button id="deleteAccount">Delete Account</button>
+            </li>
+            <a href="/home/logout" id="logout">Logout</a>
+            </ul>
         </div>
 
         <div class="profile-gallery">
@@ -435,6 +442,35 @@ async function addComment(postId) {
         console.error("Error adding comment:", error);
     }
 }
+document.getElementById('deactivateAccount').addEventListener('click', async () => {
+    try {
+        const response = await fetch('/account/deactivate-account', { method: 'POST' });
+        if (response.ok) {
+            alert('Account deactivated successfully');
+            window.location.href = '/home/logout'; // Redirect the user to logout
+        } else {
+            alert('Failed to deactivate account');
+        }
+    } catch (error) {
+        console.error("Error deactivating account:", error);
+    }
+});
+
+document.getElementById('deleteAccount').addEventListener('click', async () => {
+    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) return;
+
+    try {
+        const response = await fetch('/account/delete-account', { method: 'POST' });
+        if (response.ok) {
+            alert('Account deleted successfully');
+            window.location.href = '/home/logout'; // Redirect the user to logout
+        } else {
+            alert('Failed to delete account');
+        }
+    } catch (error) {
+        console.error("Error deleting account:", error);
+    }
+});
 
 
         

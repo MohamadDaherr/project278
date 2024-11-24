@@ -10,26 +10,36 @@ const ActiveFriend = require('../../models/ActiveFriend');
 // Route to toggle like on a post
 router.post('/:postId/like', isAuthenticated, async (req, res) => {
     const { postId } = req.params;
-    const userId = req.user.userId; // Ensure req.user is populated with userId from auth middleware
+    const userId = req.user.userId;
 
     try {
-        const post = await Post.findById(postId);
+        const post = await Post.findById(postId).populate('user', '_id'); // Get the post owner
         if (!post) return res.status(404).json({ message: 'Post not found' });
 
-        // Check if user already liked the post
+        const postOwnerId = post.user._id.toString();
         const existingLikeIndex = post.likes.findIndex(like => like.user?.toString() === userId);
 
         if (existingLikeIndex !== -1) {
-            // User has already liked the post, remove the like
+            // Remove like and decrement likeCount
             post.likes.splice(existingLikeIndex, 1);
+            await ActiveFriend.updateOne(
+                { user: postOwnerId, friend: userId },
+                { $inc: { likeCount: -1 } },
+                { upsert: true }
+            );
         } else {
-            // Add a new like
+            // Add like and increment likeCount
             post.likes.push({ user: userId, date: new Date() });
-            // Notify post owner if the liker is not the owner
-            if (post.user && post.user.toString() !== userId) {
+            await ActiveFriend.updateOne(
+                { user: postOwnerId, friend: userId },
+                { $inc: { likeCount: 1 } },
+                { upsert: true }
+            );
+            // Notify post owner if liker is not the owner
+            if (postOwnerId !== userId) {
                 await Notification.create({
                     from: userId,
-                    to: post.user,
+                    to: postOwnerId,
                     type: 'post-like',
                     post: postId,
                 });
@@ -40,42 +50,64 @@ router.post('/:postId/like', isAuthenticated, async (req, res) => {
 
         res.json({
             likesCount: post.likes.length,
-            isLiked: existingLikeIndex === -1, // Return true if liked, false if unliked
+            isLiked: existingLikeIndex === -1,
         });
     } catch (error) {
         console.error("Error toggling like:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
+
 router.post('/:postId/dislike', isAuthenticated, async (req, res) => {
     const { postId } = req.params;
-    const userId = req.user.userId; // Ensure req.user is populated with userId from auth middleware
+    const userId = req.user.userId;
 
     try {
-        const post = await Post.findById(postId);
+        const post = await Post.findById(postId).populate('user', '_id'); // Get the post owner
         if (!post) return res.status(404).json({ message: 'Post not found' });
 
-        const existingdisLikeIndex = post.dislikes.findIndex(dislike => dislike.user.toString() === userId);
+        const postOwnerId = post.user._id.toString();
+        const existingDislikeIndex = post.dislikes.findIndex(dislike => dislike.user.toString() === userId);
 
-        if (existingdisLikeIndex !== -1) {
-            // User has already liked the post, remove the like
-            post.dislikes.splice(existingdisLikeIndex, 1);
+        if (existingDislikeIndex !== -1) {
+            // Remove dislike and decrement dislikeCount
+            post.dislikes.splice(existingDislikeIndex, 1);
+            await ActiveFriend.updateOne(
+                { user: postOwnerId, friend: userId },
+                { $inc: { dislikeCount: -1 } },
+                { upsert: true }
+            );
         } else {
-            // Add a new like
+            // Add dislike and increment dislikeCount
             post.dislikes.push({ user: userId, date: new Date() });
+            await ActiveFriend.updateOne(
+                { user: postOwnerId, friend: userId },
+                { $inc: { dislikeCount: 1 } },
+                { upsert: true }
+            );
+            if (postOwnerId !== userId) {
+                await Notification.create({
+                    from: userId,
+                    to: postOwnerId,
+                    type: 'post-dislike',
+                    post: postId, // Include the post ID for reference
+                });
+            }
+            
         }
 
         await post.save();
 
         res.json({
             dislikesCount: post.dislikes.length,
-            isdisLiked: existingdisLikeIndex === -1 // Return true if liked, false if unliked
+            isDisliked: existingDislikeIndex === -1,
         });
     } catch (error) {
-        console.error("Error toggling like:", error);
+        console.error("Error toggling dislike:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
+
 
 
 
@@ -85,14 +117,16 @@ router.post('/:postId/dislike', isAuthenticated, async (req, res) => {
 // Route to add a comment to a post
 router.post('/:postId/comment', isAuthenticated, async (req, res) => {
     const { postId } = req.params;
-    const userId = req.user.userId; // Ensure req.user is populated with userId from auth middleware
-    const { content } = req.body; // Use 'content' to align with the Comment schema
+    const userId = req.user.userId;
+    const { content } = req.body;
 
     try {
-        const post = await Post.findById(postId);
+        const post = await Post.findById(postId).populate('user', '_id'); // Get the post owner
         if (!post) return res.status(404).json({ message: 'Post not found' });
 
-        // Create the comment in the Comment collection
+        const postOwnerId = post.user._id.toString();
+
+        // Create a new comment
         const newComment = new Comment({
             content,
             user: userId,
@@ -101,33 +135,28 @@ router.post('/:postId/comment', isAuthenticated, async (req, res) => {
         });
         await newComment.save();
 
-        // Add the comment's ObjectId to the post's comments array
+        // Add comment to post
         post.comments.push(newComment._id);
         await post.save();
-        const activeFriend = await ActiveFriend.findOne({ user: post.user, friend: userId });
-        if (activeFriend) {
-            activeFriend.commentCount += 1;
-            await activeFriend.save();
-        } else {
-            await ActiveFriend.create({
-                user: post.user,
-                friend: userId,
-                commentCount: 1,
-            });
-        }
 
-        // Notify the post owner if the commenter is not the owner
-        if (post.user && post.user.toString() !== userId) {
+        // Update comment count for the post owner
+        await ActiveFriend.updateOne(
+            { user: postOwnerId, friend: userId },
+            { $inc: { commentCount: 1 } },
+            { upsert: true }
+        );
+
+        // Notify post owner if commenter is not the owner
+        if (postOwnerId !== userId) {
             await Notification.create({
                 from: userId,
-                to: post.user,
-                type: 'comment', // Notification type for comments
+                to: postOwnerId,
+                type: 'comment',
                 post: postId,
                 comment: newComment._id,
             });
         }
 
-        // Populate the user field in the comment for the response
         const populatedComment = await Comment.findById(newComment._id).populate('user', 'username profileImage');
 
         res.json({
@@ -142,6 +171,7 @@ router.post('/:postId/comment', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
 
 
 

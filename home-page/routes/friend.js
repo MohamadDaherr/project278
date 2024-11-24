@@ -172,16 +172,20 @@ router.get('/top-contributors', isAuthenticated, async (req, res) => {
     const userId = req.user.userId;
 
     try {
-        const friends = await User.findById(userId).populate('friends', 'username profileImage').lean();
+        // Fetch all friends from the user's friend list
+        const user = await User.findById(userId).populate('friends', 'username profileImage').lean();
+        if (!user || !user.friends.length) {
+            return res.json({ message: "No friends found", contributors: [] });
+        }
 
-        const contributors = await Contributor.find({ user: userId ,friend: { $ne: userId }})
-            .populate('friend', 'username profileImage')
-            .sort({ sharedPostCount: -1, sharedStoryCount: -1 })
+        // Fetch contributors with their shared post and story counts
+        const contributors = await Contributor.find({ user: userId, friend: { $ne: userId } })
+            .populate('friend', 'username profileImage') // Populate friend details
             .lean();
 
-        // Merge friends who are not in the contributors list
+        // Merge all friends to ensure even those with no activity are included
         const contributorsMap = new Map(contributors.map(c => [c.friend._id.toString(), c]));
-        friends.friends.forEach(friend => {
+        user.friends.forEach(friend => {
             if (!contributorsMap.has(friend._id.toString())) {
                 contributorsMap.set(friend._id.toString(), {
                     friend,
@@ -191,7 +195,18 @@ router.get('/top-contributors', isAuthenticated, async (req, res) => {
             }
         });
 
-        res.json([...contributorsMap.values()]);
+        // Convert to array and calculate the total shared content count (posts + stories)
+        const contributorsArray = [...contributorsMap.values()].map(contributor => ({
+            ...contributor,
+            totalSharedContent: (contributor.sharedPostCount || 0) + (contributor.sharedStoryCount || 0),
+        }));
+
+        // Sort contributors by total shared content in descending order and limit to top 3
+        const topContributors = contributorsArray
+            .sort((a, b) => b.totalSharedContent - a.totalSharedContent)
+            .slice(0, 3); // Top 3 contributors
+
+        res.json(topContributors);
     } catch (error) {
         console.error("Error fetching top contributors:", error);
         res.status(500).json({ message: "Server error" });
@@ -199,44 +214,36 @@ router.get('/top-contributors', isAuthenticated, async (req, res) => {
 });
 
 
+
 router.get('/active-friends', isAuthenticated, async (req, res) => {
     const userId = req.user.userId;
 
     try {
-        // Fetch active friends
         const activeFriends = await ActiveFriend.find({ user: userId, friend: { $ne: userId } }) // Exclude self
             .populate('friend', 'username profileImage') // Fetch friend details
-            .sort({ likeCount: -1, commentCount: -1, dislikeCount: -1 }) // Sort by multiple fields
             .lean();
 
-        // Include friends with 0 activity
-        const allFriends = await User.findById(userId).populate('friends', 'username profileImage').lean();
-        const allFriendsList = allFriends.friends.map(friend => ({
-            friend,
-            likeCount: 0,
-            commentCount: 0,
-            dislikeCount: 0,
-        }));
+        if (!activeFriends.length) {
+            return res.json({ message: "No active friends found", activeFriends: [] });
+        }
 
-        // Merge active friends and all friends
-        const mergedFriends = allFriendsList.map(friend => {
-            const activeFriend = activeFriends.find(active => active.friend._id.toString() === friend.friend._id.toString());
-            return activeFriend || friend;
+        // Calculate total interaction score and sort the friends in descending order
+        const sortedFriends = activeFriends.sort((a, b) => {
+            const aScore = a.likeCount + a.commentCount + a.dislikeCount;
+            const bScore = b.likeCount + b.commentCount + b.dislikeCount;
+            return bScore - aScore; // Descending order
         });
 
-        // Sort merged list by likeCount, commentCount, and dislikeCount
-        mergedFriends.sort((a, b) => {
-            if (b.likeCount !== a.likeCount) return b.likeCount - a.likeCount;
-            if (b.commentCount !== a.commentCount) return b.commentCount - a.commentCount;
-            return b.dislikeCount - a.dislikeCount;
-        });
+        // Get the top 3 most active friends
+        const top3ActiveFriends = sortedFriends.slice(0, 3);
 
-        res.json(mergedFriends);
+        res.json(top3ActiveFriends);
     } catch (error) {
         console.error("Error fetching active friends:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
+
 
 
 router.get('/search-friends', isAuthenticated, async (req, res) => {
@@ -246,15 +253,25 @@ router.get('/search-friends', isAuthenticated, async (req, res) => {
     try {
         let friends = [];
         if (type === 'top-contributors') {
-            friends = await Contributor.find({ user: userId,friend: { $ne: userId }})
+            friends = await Contributor.find({ user: userId, friend: { $ne: userId } })
                 .populate('friend', 'username profileImage')
                 .sort({ sharedPostCount: -1, sharedStoryCount: -1 })
                 .lean();
         } else if (type === 'active-friends') {
-            friends = await ActiveFriend.find({ user: userId })
+            friends = await ActiveFriend.find({ user: userId, friend: { $ne: userId } })
                 .populate('friend', 'username profileImage')
                 .sort({ likeCount: -1, commentCount: -1, dislikeCount: -1 })
                 .lean();
+        } else if (type === 'friends') {
+            const user = await User.findById(userId).populate('friends', 'username profileImage').lean();
+            friends = user.friends.map(friend => ({
+                friend,
+                sharedPostCount: 0,
+                sharedStoryCount: 0,
+                likeCount: 0,
+                commentCount: 0,
+                dislikeCount: 0,
+            }));
         }
 
         // Filter friends based on the search query
@@ -268,6 +285,61 @@ router.get('/search-friends', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+router.get('/list', isAuthenticated, async (req, res) => {
+    const userId = req.user.userId;
+
+    try {
+        const user = await User.findById(userId).populate('friends', 'username profileImage').lean();
+        const friends = user.friends.map(friend => ({
+            friend,
+            sharedPostCount: 0,
+            sharedStoryCount: 0,
+            likeCount: 0,
+            commentCount: 0,
+            dislikeCount: 0,
+        }));
+
+        res.json(friends);
+    } catch (error) {
+        console.error("Error fetching friends list:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+router.get('/suggestions', isAuthenticated, async (req, res) => {
+    const userId = req.user.userId;
+
+    try {
+        // Fetch the user's friends
+        const user = await User.findById(userId).populate('friends', '_id').lean();
+        const existingFriends = user.friends.map(friend => friend._id.toString());
+
+        // Find top 3 active friends of the user
+        const activeFriends = await ActiveFriend.find({ user: userId, friend: { $ne: userId } })
+            .populate('friend', '_id')
+            .sort({ likeCount: -1, commentCount: -1, dislikeCount: -1 })
+            .limit(3)
+            .lean();
+
+        const topActiveFriendIds = activeFriends.map(f => f.friend._id.toString());
+
+        // Fetch the most active friends of the user's top 3 active friends
+        const suggestions = await ActiveFriend.find({
+            user: { $in: topActiveFriendIds },
+            friend: { $nin: [...existingFriends, userId] },
+        })
+            .populate('friend', 'username profileImage')
+            .sort({ likeCount: -1, commentCount: -1, dislikeCount: -1 })
+            .limit(9)
+            .lean();
+
+        res.json(suggestions);
+    } catch (error) {
+        console.error("Error fetching friend suggestions:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+
 
 
 

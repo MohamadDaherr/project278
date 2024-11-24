@@ -14,6 +14,8 @@ const storiesRoutes = require('./home-page/routes/stories');
 
 const notificationRoutes = require('./home-page/routes/notifications');
 const commentRoutes = require('./home-page/routes/comments');
+const accountRoutes = require('./home-page/routes/account');
+
 
 
 
@@ -33,6 +35,7 @@ app.set('views', [path.join(__dirname, 'login-page/views'), path.join(__dirname,
 app.set('view engine', 'ejs');
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
+
 // Routes
 app.use('/auth', authRoutes); // Authentication routes
 app.use('/home', homeRoutes); // Home page routes
@@ -44,6 +47,8 @@ app.use('/home', homeRoutes); // Home page routes
  app.use('/notifications', notificationRoutes);
  app.use('/stories', storiesRoutes);
  app.use('/comments', commentRoutes);
+
+ app.use('/account', accountRoutes);
 
 // Default route
 app.get('/', (req, res) => {

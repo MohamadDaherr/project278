@@ -668,6 +668,7 @@ html {
                     <li href="/friend/list" class="search" id="searchTab">
                         <a  onclick="openSearchModal()" id="search">Search Friends</a>
                     </li>
+                   
                 </ul>
             </aside>
         </div>
@@ -747,7 +748,6 @@ html {
                         <p>
                             <strong><%= post.user.username %></strong>
                             <p><%= post.content %></p>
-                            
                         </p>
                         <p class="privacy-level">Privacy: <%= post.privacy %></p>
                         <p class="date">
@@ -757,10 +757,17 @@ html {
                                 day: 'numeric'
                             }) %>
                         </p>
-            
+                
                         <!-- Post Media -->
                         <% if (post.mediaUrl) { %>
-                            <img src="<%= post.mediaUrl %>" alt="Post media">
+                            <% if (post.mediaType === 'image') { %>
+                                <img src="<%= post.mediaUrl %>" alt="Post image" style="max-width: 100%;">
+                            <% } else if (post.mediaType === 'video') { %>
+                                <video controls style="max-width: 100%;">
+                                    <source src="<%= post.mediaUrl %>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            <% } %>
                         <% } %>
             
                         <!-- Like and Comment Buttons -->
@@ -794,6 +801,9 @@ html {
             <aside>
                 <h2>Suggestions</h2>
                 <!-- Suggested friends -->
+                <ul id="suggestionsList">
+                    <!-- Suggestions will be populated dynamically here -->
+                </ul>
             </aside>
         </div>
         <div id="postModal" class="modal">
@@ -1071,6 +1081,9 @@ function resetStyles() {
                 console.error("Error removing friend:", error);
             }
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFriends();
+        });
         async function loadFriends() {
             try {
                 const response = await fetch('/friend/list');
@@ -1137,6 +1150,10 @@ function resetStyles() {
                         case 'post-like':
                             li.textContent = `${senderName} liked your post`;
                             break;
+                            
+                        case 'post-dislike':
+                        li.textContent = `${senderName} disliked your post`;
+                        break;
         
                         case 'story-like':
                             li.textContent = `${senderName} liked your story`;
@@ -1145,10 +1162,22 @@ function resetStyles() {
                         case 'comment':
                             li.textContent = `${senderName} commented on your post`;
                             break;
+                        case 'comment-reply':
+                        li.textContent = `${senderName} replied your comment`;
+                        break;
         
                         case 'comment-like':
                             li.textContent = `${senderName} liked your comment`;
                             break;
+                        case 'comment-dislike':
+                        li.textContent = `${senderName} disliked your comment`;
+                        break;
+                        case 'reply-like':
+                        li.textContent = `${senderName} disliked your comment`;
+                        break;
+                        case 'reply-dislike':
+                        li.textContent = `${senderName} disliked your comment`;
+                        break;
         
                         default:
                             li.textContent = `Unknown notification type from ${senderName}`;
@@ -1172,7 +1201,7 @@ function resetStyles() {
         
         async function deleteNotification(notificationId) {
             try {
-                const response = await fetch(`/notifications/${notificationId}`, {
+                const response = await fetch(`/notifications/notifications/${notificationId}`, {
                     method: 'DELETE',
                 });
         
@@ -1451,6 +1480,35 @@ function resetStyles() {
                 console.error("Error toggling reply Dislike:", error);
             }
         }
+        
+        async function loadFriendSuggestions() {
+            try {
+                const response = await fetch('/friend/suggestions');
+                const suggestions = await response.json();
+        
+                const suggestionsList = document.getElementById('suggestionsList');
+                suggestionsList.innerHTML = ''; // Clear previous suggestions
+        
+                if (!suggestions || suggestions.length === 0) {
+                    suggestionsList.innerHTML = '<li>No suggestions available</li>';
+                    return;
+                }
+        
+                suggestions.forEach(suggestion => {
+                    const li = document.createElement('li');
+                    li.className = 'suggestion-item'; // Add a class for styling
+                    li.innerHTML = `
+                        <img src="${suggestion.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="suggestion-image">
+                        <span class="suggestion-username">${suggestion.username}</span>
+                        <button class="add-friend-btn" onclick="sendFriendRequest('${suggestion._id}')">Add Friend</button>
+                    `;
+                    suggestionsList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error loading friend suggestions:", error);
+            }
+        }
+        loadFriendSuggestions();        
 
     </script>
 </body>
