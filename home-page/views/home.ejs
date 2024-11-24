@@ -631,6 +631,87 @@ html {
         max-height: 200px;
         overflow-y: auto;
     }
+
+    
+
+/* Close button styling */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Tabs styling */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  background-color: #f0f4ff;
+  border: none;
+  border-radius: 5px;
+  color: #007bff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tabs button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.tabs button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+/* Tab content styling */
+.tab-content h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.tab-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.tab-content ul li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tab-content ul li img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.tab-content ul li span {
+  font-weight: bold;
+  color: #333;
+}
+
+#confirm-delete {
+  background-color: #d9534f;
+  color: #fff;
+}
+
+#cancel-delete {
+  background-color: #5bc0de;
+  color: #fff;
+}
     </style>
 </head>
 
@@ -745,7 +826,14 @@ html {
                     <article class="post">
                         <!-- Post Author and Caption -->
                         <p>
-                            <strong><%= post.user.username %></strong>
+                            <img src="<%= post.user.profileImage || '/path/to/default-profile.png' %>"
+                                alt="<%= post.user.firstName %>" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
+                        
+                                <strong>
+                                    <a href="<%= post.user._id.toString() === user._id.toString() ? '/home/profile' : `/home/profile/user/${post.user._id}` %>">
+                                      <%= post.user.username %>
+                                    </a>
+                                  </strong>
                             <p><%= post.content %></p>
                             
                         </p>
@@ -757,7 +845,11 @@ html {
                                 day: 'numeric'
                             }) %>
                         </p>
-            
+                        <% if (post.isOwner) { %>
+                            <!-- Only show delete button for the post owner -->
+                            <button onclick="confirmDelete('post', '<%= post._id %>')">Delete Post</button>
+                          <% } %>
+                          <br>
                         <!-- Post Media -->
                         <% if (post.mediaUrl) { %>
                             <img src="<%= post.mediaUrl %>" alt="Post media">
@@ -766,10 +858,15 @@ html {
                         <!-- Like and Comment Buttons -->
                         <div class="post-actions">
                             <span class="like-icon" onclick="toggleLike(event, '<%= post._id %>')">❤️</span>
-                            <span id="likes-count-<%= post._id %>"><%= post.likes.length %> Likes</span>
+                            <span id="likes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'likes')">
+                                <%= post.likes.length %> Likes
+                              </span>
 
                             <span class="like-icon" onclick="toggledisLike(event, '<%= post._id %>')">❤️</span>
-                            <span id="dislikes-count-<%= post._id %>"><%= post.dislikes.length %> DisLikes</span>
+                            <span id="dislikes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'dislikes')">
+                                <%= post.dislikes.length %> Dislikes
+                              </span>
+                              
             
                             <span class="comment-icon" onclick="openCommentSection('<%= post._id %>')">💬</span>
                             <span><%= post.comments.length %> Comments</span>
@@ -785,6 +882,14 @@ html {
                             <button onclick="addComment('<%= post._id %>')">Post</button>
                         </div>
                     </article>
+
+                    <div id="delete-modal" class="modal" style="display: none;">
+                        <div class="modal-content">
+                        <h3>Are you sure you want to delete this?</h3>
+                        <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
+                        <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
+                        </div>
+                    </div>
                 <% }) %>
             </section>
             
@@ -874,6 +979,32 @@ html {
 
         </div>
     </div>
+
+    <div id="reaction-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close" onclick="closeReactionModal()">&times;</span>
+          <div class="tabs">
+            <button id="likes-tab" onclick="showLikes()">Likes</button>
+            <button id="dislikes-tab" onclick="showDislikes()">Dislikes</button>
+          </div>
+          <div id="likes-section" class="tab-content">
+            <h3>Liked by</h3>
+            <ul id="likes-list">
+              <!-- Likes will be dynamically inserted here -->
+            </ul>
+          </div>
+          <div id="dislikes-section" class="tab-content" style="display: none;">
+            <h3>Disliked by</h3>
+            <ul id="dislikes-list">
+              <!-- Dislikes will be dynamically inserted here -->
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    
+      
+      
 
     <!-- JavaScript to handle modal behavior -->
     <script>
@@ -1012,7 +1143,10 @@ function resetStyles() {
                     
                     // Display username or fallback to firstName
                     const usernameSpan = document.createElement('span');
-                    usernameSpan.textContent = user.username;
+                    const usernamelink = document.createElement('a');
+                    usernamelink.href=`/home/profile/user/${user._id}`;
+                    usernamelink.textContent=user.username;
+                    usernameSpan.appendChild(usernamelink);
                     
                     // Create add/remove button based on friend status
                     const button = document.createElement('button');
@@ -1107,7 +1241,14 @@ function resetStyles() {
                 notifications.forEach(notification => {
                     const li = document.createElement('li');
                     const senderName = notification.from?.username || notification.from?.firstName || "Unknown User";
-        
+                    
+                    // // Create a link for the sender's name
+                    // const senderName = document.createElement('a');
+                    // senderName.href = `/home/profile/user/${notification.from?._id}`; // Link to user's profile
+                    // senderName.textContent = sender;
+                    // senderName.style.textDecoration = 'none';
+                    // senderName.style.color = 'blue'; // Optional styling for the link
+
                     // Handle different notification types
                     switch (notification.type) {
                         case 'friend-request':
@@ -1237,6 +1378,11 @@ function resetStyles() {
 
                 // Update the like count
                 document.getElementById(`likes-count-${postId}`).textContent = `${data.likesCount} Likes`;
+
+                // If the likes modal is open, update it
+                 if (document.getElementById('likes-modal').style.display === 'block') {
+                    populateLikesModal(data.likedBy);
+                }
             } catch (error) {
                 console.error("Error toggling like:", error);
             }
@@ -1281,10 +1427,11 @@ function resetStyles() {
         <strong>${comment.user.username}:</strong> ${comment.content}
         <span>
           <button onclick="toggleCommentLike('${comment._id}')">❤️</button>
-          <span id="comment-likes-${comment._id}">${comment.likesCount}</span>
+          <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'likes')">${comment.likesCount} Likes</span>
           <button onclick="toggleCommentdisLike('${comment._id}')">❤️</button>
-          <span id="comment-dislikes-${comment._id}">${comment.dislikesCount}</span>
+          <span id="comment-dislikes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'dislikes')">${comment.dislikesCount} Dislikes</span>
         </span>
+        ${comment.isOwner ? `<button onclick="confirmDelete('comment', '${comment._id}')">Delete Comment</button>` : ''}
         <button onclick="toggleReplyBox('${comment._id}')">Reply</button>
 
         <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
@@ -1301,9 +1448,10 @@ function resetStyles() {
               <strong>${reply.user.username}:</strong> ${reply.content}
               <span>
                 <button onclick="toggleReplyLike('${comment._id}', '${reply._id}')">❤️</button>
-                <span id="reply-likes-${reply._id}">${reply.likesCount}</span>
+                <span id="reply-likes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'likes')">${reply.likesCount} Likes</span>
                 <button onclick="toggleReplydisLike('${comment._id}', '${reply._id}')">❤️</button>
-                <span id="reply-dislikes-${reply._id}">${reply.dislikesCount}</span>
+                <span id="reply-dislikes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'dislikes')">${reply.dislikesCount} Dislikes</span>
+                ${reply.isOwner ? `<button onclick="confirmDelete('reply', '${reply._id}')">Delete Reply</button>` : ''}
               </span>
             </li>
           `).join('')}
@@ -1371,9 +1519,10 @@ function resetStyles() {
             <strong>${newReply.user.username}:</strong> ${newReply.content}
             <span>
               <button onclick="toggleReplyLike('${commentId}', '${newReply._id}')">❤️</button>
-              <span id="reply-likes-${newReply._id}">0</span>
+              <span id="reply-likes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'likes')">0 Likes</span>
               <button onclick="toggleReplydisLike('${commentId}', '${newReply._id}')">❤️</button>
-              <span id="reply-dislikes-${newReply._id}">0</span>
+              <span id="reply-dislikes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'dislikes')">0 Dislikes</span>
+                ${newReply.isOwner ? `<button onclick="confirmDelete('reply', '${newReply._id}')">Delete Reply</button>` : ''}
             </span>
           </li>
         `;
@@ -1398,7 +1547,7 @@ function resetStyles() {
                 // Update the like count dynamically
                 const likeCountElement = document.getElementById(`comment-likes-${commentId}`);
                 if (likeCountElement) {
-                    likeCountElement.textContent = data.likesCount;
+                    likeCountElement.textContent = `${data.likesCount} Likes`;
                 }
             } catch (error) {
                 console.error("Error toggling comment like:", error);
@@ -1412,7 +1561,7 @@ function resetStyles() {
                 // Update the like count dynamically
                 const dislikeCountElement = document.getElementById(`comment-dislikes-${commentId}`);
                 if (dislikeCountElement) {
-                    dislikeCountElement.textContent = data.dislikesCount;
+                    dislikeCountElement.textContent = `${data.dislikesCount} DisLikes`;
                 }
             } catch (error) {
                 console.error("Error toggling comment dislike:", error);
@@ -1429,7 +1578,7 @@ function resetStyles() {
                 // Update the like count dynamically
                 const likeCountElement = document.getElementById(`reply-likes-${replyIndex}`);
                 if (likeCountElement) {
-                    likeCountElement.textContent = data.likesCount;
+                    likeCountElement.textContent = `${data.likesCount} Likes`;
                 }
             } catch (error) {
                 console.error("Error toggling reply like:", error);
@@ -1445,13 +1594,141 @@ function resetStyles() {
                 // Update the like count dynamically
                 const dislikeCountElement = document.getElementById(`reply-dislikes-${replyIndex}`);
                 if (dislikeCountElement) {
-                    dislikeCountElement.textContent = data.dislikesCount;
+                    dislikeCountElement.textContent = `${data.dislikesCount} Likes`;
                 }
             } catch (error) {
                 console.error("Error toggling reply Dislike:", error);
             }
         }
 
+        function showLikes() {
+  document.getElementById('likes-section').style.display = 'block';
+  document.getElementById('dislikes-section').style.display = 'none';
+  document.getElementById('likes-tab').classList.add('active');
+  document.getElementById('dislikes-tab').classList.remove('active');
+}
+
+function showDislikes() {
+  document.getElementById('likes-section').style.display = 'none';
+  document.getElementById('dislikes-section').style.display = 'block';
+  document.getElementById('dislikes-tab').classList.add('active');
+  document.getElementById('likes-tab').classList.remove('active');
+}
+
+async function openReactionModal(type, id, section) {
+  const modal = document.getElementById('reaction-modal');
+  modal.style.display = 'flex';
+
+  try {
+    const response = await fetch(`/posts/${type}/${id}/reactions`);
+    const data = await response.json();
+    if (response.ok) {
+      populateLikesList(data.likedBy);
+      populateDislikesList(data.dislikedBy);
+
+      // Show the appropriate section based on the clicked button
+      if (section === 'likes') {
+        showLikes();
+      } else if (section === 'dislikes') {
+        showDislikes();
+      }
+    } else {
+      console.error('Error fetching reactions:', data.message || 'Unknown error');
+    }
+  } catch (error) {
+    console.error('Error fetching reactions:', error);
+  }
+}
+
+
+function closeReactionModal() {
+  document.getElementById('reaction-modal').style.display = 'none';
+}
+
+function populateLikesList(likedBy) {
+  const likesList = document.getElementById('likes-list');
+  likesList.innerHTML = ''; // Clear previous list
+
+  likedBy.forEach(user => {
+    const listItem = document.createElement('li');
+    listItem.style.display = 'flex';
+    listItem.style.alignItems = 'center';
+    listItem.style.marginBottom = '10px';
+
+    const img = document.createElement('img');
+    img.src = user.profileImage;
+    img.alt = `${user.username}'s profile image`;
+    img.style.width = '40px';
+    img.style.height = '40px';
+    img.style.borderRadius = '50%';
+    img.style.marginRight = '10px';
+
+    const username = document.createElement('span');
+    username.textContent = user.username;
+
+    listItem.appendChild(img);
+    listItem.appendChild(username);
+    likesList.appendChild(listItem);
+  });
+}
+
+function populateDislikesList(dislikedBy) {
+  const dislikesList = document.getElementById('dislikes-list');
+  dislikesList.innerHTML = ''; // Clear previous list
+
+  dislikedBy.forEach(user => {
+    const listItem = document.createElement('li');
+    listItem.style.display = 'flex';
+    listItem.style.alignItems = 'center';
+    listItem.style.marginBottom = '10px';
+
+    const img = document.createElement('img');
+    img.src = user.profileImage;
+    img.alt = `${user.username}'s profile image`;
+    img.style.width = '40px';
+    img.style.height = '40px';
+    img.style.borderRadius = '50%';
+    img.style.marginRight = '10px';
+
+    const username = document.createElement('span');
+    username.textContent = user.username;
+
+    listItem.appendChild(img);
+    listItem.appendChild(username);
+    dislikesList.appendChild(listItem);
+  });
+}
+
+    let deleteType = '';
+    let deleteId = '';
+
+    function confirmDelete(type, id) {
+        deleteType = type;
+        deleteId = id;
+        document.getElementById('delete-modal').style.display = 'block';
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('delete-modal').style.display = 'none';
+    }
+
+    async function performDelete(postid) {
+        try {
+            const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
+            if (response.ok) {
+                alert("Deleted successfully");
+                if(deleteType=='comment' || deleteType=='reply')
+                    loadComments(postid);
+                else
+                    location.reload();
+            } else {
+                console.error("Error deleting:", await response.json());
+            }
+        } catch (error) {
+            console.error("Error performing delete:", error);
+        }
+        closeDeleteModal();
+    }
     </script>
 </body>
 
