@@ -52,6 +52,7 @@ router.post('/login', async (req, res) => {
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '9h' });
       // Step 5: Send the token as a cookie or in the response
       
+      
       res.cookie('token', token, { httpOnly: true, maxAge: 3600000 });
       res.redirect('/home');
 
@@ -190,6 +191,7 @@ router.post('/reset-password', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 
 module.exports = router;
 

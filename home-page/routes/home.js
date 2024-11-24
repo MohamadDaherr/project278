@@ -12,11 +12,15 @@ const isAuthenticated = require('../middleware/authMiddleware');
 const Notification = require('../../models/Notification');
 const Contributor = require('../../models/Contributor');
 
-
+router.get('/logout', (req, res) => {
+    res.clearCookie('token'); // Clear the authentication token cookie
+    req.session = null; // If you use sessions, clear the session
+    res.redirect('/auth/login'); // Redirect to the login page
+});
 // Configure multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/uploads');
+        cb(null, 'public/uploads/posts');
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));
@@ -90,32 +94,58 @@ router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (
         const userId = req.user.userId;
         const { content, privacy } = req.body;
         let mediaUrl = '';
+        let mediaType = '';
 
         // Check if a file was uploaded
         if (req.file) {
-            mediaUrl = '/uploads/' + req.file.filename; // Save the file path to mediaUrl
+            const fileExtension = path.extname(req.file.originalname).toLowerCase();
+            mediaUrl = '/uploads/posts/' + req.file.filename;
+
+            // Determine media type based on file extension
+            if (['.jpg', '.jpeg', '.png', '.gif'].includes(fileExtension)) {
+                mediaType = 'image';
+            } else if (['.mp4', '.avi', '.mov', '.wmv'].includes(fileExtension)) {
+                mediaType = 'video';
+            } else {
+                throw new Error('Unsupported media type');
+            }
         }
 
         // Create a new post with the provided data
         const newPost = new Post({
             content,
             mediaUrl,
+            mediaType,
             privacy,
             user: userId,
-            likes: [], // Initialize likes as an empty array
-            dislikes: [], // Initialize likes as an empty array
-            comments: [], // Initialize comments as an empty array
+            likes: [],
+            dislikes: [],
+            comments: [],
         });
 
         // Save the post to the database
         await newPost.save();
 
-        // Update the Contributor schema
+        // Update the Contributor schema for the user
         await Contributor.findOneAndUpdate(
-            { user: userId, friend: userId }, // Ensure the user is updating their own contributor record
-            { $inc: { sharedPostCount: 1 } }, // Increment the shared post count
-            { upsert: true, new: true } // Create a record if it doesn't exist
+            { user: userId, friend: userId },
+            { $inc: { sharedPostCount: 1 } },
+            { upsert: true, new: true }
         );
+
+        // Update the Contributor schema for each friend
+        const user = await User.findById(userId).populate('friends', '_id');
+        if (user && user.friends.length > 0) {
+            const bulkOps = user.friends.map(friend => ({
+                updateOne: {
+                    filter: { user: friend._id, friend: userId },
+                    update: { $inc: { sharedPostCount: 1 } },
+                    upsert: true,
+                },
+            }));
+
+            await Contributor.bulkWrite(bulkOps);
+        }
 
         res.redirect('/home'); // Redirect to home page after posting
     } catch (error) {
@@ -123,6 +153,8 @@ router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (
         res.status(500).send("Server error");
     }
 });
+
+
 
 router.get('/search-users', isAuthenticated, async (req, res) => {
     const { query } = req.query;
@@ -154,57 +186,6 @@ router.get('/search-users', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
-
-
-// Route to send a friend request
-// router.post('/friend-request/send', isAuthenticated, async (req, res) => {
-//     const { targetUserId } = req.body;
-//     const userId = req.user.userId;
-
-//     try {
-//         const currentUser = await User.findById(userId);
-//         const targetUser = await User.findById(targetUserId);
-
-//         if (!currentUser || !targetUser) return res.status(404).json({ message: "User not found" });
-
-//         if (!currentUser.friends.includes(targetUserId)) {
-//             targetUser.notifications.push({ type: 'friend-request', from: userId });
-//             await targetUser.save();
-//             res.status(200).json({ message: "Friend request sent" });
-//         } else {
-//             res.status(400).json({ message: "Already friends" });
-//         }
-//     } catch (error) {
-//         console.error("Error sending friend request:", error);
-//         res.status(500).json({ message: "Server error" });
-//     }
-// });
-
-// Route to remove a friend
-// router.post('/friend/remove', isAuthenticated, async (req, res) => {
-//     const { friendId } = req.body;
-//     const userId = req.user.userId;
-
-//     try {
-//         const currentUser = await User.findById(userId);
-//         const friendUser = await User.findById(friendId);
-
-//         if (!currentUser || !friendUser) return res.status(404).json({ message: "User not found" });
-
-//         currentUser.friends.pull(friendId);
-//         friendUser.friends.pull(userId);
-
-//         await currentUser.save();
-//         await friendUser.save();
-
-//         res.status(200).json({ message: "Friend removed" });
-//     } catch (error) {
-//         console.error("Error removing friend:", error);
-//         res.status(500).json({ message: "Server error" });
-//     }
-// });
-
-// Route to fetch notifications
 router.get('/notifications', isAuthenticated, async (req, res) => {
     const userId = req.user.userId;
 
@@ -220,38 +201,6 @@ router.get('/notifications', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
-// Profile route in home.js or a profile-specific route file
-// router.get('/profile', isAuthenticated, async (req, res) => {
-//     try {
-//         const userId = req.user.userId;
-//         const user = await User.findById(userId).populate('friends').lean();
-//         const posts = await Post.find({ user: userId }).sort({ createdAt: -1 }).lean();
-        
-//         res.render('profile', { user, posts });
-//     } catch (error) {
-//         console.error("Error loading profile:", error);
-//         res.status(500).send("Server error");
-//     }
-// });
-// router.post('/profile/toggle-privacy/:userId', isAuthenticated, async (req, res) => {
-//     try {
-//         const userId = req.params.userId;
-//         const user = await User.findById(userId);
-        
-//         if (user) {
-//             user.isPrivate = !user.isPrivate;
-//             await user.save();
-//             res.json({ success: true });
-//         } else {
-//             res.status(404).json({ success: false, message: "User not found" });
-//         }
-//     } catch (error) {
-//         console.error("Error toggling privacy:", error);
-//         res.status(500).json({ success: false });
-//     }
-// });
-
-
 
 module.exports = router;
 

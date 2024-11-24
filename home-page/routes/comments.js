@@ -3,6 +3,7 @@ const router = express.Router(); // Express Router
 const Comment = require('../../models/comments'); // Import the Comment schema
 const isAuthenticated = require('../middleware/authMiddleware');
 const User = require('../../models/User'); // Adjust the path if needed
+const Notification=require('../../models/Notification')
 
 
 
@@ -25,6 +26,14 @@ router.post('/:commentId/like', isAuthenticated, async (req, res) => {
         }
 
         await comment.save();
+        if (comment.user._id.toString() !== userId) {
+            await Notification.create({
+                from: userId,
+                to: comment.user._id, // Notify the author of the comment
+                type: 'comment-like',
+                comment: commentId,
+            });
+        }
         res.json({ likesCount: comment.likes.length, isLiked: !isLiked });
     } catch (error) {
         console.error("Error toggling comment like:", error);
@@ -50,6 +59,14 @@ router.post('/:commentId/dislike', isAuthenticated, async (req, res) => {
         }
 
         await comment.save();
+        if (comment.user._id.toString() !== userId) {
+            await Notification.create({
+                from: userId,
+                to: comment.user._id, // Notify the author of the comment
+                type: 'comment-dislike',
+                comment: commentId,
+            });
+        }
         res.json({ dislikesCount: comment.dislikes.length, isdisLiked: !isdisLiked });
     } catch (error) {
         console.error("Error toggling comment like:", error);
@@ -79,6 +96,15 @@ router.post('/:commentId/replies/:replyIndex/like', isAuthenticated, async (req,
         } else {
             // Like the reply
             reply.likes.push({ user: userId, date: new Date() });
+            if (reply.user.toString() !== userId) {
+                await Notification.create({
+                    from: userId,
+                    to: reply.user,
+                    type: 'reply-like', // Notification type for liking a reply
+                    comment: commentId,
+                    reply: reply._id, // Reply ID
+                });
+            }
         }
 
         await comment.save();
@@ -109,9 +135,19 @@ router.post('/:commentId/replies/:replyIndex/dislike', isAuthenticated, async (r
         } else {
             // Like the reply
             reply.dislikes.push({ user: userId, date: new Date() });
+            if (reply.user.toString() !== userId) {
+                await Notification.create({
+                    from: userId,
+                    to: reply.user,
+                    type: 'reply-dislike', // Notification type for liking a reply
+                    comment: commentId,
+                    reply: reply._id, // Reply ID
+                });
+            }
         }
 
         await comment.save();
+        
         res.json({ dislikesCount: reply.dislikes.length, isdisLiked: !isdisLiked });
     } catch (error) {
         console.error("Error toggling reply Dislike:", error);
@@ -147,6 +183,14 @@ router.post('/:commentId/reply', isAuthenticated, async (req, res) => {
         };
         comment.replies.push(newReply);
         await comment.save();
+        if (comment.user._id.toString() !== userId) {
+            await Notification.create({
+                from: userId,
+                to: comment.user._id, // Notify the author of the comment
+                type: 'comment-reply',
+                comment: commentId,
+            });
+        }
 
         // Populate the user's details for the response
         const populatedReply = comment.replies[comment.replies.length - 1];

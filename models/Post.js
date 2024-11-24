@@ -4,6 +4,7 @@ require('./comments');
 const postSchema = new Schema({
     content: { type: String},
     mediaUrl: { type: String, required:true },
+    mediaType: { type: String, enum: ['image', 'video']},
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Author of the post
     likes: [
         {
