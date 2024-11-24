@@ -119,6 +119,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
+            overflow: auto;
         }
         
         .modal-content {
@@ -222,6 +223,9 @@
                 </div>
                 <br>
                 <p class="bio"><%= user.bio %></p>
+                <p class="dateOfBirth"><%= user.formattedDateOfBirth %></p>
+                <p class="gender"><%= user.gender%></p>
+                <p class="address"><%= user.address %></p>
             </div>
             <ul>
             <li><button id="deactivateAccount">Deactivate Account</button>
@@ -264,13 +268,30 @@
             </div>
     
             <!-- Edit Info Tab -->
+            <!-- Edit Info Tab -->
             <div id="edit-info" class="tab-content active">
                 <form onsubmit="submitEditProfile(event)">
                     <label for="bio">Bio:</label>
                     <textarea id="bio" name="bio"><%= user.bio %></textarea>
+                    
+                    <label for="dateOfBirth">Date of Birth:</label>
+                    <input type="date" id="dateOfBirth" name="dateOfBirth" value="<%= user.dateOfBirth ? user.dateOfBirth.toISOString().split('T')[0] : '' %>">
+
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender">
+                        <option value="" disabled selected>Select your gender</option>
+                        <option value="Male" <%= user.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                        <option value="Female" <%= user.gender === 'Female' ? 'selected' : '' %>>Female</option>
+                        <option value="Other" <%= user.gender === 'Other' ? 'selected' : '' %>>Other</option>
+                    </select>
+
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" value="<%= user.address %>">
+
                     <button type="submit">Save Changes</button>
                 </form>
             </div>
+
     
             <!-- Change Photo Tab -->
             <div id="change-photo" class="tab-content">
@@ -304,22 +325,37 @@
         async function submitEditProfile(event) {
             event.preventDefault();
             const bio = document.getElementById('bio').value;
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
+            const gender = document.getElementById('gender').value;
+            const address = document.getElementById('address').value;
 
             try {
                 const response = await fetch('/home/profile/edit', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ bio })
+                    body: JSON.stringify({ bio, dateOfBirth, gender, address })
                 });
                 if (response.ok) {
                     const data = await response.json();
                     document.querySelector('.bio').textContent = data.bio;
+                    const dateOfBirthElement = document.querySelector('.dateOfBirth');
+                    if (data.dateOfBirth) {
+                        const formattedDate = new Date(data.dateOfBirth).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                        }); 
+                        dateOfBirthElement.textContent = formattedDate;
+                    }
+                    document.querySelector('.gender').textContent = data.gender;
+                    document.querySelector('.address').textContent = data.address;
                     closeEditProfileModal();
                 }
             } catch (error) {
                 console.error('Error updating profile:', error);
             }
         }
+
         async function submitProfilePhoto(event) {
             event.preventDefault();
             const profileImage = document.getElementById('profileImage').files[0];
@@ -356,19 +392,30 @@
                 postDetails.innerHTML = `
                     <img src="${data.mediaUrl}" alt="Post Media" style="width: 100%; border-radius: 8px;">
                     <div class="post-actions">
-                        <span onclick="toggleLike(event, '${data._id}')" class="like-icon">❤️</span>
-                        <span id="likes-count-${data._id}">${data.likesCount || 0}</span>
-                        <span onclick="openCommentSection('${data._id}')" class="comment-icon">💬 ${data.comments.length} Comment</span>
-                    </div>
+                            <span class="like-icon" onclick="toggleLike(event, '${data._id}')">❤️</span>
+                            <span id="likes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'likes')">
+                                ${data.likesCount}Likes
+                              </span>
 
-                    <div id="commentSection-${data._id}" class="commentSection" style="display: none;">
-                        <h4>Comments</h4>
-                        <ul id="comments-list-${data._id}">
-                            <!-- Comments will be dynamically loaded -->
-                        </ul>
-                        <input type="text" id="new-comment-${data._id}" placeholder="Add a comment..." />
-                        <button onclick="addComment('${data._id}')">Post</button>
-                    </div>
+                            <span class="like-icon" onclick="toggledisLike(event, '${data._id}')">❤️</span>
+                            <span id="dislikes-count-${data._id}" onclick="openReactionModal('post','${data._id}>', 'dislikes')">
+                                ${data.dislikesCount} Dislikes
+                              </span>
+                              
+            
+                            <span class="comment-icon" onclick="openCommentSection('${data._id}')">💬</span>
+                            <span>${data.comments.length} Comments</span>
+                        </div>
+            
+                        <!-- Comment Section -->
+                        <div id="commentSection-${data._id}" class="commentSection" style="display: none;">
+                            <h4>Comments</h4>
+                            <ul id="comments-list-${data._id}">
+                                <!-- Comments will be dynamically loaded -->
+                            </ul>
+                            <input type="text" id="new-comment-${data._id}" placeholder="Add a comment..." />
+                            <button onclick="addComment('${data._id}')">Post</button>
+                        </div>
                 `;
             } catch (error) {
                 console.error("Error loading post details:", error);
@@ -394,11 +441,32 @@
             }
 }
 
+async function toggledisLike(event, postId) {
+            event.stopPropagation();
+            try {
+                const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
+                const data = await response.json();
 
-function openCommentSection(postId) {
-    document.getElementById(`commentSection-${postId}`).style.display = 'block';
-    loadComments(postId); // Dynamically load the comments when the section is opened
-}
+                // Update the like count
+                document.getElementById(`dislikes-count-${postId}`).textContent = `${data.dislikesCount} DisLikes`;
+            } catch (error) {
+                console.error("Error toggling like:", error);
+            }
+        }
+
+
+        function openCommentSection(postId) {
+            const commentSection = document.getElementById(`commentSection-${postId}`);
+            
+            if (commentSection.style.display === 'none' || commentSection.style.display === '') {
+                // Load comments only if the section is being opened
+                loadComments(postId);
+                commentSection.style.display = 'block';
+            } else {
+                // Toggle visibility to close the comment section
+                commentSection.style.display = 'none';
+            }
+        }
 
 async function loadComments(postId) {
     try {

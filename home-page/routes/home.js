@@ -47,7 +47,7 @@ router.get('/', isAuthenticated, async (req, res) => {
         friendIds.push(userId); // Include the current user's own ID
 
         // Fetch posts based on friends and privacy settings
-        const posts = await Post.find({
+        let posts = await Post.find({
             $or: [
                 { user: { $in: friendIds }, privacy: { $in: ['friends', 'public'] } }, // Friends' public or 'friends' posts
                 { privacy: 'public' }, // Public posts from any user
@@ -72,7 +72,14 @@ router.get('/', isAuthenticated, async (req, res) => {
             createdAt: { $gte: oneDayAgo }
         }).populate('user').sort({ createdAt: -1 });
 
+        posts = posts.map(post => ({
+            ...post.toObject(),
+            isOwner: post.user._id.toString() === userId, // Compare IDs and set boolean
+        }));
+
         console.log("Fetched posts and stories successfully"); // Debug log
+
+
         // Render the home page, passing posts, stories, and the current user
         res.render('home', { posts, stories, user: currentUser });
     } catch (error) {
@@ -194,5 +201,6 @@ router.get('/notifications', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 module.exports = router;
 

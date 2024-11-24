@@ -197,6 +197,7 @@ router.post('/:commentId/reply', isAuthenticated, async (req, res) => {
         const populatedUser = await User.findById(userId).select('username profileImage');
         res.json({
             _id: populatedReply._id,
+            isOwner: userId === userId,
             content: populatedReply.content,
             user: {
                 username: populatedUser.username,

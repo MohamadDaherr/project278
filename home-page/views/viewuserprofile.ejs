@@ -1,0 +1,154 @@
+<!-- viewuserprofile.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= viewedUser.username %>'s Profile</title>
+    <!-- <link rel="stylesheet" href="/css/profile.css"> -->
+
+    <style>
+        /* General Container */
+.profile-container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Profile Header Section */
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+}
+
+.profile-header-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+.profile-header-info h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.bio {
+    font-style: italic;
+    color: #555;
+}
+
+.friend-status {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.add-friend-btn {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Posts Section */
+.profile-posts {
+    margin-top: 30px;
+}
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.post-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.post-media {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.post-content {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Profile Header Section -->
+        <div class="profile-header">
+            <div class="profile-header-image">
+                <img src="<%= viewedUser.profileImage || '/images/default-profile.png' %>" alt="<%= viewedUser.username %>'s Profile Image">
+            </div>
+            <div class="profile-header-info">
+                <h1><%= viewedUser.username %></h1>
+                <p class="bio"><%= viewedUser.bio || 'No bio available' %></p>
+
+                <% if (isFriend) { %>
+                    <span class="friend-status">Friends</span>
+                <% } else if (!isOwner) { %>
+                    <button class="add-friend-btn" onclick="sendFriendRequest('<%= viewedUser._id %>')">Add Friend</button>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Posts Section -->
+        <div class="profile-posts">
+            <h2>Posts</h2>
+            <% if (posts.length === 0) { %>
+                <p>No posts to display</p>
+            <% } else { %>
+                <div class="post-grid">
+                    <% posts.forEach(post => { %>
+                        <div class="post-item">
+                            <img src="<%= post.mediaUrl %>" alt="Post Media" class="post-media">
+                            <p class="post-content"><%= post.content %></p>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        async function sendFriendRequest(userId) {
+    try {
+        const response = await fetch('/friend/send-request', { // Updated endpoint
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ targetUserId: userId })
+                });
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message); // Show message from server (e.g., "Friend request sent")
+            location.reload(); // Refresh to update the status
+        } else {
+            console.error('Error sending friend request:', await response.text());
+        }
+    } catch (error) {
+        console.error('Error sending friend request:', error);
+    }
+}
+
+    </script>
+</body>
+</html>
