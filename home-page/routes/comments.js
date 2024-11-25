@@ -139,11 +139,13 @@ router.post('/:commentId/replies/:replyIndex/dislike', isAuthenticated, async (r
                 await Notification.create({
                     from: userId,
                     to: reply.user,
-                    type: 'reply-dislike', // Notification type for liking a reply
+                    type: 'reply-dislike', // Notification type for disliking a reply
                     comment: commentId,
                     reply: reply._id, // Reply ID
                 });
+                
             }
+           
         }
 
         await comment.save();

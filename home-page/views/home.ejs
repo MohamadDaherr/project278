@@ -1000,8 +1000,8 @@
                         style="width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
-
             <!-- Posts Feed Section -->
+
             <section class="posts">
                 <h2>Posts</h2>
                 <% posts.forEach(post=> { %>
@@ -1033,23 +1033,12 @@
                             <!-- Only show delete button for the post owner -->
                             <button onclick="confirmDelete('post', '<%= post._id %>')">Delete Post</button>
                             <% } %>
-                                <br>
 
-                                <!-- Post Media -->
-                                <% if (post.mediaUrl) { %>
-                                    <% if (post.mediaType==='image' ) { %>
-                                        <img src="<%= post.mediaUrl %>" alt="Post image" style="max-width: 100%;">
-                                        <% } else if (post.mediaType==='video' ) { %>
-                                            <video controls style="max-width: 100%;">
-                                                <source src="<%= post.mediaUrl %>" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                            <% } %>
-                                                <% } %>
-
-                                                    <!-- Like and Comment Buttons -->
-                                                    <div class="post-actions">
-                                                        <label class="like-icon">
+                        <% } %>
+            
+                        <!-- Like and Comment Buttons -->
+                        <div class="post-actions">
+                           <label class="like-icon">
                                                             <input type="checkbox" onclick="toggleLike(event, '<%= post._id %>')" />
                                                             <div class="checkmark">
                                                                 <svg fill="none" viewBox="0 0 24 24">
@@ -1063,39 +1052,30 @@
                                                                 </svg>
                                                             </div>
                                                         </label>
-                                                        
+                            <span id="likes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'likes')">
+                                <%= post.likes.length %> Likes
+                              </span>
 
-                                                        <span id="likes-count-<%= post._id %>"
-                                                            onclick="openReactionModal('post','<%= post._id %>', 'likes')">
-                                                            <%= post.likes.length %> Likes
-                                                        </span>
+                            <span class="like-icon" onclick="toggledisLike(event, '<%= post._id %>')">❤️</span>
+                            <span id="dislikes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'dislikes')">
+                                <%= post.dislikes.length %> Dislikes
+                              </span>
+                              
+            
+                            <span class="comment-icon" onclick="openCommentSection('<%= post._id %>')">💬</span>
+                            <span class="commentcount"><%= post.comments.length %> Comments</span>
+                        </div>
+            
+                        <!-- Comment Section -->
+                        <div id="commentSection-<%= post._id %>" class="commentSection" style="display: none;">
+                            <h4>Comments</h4>
+                            <ul id="comments-list-<%= post._id %>">
+                                <!-- Comments will be dynamically loaded -->
+                            </ul>
+                            <input type="text" id="new-comment-<%= post._id %>" placeholder="Add a comment..." />
+                            <button onclick="addComment('<%= post._id %>')">Post</button>
+                        </div>
 
-                                                        <span class="like-icon"
-                                                            onclick="toggledisLike(event, '<%= post._id %>')">❤️</span>
-                                                        <span id="dislikes-count-<%= post._id %>"
-                                                            onclick="openReactionModal('post','<%= post._id %>', 'dislikes')">
-                                                            <%= post.dislikes.length %> Dislikes
-                                                        </span>
-
-
-                                                        <span class="comment-icon"
-                                                            onclick="openCommentSection('<%= post._id %>')">💬</span>
-                                                        <span>
-                                                            <%= post.comments.length %> Comments
-                                                        </span>
-                                                    </div>
-
-                                                    <!-- Comment Section -->
-                                                    <div id="commentSection-<%= post._id %>" class="commentSection"
-                                                        style="display: none;">
-                                                        <h4>Comments</h4>
-                                                        <ul id="comments-list-<%= post._id %>">
-                                                            <!-- Comments will be dynamically loaded -->
-                                                        </ul>
-                                                        <input type="text" id="new-comment-<%= post._id %>"
-                                                            placeholder="Add a comment..." />
-                                                        <button onclick="addComment('<%= post._id %>')">Post</button>
-                                                    </div>
                     </article>
 
                     <div id="delete-modal" class="modal" style="display: none;">
@@ -1139,16 +1119,16 @@
                     <div class="form-group">
                         <div for="privacy" class="radio-inputs">
                             <label class="privacy">
-                                <input type="radio" name="radio" checked="">
+                                <input type="radio" name="privacy" value="public" checked="">
                                 <span class="name">Public</span>
                             </label>
                             <label class="privacy">
-                                <input type="radio" name="radio">
+                                <input type="radio" name="privacy" value="private">
                                 <span class="name">Private</span>
                             </label>
 
                             <label class="privacy">
-                                <input type="radio" name="radio">
+                                <input type="radio" name="privacy" value="friends">
                                 <span class="name">Friends</span>
                             </label>
                         </div>
@@ -1467,31 +1447,41 @@
                 const notifications = await response.json(); // Parse response data
 
                 const notificationsList = document.getElementById('notificationsList');
+                if (!notificationsList) {
+                    console.error("Element with id 'notificationsList' not found.");
+                    return;
+                }
+                
                 notificationsList.innerHTML = ''; // Clear previous notifications
 
                 notifications.forEach(notification => {
                     const li = document.createElement('li');
                     const senderName = notification.from?.username || notification.from?.firstName || "Unknown User";
 
-                    // // Create a link for the sender's name
-                    // const senderName = document.createElement('a');
-                    // senderName.href = `/home/profile/user/${notification.from?._id}`; // Link to user's profile
-                    // senderName.textContent = sender;
-                    // senderName.style.textDecoration = 'none';
-                    // senderName.style.color = 'blue'; // Optional styling for the link
+        
+                    // Create a link for the sender's name
+                    const senderLink = document.createElement('a');
+                    senderLink.href = `/home/profile/user/${notification.from?._id}`; // Link to user's profile
+                    senderLink.textContent = senderName;
+                    senderLink.style.textDecoration = 'none';
+                    senderLink.style.color = 'blue'; // Optional styling
+                    li.appendChild(senderLink);
+        
 
                     // Handle different notification types
                     switch (notification.type) {
                         case 'friend-request':
-                            li.textContent = `Friend Request from ${senderName}`;
+                            li.appendChild(document.createTextNode(` sent you a friend request.`));
                             const acceptButton = document.createElement('button');
                             acceptButton.textContent = 'Accept';
                             acceptButton.className = 'accept-button';
+                            acceptButton.style.marginRight = '5px';
                             acceptButton.onclick = () => handleAcceptRequest(notification._id);
 
                             const declineButton = document.createElement('button');
                             declineButton.textContent = 'Decline';
                             declineButton.className = 'decline-button';
+                            declineButton.style.marginRight = '5px';
                             declineButton.onclick = () => handleDeclineRequest(notification._id);
 
                             li.appendChild(acceptButton);
@@ -1499,47 +1489,56 @@
                             break;
 
                         case 'friend-accepted':
-                            li.textContent = `Friend Request accepted by ${senderName}`;
+                            li.appendChild(document.createTextNode(` accepted your friend request.`));
                             break;
 
                         case 'friend-declined':
-                            li.textContent = `Friend Request declined by ${senderName}`;
+                            li.appendChild(document.createTextNode(` declined your friend request.`));
                             break;
 
                         case 'post-like':
-                            li.textContent = `${senderName} liked your post`;
+                            li.appendChild(document.createTextNode(` liked your post.`));
                             break;
 
+        
                         case 'post-dislike':
-                            li.textContent = `${senderName} disliked your post`;
+                            li.appendChild(document.createTextNode(` disliked your post.`));
                             break;
+        
 
                         case 'story-like':
-                            li.textContent = `${senderName} liked your story`;
+                            li.appendChild(document.createTextNode(` liked your story.`));
                             break;
 
                         case 'comment':
-                            li.textContent = `${senderName} commented on your post`;
+                            li.appendChild(document.createTextNode(` commented on your post.`));
                             break;
+        
                         case 'comment-reply':
-                            li.textContent = `${senderName} replied your comment`;
+
+                            li.appendChild(document.createTextNode(` replied to your comment.`));
                             break;
+        
 
                         case 'comment-like':
-                            li.textContent = `${senderName} liked your comment`;
+                            li.appendChild(document.createTextNode(` liked your comment.`));
                             break;
+        
                         case 'comment-dislike':
-                            li.textContent = `${senderName} disliked your comment`;
-                            break;
-                        case 'reply-like':
-                            li.textContent = `${senderName} disliked your comment`;
-                            break;
-                        case 'reply-dislike':
-                            li.textContent = `${senderName} disliked your comment`;
-                            break;
 
+                           li.appendChild(document.createTextNode(` disliked your comment.`));
+                            break;
+        
+                        case 'reply-like':
+                            li.appendChild(document.createTextNode(` liked your reply.`));
+                            break;
+        
+                        case 'reply-dislike':
+                            li.appendChild(document.createTextNode(` disliked your reply.`));
+                            break;
+        
                         default:
-                            li.textContent = `Unknown notification type from ${senderName}`;
+                            li.appendChild(document.createTextNode(` sent an unknown notification.`));
                             break;
                     }
 
@@ -1547,6 +1546,7 @@
                     const deleteButton = document.createElement('button');
                     deleteButton.textContent = 'Delete';
                     deleteButton.className = 'delete-button';
+                    deleteButton.style.marginLeft = '10px';
                     deleteButton.onclick = () => deleteNotification(notification._id);
 
                     li.appendChild(deleteButton);
@@ -1556,7 +1556,6 @@
                 console.error("Error loading notifications:", error);
             }
         }
-
 
         async function deleteNotification(notificationId) {
             try {
@@ -1724,7 +1723,9 @@
                 });
 
                 if (response.ok) {
+                    const data = await response.json(); // Get the newly created reply data
                     loadComments(postId); // Reload comments after posting a new one
+                    document.querySelector(".commentcount").innerHTML = `${data.CommentCount} Comment`
                     document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
                 }
             } catch (error) {
@@ -1864,11 +1865,13 @@
                 suggestions.forEach(suggestion => {
                     const li = document.createElement('li');
                     li.className = 'suggestion-item'; // Add a class for styling
+        
                     li.innerHTML = `
-                        <img src="${suggestion.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="suggestion-image">
-                        <span class="suggestion-username">${suggestion.username}</span>
-                        <button class="add-friend-btn" onclick="sendFriendRequest('${suggestion._id}')">Add Friend</button>
-                    `;
+                    <img src="${suggestion.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="suggestion-image" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                    <span class="suggestion-username">${suggestion.friend.username}</span>
+                    <button class="add-friend-btn" onclick="addFriend('${suggestion.friend._id}')">Add Friend</button>
+                `;
+        
                     suggestionsList.appendChild(li);
                 });
             } catch (error) {
@@ -1922,7 +1925,7 @@
         }
 
         function populateLikesList(likedBy) {
-            const likesList = document.getElementById('likes-list');
+            const likesList = document.getElement=ById('likes-list');
             likesList.innerHTML = ''; // Clear previous list
 
             likedBy.forEach(user => {
@@ -1941,7 +1944,6 @@
 
                 const username = document.createElement('span');
                 username.textContent = user.username;
-
                 listItem.appendChild(img);
                 listItem.appendChild(username);
                 likesList.appendChild(listItem);
@@ -1988,23 +1990,29 @@
             document.getElementById('delete-modal').style.display = 'none';
         }
 
-        async function performDelete(postid) {
-            try {
-                const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
-                if (response.ok) {
-                    alert("Deleted successfully");
-                    if (deleteType == 'comment' || deleteType == 'reply')
-                        loadComments(postid);
-                    else
-                        location.reload();
-                } else {
-                    console.error("Error deleting:", await response.json());
-                }
-            } catch (error) {
-                console.error("Error performing delete:", error);
-            }
-            closeDeleteModal();
-        }
+
+    async function performDelete(postid) {
+          try {
+              const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
+              const data = await response.json();
+              if (response.ok) {
+                  alert("Deleted successfully");
+                  if(deleteType=='comment' || deleteType=='reply'){
+                    loadComments(postid);
+                    if(deleteType=='comment')
+                        document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} Comments`  
+                  }
+                  else
+                      location.reload();
+              } else {
+                  console.error("Error deleting:", await response.json());
+              }
+          } catch (error) {
+              console.error("Error performing delete:", error);
+          }
+          closeDeleteModal();
+      }
+
     </script>
 </body>
 

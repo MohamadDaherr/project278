@@ -5,10 +5,17 @@ const Notification = require('../../models/Notification');
 const isAuthenticated = require('../middleware/authMiddleware');
 const ActiveFriend = require('../../models/ActiveFriend');
 const Contributor = require('../../models/Contributor');
-
+const Post = require('../../models/Post');
+const Story = require('../../models/Story');
 // Send friend request
-router.get('/', isAuthenticated, (req, res) => {
-    res.render('friends'); // Render the friends.ejs template
+router.get('/', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId).lean(); // Fetch the logged-in user's details
+        res.render('friends', { user }); // Pass user data to the EJS template
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
 router.post('/send-request', isAuthenticated, async (req, res) => {
     const { targetUserId } = req.body;
@@ -172,36 +179,27 @@ router.get('/top-contributors', isAuthenticated, async (req, res) => {
     const userId = req.user.userId;
 
     try {
-        // Fetch all friends from the user's friend list
+        // Fetch user's friends
         const user = await User.findById(userId).populate('friends', 'username profileImage').lean();
         if (!user || !user.friends.length) {
             return res.json({ message: "No friends found", contributors: [] });
         }
 
-        // Fetch contributors with their shared post and story counts
-        const contributors = await Contributor.find({ user: userId, friend: { $ne: userId } })
-            .populate('friend', 'username profileImage') // Populate friend details
-            .lean();
-
-        // Merge all friends to ensure even those with no activity are included
-        const contributorsMap = new Map(contributors.map(c => [c.friend._id.toString(), c]));
-        user.friends.forEach(friend => {
-            if (!contributorsMap.has(friend._id.toString())) {
-                contributorsMap.set(friend._id.toString(), {
+        // Prepare contributors array
+        const contributorsArray = await Promise.all(
+            user.friends.map(async (friend) => {
+                const sharedPostCount = await Post.countDocuments({ user: friend._id });
+                const sharedStoryCount = await Story.countDocuments({user:friend._id}); // Adjust if you have a similar `Story` schema to count stories
+                return {
                     friend,
-                    sharedPostCount: 0,
-                    sharedStoryCount: 0,
-                });
-            }
-        });
+                    sharedPostCount,
+                    sharedStoryCount,
+                    totalSharedContent: sharedPostCount + sharedStoryCount,
+                };
+            })
+        );
 
-        // Convert to array and calculate the total shared content count (posts + stories)
-        const contributorsArray = [...contributorsMap.values()].map(contributor => ({
-            ...contributor,
-            totalSharedContent: (contributor.sharedPostCount || 0) + (contributor.sharedStoryCount || 0),
-        }));
-
-        // Sort contributors by total shared content in descending order and limit to top 3
+        // Sort contributors by total shared content (descending order)
         const topContributors = contributorsArray
             .sort((a, b) => b.totalSharedContent - a.totalSharedContent)
             .slice(0, 3); // Top 3 contributors
@@ -212,6 +210,8 @@ router.get('/top-contributors', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+
 
 
 

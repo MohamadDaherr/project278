@@ -29,8 +29,13 @@ router.get('/', isAuthenticated, async (req, res) => {
     if (!user) return res.status(404).send("User not found");
 
     // Fetch user posts
-    const posts = await Post.find({ user: userId }).sort({ createdAt: -1 }).lean();
+    let posts = await Post.find({ user: userId }).sort({ createdAt: -1 }).lean();
     const postsCount = posts.length;
+
+    posts = posts.map(post => ({
+      ...post,
+      isOwner: post.user._id.toString() === userId, // Compare IDs and set boolean
+  }));
 
     const formattedDateOfBirth = user.dateOfBirth
       ? new Date(user.dateOfBirth).toLocaleDateString('en-US', {
@@ -139,15 +144,25 @@ router.get('/user/:userId', isAuthenticated, async (req, res) => {
       const viewedUserId = req.params.userId;
 
       // Find the viewed user's details
-      const viewedUser = await User.findById(viewedUserId).select('username profileImage bio friends');
+      const viewedUser = await User.findById(viewedUserId)
+      .select('username profileImage bio gender address dateOfBirth friends friendRequests');
+
       if (!viewedUser) {
           return res.status(404).send('User not found');
       }
 
+      if (viewedUser.dateOfBirth) {
+        viewedUser.formattedDateOfBirth = new Date(viewedUser.dateOfBirth).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+    }
+
       // Check friendship status
       const isFriend = viewedUser.friends.includes(userId);
       const isOwner = userId === viewedUserId;
-
+      const isPending = viewedUser.friendRequests.includes(req.user.userId);
       // Filter posts based on privacy
       const posts = await Post.find({
           user: viewedUserId,
@@ -163,6 +178,7 @@ router.get('/user/:userId', isAuthenticated, async (req, res) => {
           isFriend,
           isOwner,
           posts,
+          isPending,
       });
   } catch (error) {
       console.error('Error loading user profile:', error);
