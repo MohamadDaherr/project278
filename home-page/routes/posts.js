@@ -6,6 +6,7 @@ const isAuthenticated = require('../middleware/authMiddleware');
 const Notification = require('../../models/Notification');
 const Comment = require('../../models/comments');
 const ActiveFriend = require('../../models/ActiveFriend');
+const Contributor = require('../../models/Contributor');
 
 // Route to toggle like on a post
 router.post('/:postId/like', isAuthenticated, async (req, res) => {
@@ -336,11 +337,23 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
             if (!post) return res.status(404).json({ message: 'Post not found' });
             if (post.user.toString() !== userId) return res.status(403).json({ message: 'Not authorized' });
 
+            // Delete the post
             await Post.findByIdAndDelete(id);
-            res.json({ message: 'Post deleted' });
+
+            // Decrement sharedPostCount in the Contributor schema
+            const result = await Contributor.updateOne(
+                { user: userId, friend: userId },
+                { $inc: { sharedPostCount: -1 } },
+                { upsert: true } 
+            );
+
+            console.log('Contributor Update Result:', result);
+
+
+            res.json({ message: 'Post deleted successfully' });
         } else if (type === 'comment') {
             // Find and delete the comment
-            const comment = await Comment.findById(id);
+            const comment = await Comment.findById(id).populate('post', 'user');
 
             if (!comment) {
                 console.error('Comment not found for ID:', id);
@@ -353,8 +366,19 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
                 return res.status(403).json({ message: 'Unauthorized' });
             }
 
-            // Delete the comment and all its replies
-            await comment.deleteOne();
+            // Get the post owner ID
+            const postOwnerId = comment.post.user.toString();
+
+            // Delete the comment and update post's comments array
+            await Post.findByIdAndUpdate(comment.post._id, { $pull: { comments: id } });
+            await Comment.findByIdAndDelete(id);
+
+            // Decrement the commentCount in ActiveFriend schema
+            await ActiveFriend.updateOne(
+                { user: postOwnerId, friend: userId },
+                { $inc: { commentCount: -1 } }
+            );
+
             res.json({ message: 'Comment deleted successfully' });
         } else if (type === 'reply') {
             // Find the parent comment containing the reply
@@ -393,5 +417,7 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+
 
 module.exports = router;
