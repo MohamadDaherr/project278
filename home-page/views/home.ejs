@@ -820,7 +820,7 @@ html {
                 </div>
             </div>
     
-            <!-- Posts Feed Section -->
+            <!-- Posts Feed Section --> 
             <section class="posts">
                 <h2>Posts</h2>
                 <% posts.forEach(post => { %>
@@ -933,16 +933,16 @@ html {
                     <div class="form-group">
                         <div for="privacy" class="radio-inputs">
                             <label class="privacy">
-                                <input type="radio" name="radio" checked="">
+                                <input type="radio" name="privacy" value="public" checked="">
                                 <span class="name">Public</span>
                             </label>
                             <label class="privacy">
-                                <input type="radio" name="radio">
+                                <input type="radio" name="privacy" value="private">
                                 <span class="name">Private</span>
                             </label>
     
                             <label class="privacy">
-                                <input type="radio" name="radio">
+                                <input type="radio" name="privacy" value="friends">
                                 <span class="name">Friends</span>
                             </label>
                         </div>

@@ -169,13 +169,14 @@ router.post('/:postId/comment', isAuthenticated, async (req, res) => {
         }
 
         const populatedComment = await Comment.findById(newComment._id).populate('user', 'username profileImage');
-
+        const CommentCount = post.comments.length;
         res.json({
             content: populatedComment.content,
             user: {
                 username: populatedComment.user.username,
                 profileImage: populatedComment.user.profileImage,
             },
+            CommentCount,
         });
     } catch (error) {
         console.error("Error adding comment:", error);
@@ -216,6 +217,7 @@ router.get('/:postId', isAuthenticated, async (req, res) => {
         res.json({
             _id: post._id,
             mediaUrl: post.mediaUrl,
+            isOwner: post.user._id.toString() === userId,
             likesCount: post.likes.length,
             dislikesCount: post.dislikes.length,
             commentsCount: post.comments.length,
@@ -318,7 +320,6 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
       } else {
         return res.status(400).json({ message: 'Invalid type' });
       }
-  
       res.json({ likedBy, dislikedBy });
     } catch (error) {
       console.error('Error fetching reactions:', error);
@@ -352,19 +353,37 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
 
             res.json({ message: 'Post deleted successfully' });
         } else if (type === 'comment') {
+
             // Find and delete the comment
             const comment = await Comment.findById(id).populate('post', 'user');
-
+          
             if (!comment) {
-                console.error('Comment not found for ID:', id);
                 return res.status(404).json({ message: 'Comment not found' });
             }
 
             // Ensure only the owner can delete the comment
             if (comment.user.toString() !== userId) {
-                console.error('Unauthorized attempt to delete comment by user:', userId);
                 return res.status(403).json({ message: 'Unauthorized' });
             }
+
+
+            // Get the associated post
+            const post = await Post.findById(comment.post);
+
+            if (!post) {
+                return res.status(404).json({ message: 'Post not found' });
+            }
+
+//             // Remove the comment ID from the post's comments array
+//             post.comments = post.comments.filter(commentId => commentId.toString() !== id);
+//             await post.save();
+
+//             // Delete the comment
+//             await comment.deleteOne();
+
+//             // Return the updated comment count
+//             const updatedCommentCount = post.comments.length;
+//             res.json({ message: 'Comment deleted successfully', updatedCommentCount });
 
             // Get the post owner ID
             const postOwnerId = comment.post.user.toString();
@@ -372,6 +391,9 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
             // Delete the comment and update post's comments array
             await Post.findByIdAndUpdate(comment.post._id, { $pull: { comments: id } });
             await Comment.findByIdAndDelete(id);
+          
+            // Get the associated post
+            const post = await Post.findById(comment.post);
 
             // Decrement the commentCount in ActiveFriend schema
             await ActiveFriend.updateOne(
@@ -379,7 +401,10 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
                 { $inc: { commentCount: -1 } }
             );
 
-            res.json({ message: 'Comment deleted successfully' });
+            // Return the updated comment count
+            const updatedCommentCount = post.comments.length;
+            res.json({ message: 'Comment deleted successfully', updatedCommentCount });
+
         } else if (type === 'reply') {
             // Find the parent comment containing the reply
             const comment = await Comment.findOne({ 'replies._id': id });

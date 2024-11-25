@@ -1,308 +1,4 @@
-<!-- viewuserprofile.ejs -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= viewedUser.username %>'s Profile</title>
-    <!-- <link rel="stylesheet" href="/css/profile.css"> -->
-
-    <style>
-        /* General Container */
-.profile-container {
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-/* Profile Header Section */
-.profile-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-}
-
-.profile-header-image img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-}
-
-.profile-header-info h1 {
-    font-size: 24px;
-    margin: 0;
-}
-
-.bio {
-    font-style: italic;
-    color: #555;
-}
-
-.friend-status {
-    background-color: green;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.add-friend-btn {
-    background-color: blue;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-/* Posts Section */
-.profile-posts {
-    margin-top: 30px;
-}
-
-.post-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.post-item {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-}
-
-.post-media {
-    width: 100%;
-    border-radius: 10px;
-}
-
-.post-content {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #333;
-}
-
-.friend-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .friend-status {
-        font-weight: bold;
-        color: #0095f6;
-    }
-
-    .remove-friend-btn {
-        background-color: transparent;
-        border: 1px solid #ff4d4d;
-        color: #ff4d4d;
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 14px;
-    }
-
-    .remove-friend-btn:hover {
-        background-color: #ffe6e6;
-    }
-
-    .friend-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.friend-btn.pending {
-  background-color: #f0f0f0;
-  color: #999;
-  cursor: not-allowed;
-}
-
-.friend-btn:hover:not(.pending) {
-  background-color: #0095f6;
-  color: #fff;
-}
-
-.modal {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            overflow: auto;
-        }
-        
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 100%;
-            position: relative;
-        }
-        
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #333;
-        }
-        #delete-modal {
-    z-index: 1100; /* Ensure it is higher than other modals */
-}
-    </style>
-</head>
-<body>
-    <div class="profile-container">
-        <!-- Profile Header Section -->
-        <div class="profile-header">
-            <div class="profile-header-image">
-                <img src="<%= viewedUser.profileImage || '/images/default-profile.png' %>" alt="<%= viewedUser.username %>'s Profile Image">
-            </div>
-            
-            <div class="profile-header-info">
-                <h1><%= viewedUser.username %></h1>
-                <p class="bio"><%= viewedUser.bio || 'No bio available' %></p>
-                <p class="dateofBirth"><%= viewedUser.formattedDateOfBirth%></p>
-                <p class="address"><%= viewedUser.address%></p>
-                <p class="gender"><%= viewedUser.gender%></p>
-    
-                <% if (isFriend) { %>
-                    <div class="friend-actions">
-                        <span class="friend-status">Friends</span>
-                        <button class="remove-friend-btn" onclick="removeFriend('<%= viewedUser._id %>')">Remove Friend</button>
-                    </div>
-                <% } else if (isPending) { %>
-                    <button class="friend-btn pending" disabled>Pending</button>
-                <% } else if (!isOwner) { %>
-                    <button class="friend-btn" onclick="sendFriendRequest('<%= viewedUser._id %>')">Add Friend</button>
-                <% } %>
-            </div>
-        </div>
-    
-        <!-- Posts Section -->
-        <div class="profile-posts">
-            <h2>Posts</h2>
-            <% if (posts.length === 0) { %>
-                <p>No posts to display</p>
-            <% } else { %>
-                <div class="post-grid">
-                    <% posts.forEach(post => { %>
-                        <div class="post-item" onclick="openPostModal('<%= post._id %>')">
-                            <img src="<%= post.mediaUrl %>" alt="Post Media" class="post-media">
-                            <!-- <p class="post-content"><%= post.content %></p> -->
-                        </div>
-
-                        <div id="delete-modal" class="modal" style="display: none;">
-                            <div class="modal-content">
-                            <h3>Are you sure you want to delete this?</h3>
-                            <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
-                            <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
-                            </div>
-                        </div>
-
-                    <% }); %>
-                </div>
-            <% } %>
-        </div>
-    </div>
-
-    <div id="postModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closePostModal()">&times;</span>
-            <div id="postDetails">
-                <!-- Post details will be dynamically loaded here -->
-            </div>
-        </div>
-    </div>
-
-    <div id="reaction-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-          <span class="close" onclick="closeReactionModal()">&times;</span>
-          <div class="tabs">
-            <button id="likes-tab" onclick="showLikes()">Likes</button>
-            <button id="dislikes-tab" onclick="showDislikes()">Dislikes</button>
-          </div>
-          <div id="likes-section" class="tab-content">
-            <h3>Liked by</h3>
-            <ul id="likes-list">
-              <!-- Likes will be dynamically inserted here -->
-            </ul>
-          </div>
-          <div id="dislikes-section" class="tab-content" style="display: none;">
-            <h3>Disliked by</h3>
-            <ul id="dislikes-list">
-              <!-- Dislikes will be dynamically inserted here -->
-            </ul>
-          </div>
-        </div>
-      </div>
-
-    <script>
-        async function sendFriendRequest(userId) {
-    try {
-        const response = await fetch('/friend/send-request', { // Updated endpoint
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ targetUserId: userId })
-                });
-        if (response.ok) {
-            alert("Friend request sent.");
-      const button = document.querySelector('.friend-btn');
-      button.textContent = "Pending";
-      button.classList.add('pending');
-      button.disabled = true; // Disable the button while pending
-        } else {
-            console.error('Error sending friend request:', await response.text());
-        }
-    } catch (error) {
-        console.error('Error sending friend request:', error);
-    }
-}
-
-// Function to remove a friend
-async function removeFriend(userId) {
-        if (!confirm('Are you sure you want to remove this user from your friends?')) return;
-
-        try {
-            const response = await fetch('/friend/remove', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ friendId: userId }),
-            });
-
-            if (response.ok) {
-                alert('Friend removed successfully');
-                location.reload(); // Refresh to update the status
-            } else {
-                const errorData = await response.json();
-                alert(errorData.message || 'Failed to remove friend.');
-            }
-        } catch (error) {
-            console.error('Error removing friend:', error);
-            alert('An error occurred while removing the friend.');
-        }
-    }
-
-    async function openPostModal(postId) {
+async function openPostModal(postId) {
     document.getElementById('postModal').style.display = 'flex';
 
     try {
@@ -325,7 +21,7 @@ async function removeFriend(userId) {
                       
     
                     <span class="comment-icon" onclick="openCommentSection('${data._id}')">💬</span>
-                    <span class="commentcount">${data.comments.length} Comments</span>
+                    <span>${data.comments.length} Comments</span>
                     ${
                         data.isOwner
                           ? `<button onclick="confirmDelete('post', '${data._id}')">Delete Post</button>`
@@ -334,14 +30,14 @@ async function removeFriend(userId) {
                 </div>
     
                 <!-- Comment Section -->
-                        <div id="commentSection-${data._id}" class="commentSection" style="display: none;">
-                            <h4>Comments</h4>
-                            <ul id="comments-list-${data._id}">
-                                <!-- Comments will be dynamically loaded -->
-                            </ul>
-                            <input type="text" id="new-comment-${data._id}" placeholder="Add a comment..." />
-                            <button onclick="addComment('${data._id}')">Post</button>
-                        </div>
+                <div id="commentSection-${data._id}" class="commentSection" style="display: none;">
+                    <h4>Comments</h4>
+                    <ul id="comments-list-${data._id}">
+                        <!-- Comments will be dynamically loaded -->
+                    </ul>
+                    <input type="text" id="new-comment-${data._id}" placeholder="Add a comment..." />
+                    <button onclick="addComment('${data._id}')">Post</button>
+                </div>
         `;
     } catch (error) {
         console.error("Error loading post details:", error);
@@ -462,11 +158,9 @@ async function addComment(postId) {
         });
 
         if (response.ok) {
-                    const data = await response.json(); // Get the newly created reply data
-                    loadComments(postId); // Reload comments after posting a new one
-                    document.querySelector(".commentcount").innerHTML = `${data.CommentCount} Comment`;
-                    document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
-                }
+            loadComments(postId); // Reload comments after posting a new one
+            document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
+        }
     } catch (error) {
         console.error("Error adding comment:", error);
     }
@@ -702,14 +396,10 @@ function showLikes() {
       async function performDelete(postid) {
           try {
               const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
-              const data = await response.json();
               if (response.ok) {
                   alert("Deleted successfully");
-                  if(deleteType=='comment' || deleteType=='reply'){
-                    loadComments(postid);
-                    if(deleteType=='comment')
-                        {document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} Comments`;} 
-                  }
+                  if(deleteType=='comment' || deleteType=='reply')
+                      loadComments(postid);
                   else
                       location.reload();
               } else {
@@ -720,6 +410,3 @@ function showLikes() {
           }
           closeDeleteModal();
       }
-      </script>
-</body>
-</html>
