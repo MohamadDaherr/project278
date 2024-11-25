@@ -366,25 +366,6 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
                 return res.status(403).json({ message: 'Unauthorized' });
             }
 
-
-            // Get the associated post
-            const post = await Post.findById(comment.post);
-
-            if (!post) {
-                return res.status(404).json({ message: 'Post not found' });
-            }
-
-//             // Remove the comment ID from the post's comments array
-//             post.comments = post.comments.filter(commentId => commentId.toString() !== id);
-//             await post.save();
-
-//             // Delete the comment
-//             await comment.deleteOne();
-
-//             // Return the updated comment count
-//             const updatedCommentCount = post.comments.length;
-//             res.json({ message: 'Comment deleted successfully', updatedCommentCount });
-
             // Get the post owner ID
             const postOwnerId = comment.post.user.toString();
 
@@ -394,7 +375,9 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
           
             // Get the associated post
             const post = await Post.findById(comment.post);
-
+            if (!post) {
+                return res.status(404).json({ message: 'Post not found' });
+            }
             // Decrement the commentCount in ActiveFriend schema
             await ActiveFriend.updateOne(
                 { user: postOwnerId, friend: userId },

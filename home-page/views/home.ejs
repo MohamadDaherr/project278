@@ -878,7 +878,7 @@ html {
                               
             
                             <span class="comment-icon" onclick="openCommentSection('<%= post._id %>')">💬</span>
-                            <span><%= post.comments.length %> Comments</span>
+                            <span class="commentcount"><%= post.comments.length %> Comments</span>
                         </div>
             
                         <!-- Comment Section -->
@@ -1523,7 +1523,9 @@ function resetStyles() {
                 });
 
                 if (response.ok) {
+                    const data = await response.json(); // Get the newly created reply data
                     loadComments(postId); // Reload comments after posting a new one
+                    document.querySelector(".commentcount").innerHTML = `${data.CommentCount} Comment`
                     document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
                 }
             } catch (error) {
@@ -1790,22 +1792,26 @@ function populateDislikesList(dislikedBy) {
     }
 
     async function performDelete(postid) {
-        try {
-            const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
-            if (response.ok) {
-                alert("Deleted successfully");
-                if(deleteType=='comment' || deleteType=='reply')
+          try {
+              const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
+              const data = await response.json();
+              if (response.ok) {
+                  alert("Deleted successfully");
+                  if(deleteType=='comment' || deleteType=='reply'){
                     loadComments(postid);
-                else
-                    location.reload();
-            } else {
-                console.error("Error deleting:", await response.json());
-            }
-        } catch (error) {
-            console.error("Error performing delete:", error);
-        }
-        closeDeleteModal();
-    }
+                    if(deleteType=='comment')
+                        document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} Comments`  
+                  }
+                  else
+                      location.reload();
+              } else {
+                  console.error("Error deleting:", await response.json());
+              }
+          } catch (error) {
+              console.error("Error performing delete:", error);
+          }
+          closeDeleteModal();
+      }
     </script>
 </body>
 
