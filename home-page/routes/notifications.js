@@ -41,7 +41,6 @@ router.delete('/notifications/:notificationId', isAuthenticated, async (req, res
 });
 router.delete('/notifications/:notificationId', isAuthenticated, async (req, res) => {
     const { notificationId } = req.params;
-
     try {
         // Find and delete the notification
         const deletedNotification = await Notification.findByIdAndDelete(notificationId);
