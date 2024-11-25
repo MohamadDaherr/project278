@@ -5,6 +5,7 @@ const path = require('path');
 const Story = require('../../models/Story');
 const router = express.Router();
 const Contributor = require('../../models/Contributor');
+const User = require('../../models/User');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -20,7 +21,10 @@ router.createStory = async (req, res) => {
     try {
         const userId = req.user.userId;
 
-        // Create a new story
+        if (!req.file) {
+            return res.status(400).send("Media file is required for a story.");
+        }
+
         const newStory = new Story({
             user: userId,
             mediaUrl: `/uploads/stories/${req.file.filename}`,
@@ -30,17 +34,29 @@ router.createStory = async (req, res) => {
 
         await newStory.save();
 
-        // Update the Contributor schema
         await Contributor.findOneAndUpdate(
-            { user: userId, friend: userId }, // Ensure the user is updating their own contributor record
-            { $inc: { sharedStoryCount: 1 } }, // Increment the shared story count
-            { upsert: true, new: true } // Create a record if it doesn't exist
+            { user: userId, friend: userId }, 
+            { $inc: { sharedStoryCount: 1 } },
+            { upsert: true, new: true }
         );
-
-        res.redirect('/home'); // Redirect to home page after creating the story
+        
+        // Update the Contributor schema for each friend
+        const user = await User.findById(userId).populate('friends', '_id');
+        if (user && user.friends.length > 0) {
+            const bulkOps = user.friends.map(friend => ({
+                updateOne: {
+                    filter: { user: friend._id, friend: userId },
+                    update: { $inc: { sharedStoryCount: 1 } },
+                    upsert: true,
+                },
+            }));
+        
+            await Contributor.bulkWrite(bulkOps);
+        }
+        res.redirect('/home');
     } catch (error) {
-        console.error("Error creating story:", error);
-        res.status(500).send("Server error");
+        console.error("Error creating story:", error.message);
+        res.status(500).json({ message: "Server error during story creation." });
     }
 };
 

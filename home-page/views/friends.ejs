@@ -6,7 +6,7 @@
     <div id="buttons-container">
         <button id="friendsButton" onclick="loadFriends()">Friends</button>
         <button id="topContributorsButton" onclick="loadTopContributors()">Top Contributors</button>
-        <button id="activeFriendsButton" onclick="loadActiveFriend()">Active Friend</button>
+        <button id="activeFriendsButton" onclick="loadActiveFriends()">Active Friend</button>
     </div>
 
     <ul id="friendsList" class="friend-list"></ul>
@@ -23,48 +23,54 @@
             try {
                 const response = await fetch('/friend/top-contributors');
                 const contributors = await response.json();
+                const userId = '<%= user._id %>'; // Include the current user's ID in the EJS template
         
                 const friendsList = document.getElementById('friendsList');
                 friendsList.innerHTML = ''; // Clear previous entries
         
-                contributors.forEach(contributor => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <img src="${contributor.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" width="30" height="30">
-                        ${contributor.friend.username} - Total Shared: ${contributor.totalSharedContent} (Posts: ${contributor.sharedPostCount}, Stories: ${contributor.sharedStoryCount})
-                    `;
-                    friendsList.appendChild(li);
-                });
+                contributors
+                    .filter(contributor => contributor.friend._id !== userId) // Exclude the logged-in user
+                    .forEach(contributor => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <img src="${contributor.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" width="30" height="30">
+                            ${contributor.friend.username} - Total Shared: ${contributor.totalSharedContent} (Posts: ${contributor.sharedPostCount}, Stories: ${contributor.sharedStoryCount})
+                        `;
+                        friendsList.appendChild(li);
+                    });
             } catch (error) {
                 console.error("Error loading top contributors:", error);
             }
         }
         
 
-        async function loadActiveFriend() {
+        async function loadActiveFriends() {
             try {
-                const response = await fetch('/friend/active-friends'); // API to fetch the most active friend
-                const activeFriend = await response.json();
+                const response = await fetch('/friend/active-friends'); // API to fetch most active friends
+                const activeFriends = await response.json();
         
                 const friendsList = document.getElementById('friendsList');
                 friendsList.innerHTML = ''; // Clear previous list
         
-                if (activeFriend && activeFriend.friend) {
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <img src="${activeFriend.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" width="30" height="30">
-                        ${activeFriend.friend.username} - 
-                        Likes: ${activeFriend.likeCount}, Comments: ${activeFriend.commentCount}, Dislikes: ${activeFriend.dislikeCount}
-                    `;
-                    friendsList.appendChild(li);
+                if (activeFriends && activeFriends.length > 0) {
+                    activeFriends.forEach(friend => {
+                        if (friend && friend.friend) {
+                            const li = document.createElement('li');
+                            li.innerHTML = `
+                                <img src="${friend.friend.profileImage || '/uploads/default-profile.png'}" alt="Profile Image" width="30" height="30">
+                                ${friend.friend.username} - 
+                                Likes: ${friend.likeCount}, Comments: ${friend.commentCount}, Dislikes: ${friend.dislikeCount}
+                            `;
+                            friendsList.appendChild(li);
+                        }
+                    });
                 } else {
-                    friendsList.innerHTML = `<li>No active friends found</li>`;
+                    friendsList.innerHTML = `<li>No active friends found in your list</li>`;
                 }
             } catch (error) {
-                console.error("Error loading active friend:", error);
+                console.error("Error loading active friends:", error.message);
             }
         }
-
         async function fetchFriends(endpoint) {
             try {
                 const response = await fetch(endpoint);

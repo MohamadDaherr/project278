@@ -47,6 +47,7 @@ router.post('/login', async (req, res) => {
           console.log("Invalid password");
           return res.status(400).json({ message: 'Invalid credentials' });
       }
+      user.isDeactivated = false;
 
       // Step 4: If email and password match, generate a token
       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '9h' });
