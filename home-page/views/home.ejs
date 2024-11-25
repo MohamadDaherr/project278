@@ -94,20 +94,8 @@
         }
 
 
-            padding-top: 0px;
-            padding-bottom: 0px;
-            background-color: #ffffff;
-            /* Same background as the profile link */
-            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); Same shadow as the profile link */
-            border-radius: 20px;
-            /* Same rounded corners as the profile link */
-            position: fixed;
-            /* Fix sidebar position */
-            transition: transform 0.3s ease;
-            top: 220px;
-            /* Place it below the profile link */
-            left: 10px;
-        }
+           
+        
 
         /* Right Sidebar Positioned Fixed */
         .right-sidebar {
@@ -1065,8 +1053,18 @@
                             <button onclick="confirmDelete('post', '<%= post._id %>')">Delete Post</button>
                             <% } %>
 
-                        <% } %>
-            
+                            <br>
+                            <!-- Post Media -->
+                            <% if (post.mediaUrl) { %>
+                                <% if (post.mediaType==='image' ) { %>
+                                    <img src="<%= post.mediaUrl %>" alt="Post image" style="max-width: 100%;">
+                                    <% } else if (post.mediaType==='video' ) { %>
+                                        <video controls style="max-width: 100%;">
+                                            <source src="<%= post.mediaUrl %>" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <% } %>
+                                            <% } %>
                         <!-- Like and Comment Buttons -->
                         <div class="post-actions">
 
