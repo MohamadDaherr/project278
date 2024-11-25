@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-router.post('/upload-story', isAuthenticated, upload.single('storyFile'), storyController.createStory);
+// router.post('/upload-story', isAuthenticated, upload.single('storyFile'), storyController.createStory);
 
 // Home route with authentication
 router.get('/', isAuthenticated, async (req, res) => {

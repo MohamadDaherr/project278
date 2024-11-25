@@ -5,204 +5,238 @@
     <meta charset="UTF-8">
     <title>Home - Social Media</title>
     <link rel="stylesheet">
-    <style>
- /* Global Styles */
-::-webkit-scrollbar {
-    display: none; /* Hide the scrollbar */
-}
 
-body,
-html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e0ecff;
-    overflow-x: hidden; /* Prevents horizontal scrolling */
-}
+<style>
+        /* Global Styles */
+        ::-webkit-scrollbar {
+            display: none;
+            /* Hide the scrollbar */
+        }
 
-.search {
-    display: block;
-}
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0ecff;
+            overflow-x: hidden;
+            /* Prevents horizontal scrolling */
+        }
 
-.container {
-    display: flex;
-    height: 100vh;
-    padding: 10px 10px;
-    justify-content: space-between;
-}
+        .search {
+            display: block;
+        }
 
-/* Media Query to Collapse Sidebars on Smaller Screens */
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
+        .container {
+            display: flex;
+            height: 100vh;
+            padding: 10px 10px;
+            justify-content: space-between;
+        }
 
-    .right-sidebar {
-        transform: translateX(100%);
-    }
+        /* Media Query to Collapse Sidebars on Smaller Screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
 
-    .feed {
-        width: 100%;
-        margin-left: 0;
-        margin-right: 0;
-    }
-}
+            .right-sidebar {
+                transform: translateX(100%);
+            }
 
-/* Sidebar Styling */
-.right-sidebar
-{
-    width: 15%; /* Sidebar width */
-    height: calc(100vh - 20px); /* Full viewport height minus padding */
-    padding: 20px;
-    background-color: #ffffff; /* Solid white background */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-radius: 10px; /* Rounded corners */
-    position: fixed; /* Fix sidebar position */
-    transition: transform 0.3s ease;
-}
+            .feed {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
 
-/* Left Sidebar Positioned Fixed */
+        /* Sidebar Styling */
+        .right-sidebar {
+            width: 15%;
+            /* Sidebar width */
+            height: calc(100vh - 20px);
+            /* Full viewport height minus padding */
+            padding: 20px;
+            background-color: #ffffff;
+            /* Solid white background */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow */
+            border-radius: 10px;
+            /* Rounded corners */
+            position: fixed;
+            /* Fix sidebar position */
+            transition: transform 0.3s ease;
+        }
 
-
-.sidebar {
-    width: 240px; /* Fixed width to match the profile link */
-    
-    padding-top: 0px;
-    padding-bottom: 0px;
-    background-color: #ffffff; /* Same background as the profile link */
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); Same shadow as the profile link */
-    border-radius: 20px; /* Same rounded corners as the profile link */
-    position: fixed; /* Fix sidebar position */
-    transition: transform 0.3s ease;
-    top: 220px; /* Place it below the profile link */
-    left: 10px;
-}
+        /* Left Sidebar Positioned Fixed */
 
 
-/* Right Sidebar Positioned Fixed */
-.right-sidebar {
-    top: 10px;
-    right: 10px;
-    padding-left: 7px;
-}
+        .sidebar {
+            width: 240px;
+            /* Fixed width to match the profile link */
+
+            padding-top: 0px;
+            padding-bottom: 0px;
+            background-color: #ffffff;
+            /* Same background as the profile link */
+            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); Same shadow as the profile link */
+            border-radius: 20px;
+            /* Same rounded corners as the profile link */
+            position: fixed;
+            /* Fix sidebar position */
+            transition: transform 0.3s ease;
+            top: 220px;
+            /* Place it below the profile link */
+            left: 10px;
+        }
 
 
-
-
-/* Sidebar Items Styling */
-.sidebar ul,
-.right-sidebar ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar ul li,
-.right-sidebar ul li {
-    /* margin: 10px 0; */
-    font-weight: bold;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 20px;
-    padding-right: 20px;
-   position: relative;
-    padding-left: 25px; /* Add space for the left bar */
-}
-
-
-
-.sidebar ul li a {
-    background-color: transparent; /* No individual background */
-    color: #333; /* Text color */
-    padding: 15px;
-    border-radius: 8px;
-    display: block;
-    
-    text-decoration: none;
-    transition: color 0.3s; /* Smooth color transition */
-}
-
-.sidebar ul li a:hover {
-    color: #007bff; /* Highlight text color on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-}
+        /* Right Sidebar Positioned Fixed */
+        .right-sidebar {
+            top: 10px;
+            right: 10px;
+            padding-left: 7px;
+        }
 
 
 
 
-/* Profile Section Styling */
-.profile-link {
-    width: 200px; /* Fixed width to match the sidebar */
-    background-color: #ffffff; /* Same background as the sidebar */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Same shadow as the sidebar */
-    border-radius: 10px; /* Same rounded corners as the sidebar */
-    text-decoration: none;
-    color: #333;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 10px; /* Position above the sidebar */
-    left: 10px;
- padding: 20px;
-}
+        /* Sidebar Items Styling */
+        .sidebar ul,
+        .right-sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.profile-link:hover {
-    background-color: #f0f2f5;
-}
-
-.create-post-link {
-    padding: 20px;
-    width: 200px; /* Fixed width to match the sidebar */
-    background-color: #007bff; /* Same background as the sidebar */
-    box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5); /* Same shadow as the sidebar */
-    border-radius: 30px; /* Same rounded corners as the sidebar */
-    text-decoration: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 130px; /* Position above the sidebar */
-    left: 10px;
-}
-
-.create-post-link:hover {
-    background-color: rgb(0, 0, 170);
-    transform: scale(1.05); /* Scale the button slightly larger */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Add a shadow to give depth */
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth animation */
-}
+        .sidebar ul li,
+        .right-sidebar ul li {
+            /* margin: 10px 0; */
+            font-weight: bold;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            padding-left: 20px;
+            padding-right: 20px;
+            position: relative;
+            padding-left: 25px;
+            /* Add space for the left bar */
+        }
 
 
-.profile-picture {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 10px;
-}
 
-.profile-picture img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        .sidebar ul li a {
+            background-color: transparent;
+            /* No individual background */
+            color: #333;
+            /* Text color */
+            padding: 15px;
+            border-radius: 8px;
+            display: block;
 
-.profile-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
+            text-decoration: none;
+            transition: color 0.3s;
+            /* Smooth color transition */
+        }
 
-/* Feed Section */
-.feed {
-    width: 60%;
-    padding: 20px;
-    margin-left: 20%; /* Leaves space for fixed left sidebar */
-    margin-right: 20%; /* Leaves space for fixed right sidebar */
-}
+        .sidebar ul li a:hover {
+            color: #007bff;
+            /* Highlight text color on hover */
+            transform: translateY(-2px);
+            /* Slight lift effect */
+        }
 
-/* Story Carousel Styling */
-.story-carousel {
+
+
+
+        /* Profile Section Styling */
+        .profile-link {
+            width: 200px;
+            /* Fixed width to match the sidebar */
+            background-color: #ffffff;
+            /* Same background as the sidebar */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* Same shadow as the sidebar */
+            border-radius: 10px;
+            /* Same rounded corners as the sidebar */
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 10px;
+            /* Position above the sidebar */
+            left: 10px;
+            padding: 20px;
+        }
+
+        .profile-link:hover {
+            background-color: #f0f2f5;
+        }
+
+        .create-post-link {
+            padding: 20px;
+            width: 200px;
+            /* Fixed width to match the sidebar */
+            background-color: #007bff;
+            /* Same background as the sidebar */
+            box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
+            /* Same shadow as the sidebar */
+            border-radius: 30px;
+            /* Same rounded corners as the sidebar */
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 130px;
+            /* Position above the sidebar */
+            left: 10px;
+        }
+
+        .create-post-link:hover {
+            background-color: rgb(0, 0, 170);
+            transform: scale(1.05);
+            /* Scale the button slightly larger */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            /* Add a shadow to give depth */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            /* Smooth animation */
+        }
+
+
+        .profile-picture {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Feed Section */
+        .feed {
+            width: 60%;
+            padding: 20px;
+            margin-left: 20%;
+            /* Leaves space for fixed left sidebar */
+            margin-right: 20%;
+            /* Leaves space for fixed right sidebar */
+        }
+
+        /* Story Carousel Styling */
+        .story-carousel {
             display: flex;
             overflow-x: auto;
             gap: 15px;
@@ -256,46 +290,48 @@ html {
         }
 
 
-/* Modal Styling */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-}
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
 
-.modal-content {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 500px;
-    position: relative;
-}
+        .modal-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
 
-.close {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    font-size: 28px;
-    color: #aaa;
-    cursor: pointer;
-}
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            color: #aaa;
+            cursor: pointer;
+        }
 
-.close:hover {
-    color: black;
-}        .create-post-box:hover {
+        .close:hover {
+            color: black;
+        }
+
+        .create-post-box:hover {
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
         }
 
-  /* Post Button Styling */
-  .post-button {
+        /* Post Button Styling */
+        .post-button {
             width: 100%;
             padding: 10px;
             background-color: #007bff;
@@ -317,7 +353,7 @@ html {
 
 
 
-   
+
 
         #caption {
             width: 100%;
@@ -428,9 +464,10 @@ html {
             cursor: pointer;
         }
 
-        #searchTab{
+        #searchTab {
             cursor: pointer;
         }
+
         .button {
             color: #007bff;
             outline: none;
@@ -513,7 +550,7 @@ html {
         /* Delete button style */
         #notificationsList li button.delete-button {
             background-color: grey;
-       
+
             color: white;
         }
 
@@ -567,7 +604,7 @@ html {
 
 
 
-      
+
         /* Post Section Styling */
         .posts h2 {
             font-size: 20px;
@@ -598,120 +635,265 @@ html {
         }
 
         .sidebar ul li.active::before {
-    content: ""; /* Adds an empty content block */
-    position: absolute; /* Positions the pseudo-element relative to the li */
-    left: 0; /* Align it to the left of the li */
-    top: 0; /* Start from the top of the li */
-    height: 100%; /* Match the full height of the li */
-    width: 5px; /* Width of the blue bar */
-    background-color: #007bff; /* Blue color for the bar */
-    border-radius: 4px 0 0 4px; /* Optional: rounded edges */
+            content: "";
+            /* Adds an empty content block */
+            position: absolute;
+            /* Positions the pseudo-element relative to the li */
+            left: 0;
+            /* Align it to the left of the li */
+            top: 0;
+            /* Start from the top of the li */
+            height: 100%;
+            /* Match the full height of the li */
+            width: 5px;
+            /* Width of the blue bar */
+            background-color: #007bff;
+            /* Blue color for the bar */
+            border-radius: 4px 0 0 4px;
+            /* Optional: rounded edges */
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+
+        .commentSection {
+            margin-top: 10px;
+            border-top: 1px solid #dbdbdb;
+            padding-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+
+
+        /* Close button styling */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Tabs styling */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            background-color: #f0f4ff;
+            border: none;
+            border-radius: 5px;
+            color: #007bff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .tabs button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .tabs button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Tab content styling */
+        .tab-content h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .tab-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tab-content ul li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .tab-content ul li img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .tab-content ul li span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        #confirm-delete {
+            background-color: #d9534f;
+            color: #fff;
+        }
+
+        #cancel-delete {
+            background-color: #5bc0de;
+            color: #fff;
+        }
+
+        /* Remove default list styling */
+        #searchResults {
+            list-style-type: none;
+            /* Remove bullet points */
+            padding: 0;
+            /* Remove padding from the list */
+            margin: 0;
+            /* Remove margin from the list */
+        }
+
+        #searchResults li {
+            list-style-type: none;
+            /* Ensure individual list items have no bullets */
+            margin: 10px 0;
+            /* Optional: Add spacing between items */
+            border-bottom: 1px solid #ccc;
+            /* Thin gray line between items */
+
+        }
+
+        /* Search Item Styling */
+        .search-item {
+            margin-bottom: 10px;
+        }
+
+        /* Search Card Layout */
+        .search-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .search-card:hover {
+            background-color: #f0f4ff;
+            transform: translateY(-2px);
+        }
+
+        /* Profile Image */
+        .search-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        /* Search Info */
+        .search-info {
+            flex: 1;
+        }
+
+        .search-username {
+            font-weight: bold;
+            color: black;
+            text-decoration: none;
+        }
+
+        /* Add Friend Button */
+        .add-friend-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .add-friend-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+/* Like Button Styles */
+.like-icon input {
+    position: absolute;
+    opacity: 0; /* Hide the checkbox */
+    cursor: pointer;
+    height: 0;
+    width: 0;
 }
 
-.post-actions {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        margin-top: 10px;
+.like-icon {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 25px; /* Adjust icon size */
+    user-select: none;
+    transition: transform 0.2s ease; /* Smooth hover scaling */
+}
+
+/* Default state */
+.checkmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto; /* Auto size to match the icon */
+    width: auto;
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    transition: fill 0.3s ease, transform 0.2s ease; /* Smooth color and scaling */
+}
+
+.checkmark svg {
+    width: 1.4em; /* Scale SVG size */
+    height: 1.4em;
+    fill: #ccc; /* Default grey icon */
+    transition: fill 0.3s ease; /* Smooth color transition */
+}
+
+/* Hover effect */
+.like-icon:hover .checkmark svg {
+    transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
+
+/* Checked (liked) state */
+.like-icon input:checked ~ .checkmark svg {
+    fill: #007bff; /* Bright blue icon when liked */
+}
+
+/* Unchecked (unliked) state */
+.like-icon input:not(:checked) ~ .checkmark svg {
+    fill: #cccccc; /* Grey icon when unliked */
+}
+
+/* Animations for Like and Dislike */
+@keyframes like-animation {
+    0% {
+        transform: scale(0.9);
     }
-
-    .like-icon, .comment-icon {
-        cursor: pointer;
-        font-size: 16px;
+    50% {
+        transform: scale(1.2);
     }
-
-    .like-icon:hover, .comment-icon:hover {
-        opacity: 0.7;
+    100% {
+        transform: scale(1);
     }
-
-    .commentSection {
-        margin-top: 10px;
-        border-top: 1px solid #dbdbdb;
-        padding-top: 10px;
-        max-height: 200px;
-        overflow-y: auto;
-    }
-
-    
-
-/* Close button styling */
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #333;
 }
 
-/* Tabs styling */
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 15px;
-}
-
-.tabs button {
-  flex: 1;
-  padding: 10px;
-  background-color: #f0f4ff;
-  border: none;
-  border-radius: 5px;
-  color: #007bff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.tabs button.active {
-  background-color: #007bff;
-  color: white;
-}
-
-.tabs button:hover {
-  background-color: #0056b3;
-  color: white;
-}
-
-/* Tab content styling */
-.tab-content h3 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.tab-content ul {
-  list-style: none;
-  padding: 0;
-}
-
-.tab-content ul li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.tab-content ul li img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.tab-content ul li span {
-  font-weight: bold;
-  color: #333;
-}
-
-#confirm-delete {
-  background-color: #d9534f;
-  color: #fff;
-}
-
-#cancel-delete {
-  background-color: #5bc0de;
-  color: #fff;
-}
     </style>
 </head>
 
@@ -815,7 +997,7 @@ html {
             <div id="storyModal" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closeStoryModal()">&times;</span>
-                    <img id="storyImage" src="<%= stories.mediaUrl %>" alt="Story Image"
+                    <img id="storyImage" src="" alt="Story Image"
                         style="width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
@@ -866,7 +1048,20 @@ html {
             
                         <!-- Like and Comment Buttons -->
                         <div class="post-actions">
-                            <span class="like-icon" onclick="toggleLike(event, '<%= post._id %>')">❤️</span>
+                            <label class="like-icon">
+                                <input type="checkbox" onclick="toggleLike(event, '<%= post._id %>')" />
+                                <div class="checkmark">
+                                    <svg fill="none" viewBox="0 0 24 24">
+                                        <path
+                                            stroke-linejoin="round"
+                                            stroke-linecap="round"
+                                            stroke-width="1.3"
+                                            stroke="#FFFFFF"
+                                            d="M8 10V20M8 10L4 9.99998V20L8 20M8 10L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20L8 20">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </label>
                             <span id="likes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'likes')">
                                 <%= post.likes.length %> Likes
                               </span>
@@ -1149,25 +1344,21 @@ function resetStyles() {
 
                 users.forEach(user => {
                     const li = document.createElement('li');
+                    li.className = 'search-item'; // Add class for styling
 
-                    const img = document.createElement('img');
-                    img.src=user.profileImage;
-                    
-                    // Display username or fallback to firstName
-                    const usernameSpan = document.createElement('span');
-                    const usernamelink = document.createElement('a');
-                    usernamelink.href=`/home/profile/user/${user._id}`;
-                    usernamelink.textContent=user.username;
-                    usernameSpan.appendChild(usernamelink);
-                    
-                    // Create add/remove button based on friend status
-                    const button = document.createElement('button');
-                    button.textContent = user.isFriend ? '-' : '+';
-                    button.onclick = () => user.isFriend ? removeFriend(user._id) : addFriend(user._id);
+                    // User card layout
+                    li.innerHTML = `
+                <div class="search-card">
+                    <img src="${user.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="search-image">
+                    <div class="search-info">
+                        <a href="/home/profile/user/${user._id}" class="search-username">${user.username || user.firstName}</a>
+                    </div>
+                    <button class="add-friend-btn" onclick="${user.isFriend ? `removeFriend('${user._id}')` : `addFriend('${user._id}')`}">
+                        ${user.isFriend ? '-' : '+'}
+                    </button>
+                </div>
+            `;
 
-                    li.appendChild(img);
-                    li.appendChild(usernameSpan);
-                    li.appendChild(button);
                     resultsList.appendChild(li);
                 });
             } catch (error) {
