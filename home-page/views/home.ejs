@@ -6,203 +6,236 @@
     <title>Home - Social Media</title>
     <link rel="stylesheet">
     <style>
- /* Global Styles */
-::-webkit-scrollbar {
-    display: none; /* Hide the scrollbar */
-}
+        /* Global Styles */
+        ::-webkit-scrollbar {
+            display: none;
+            /* Hide the scrollbar */
+        }
 
-body,
-html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e0ecff;
-    overflow-x: hidden; /* Prevents horizontal scrolling */
-}
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0ecff;
+            overflow-x: hidden;
+            /* Prevents horizontal scrolling */
+        }
 
-.search {
-    display: block;
-}
+        .search {
+            display: block;
+        }
 
-.container {
-    display: flex;
-    height: 100vh;
-    padding: 10px 10px;
-    justify-content: space-between;
-}
+        .container {
+            display: flex;
+            height: 100vh;
+            padding: 10px 10px;
+            justify-content: space-between;
+        }
 
-/* Media Query to Collapse Sidebars on Smaller Screens */
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
+        /* Media Query to Collapse Sidebars on Smaller Screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
 
-    .right-sidebar {
-        transform: translateX(100%);
-    }
+            .right-sidebar {
+                transform: translateX(100%);
+            }
 
-    .feed {
-        width: 100%;
-        margin-left: 0;
-        margin-right: 0;
-    }
-}
+            .feed {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
 
-/* Sidebar Styling */
-.right-sidebar
-{
-    width: 15%; /* Sidebar width */
-    height: calc(100vh - 20px); /* Full viewport height minus padding */
-    padding: 20px;
-    background-color: #ffffff; /* Solid white background */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-radius: 10px; /* Rounded corners */
-    position: fixed; /* Fix sidebar position */
-    transition: transform 0.3s ease;
-}
+        /* Sidebar Styling */
+        .right-sidebar {
+            width: 15%;
+            /* Sidebar width */
+            height: calc(100vh - 20px);
+            /* Full viewport height minus padding */
+            padding: 20px;
+            background-color: #ffffff;
+            /* Solid white background */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow */
+            border-radius: 10px;
+            /* Rounded corners */
+            position: fixed;
+            /* Fix sidebar position */
+            transition: transform 0.3s ease;
+        }
 
-/* Left Sidebar Positioned Fixed */
-
-
-.sidebar {
-    width: 240px; /* Fixed width to match the profile link */
-    
-    padding-top: 0px;
-    padding-bottom: 0px;
-    background-color: #ffffff; /* Same background as the profile link */
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); Same shadow as the profile link */
-    border-radius: 20px; /* Same rounded corners as the profile link */
-    position: fixed; /* Fix sidebar position */
-    transition: transform 0.3s ease;
-    top: 220px; /* Place it below the profile link */
-    left: 10px;
-}
+        /* Left Sidebar Positioned Fixed */
 
 
-/* Right Sidebar Positioned Fixed */
-.right-sidebar {
-    top: 10px;
-    right: 10px;
-    padding-left: 7px;
-}
+        .sidebar {
+            width: 240px;
+            /* Fixed width to match the profile link */
+
+            padding-top: 0px;
+            padding-bottom: 0px;
+            background-color: #ffffff;
+            /* Same background as the profile link */
+            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); Same shadow as the profile link */
+            border-radius: 20px;
+            /* Same rounded corners as the profile link */
+            position: fixed;
+            /* Fix sidebar position */
+            transition: transform 0.3s ease;
+            top: 220px;
+            /* Place it below the profile link */
+            left: 10px;
+        }
 
 
-
-
-/* Sidebar Items Styling */
-.sidebar ul,
-.right-sidebar ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar ul li,
-.right-sidebar ul li {
-    /* margin: 10px 0; */
-    font-weight: bold;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 20px;
-    padding-right: 20px;
-   position: relative;
-    padding-left: 25px; /* Add space for the left bar */
-}
-
-
-
-.sidebar ul li a {
-    background-color: transparent; /* No individual background */
-    color: #333; /* Text color */
-    padding: 15px;
-    border-radius: 8px;
-    display: block;
-    
-    text-decoration: none;
-    transition: color 0.3s; /* Smooth color transition */
-}
-
-.sidebar ul li a:hover {
-    color: #007bff; /* Highlight text color on hover */
-    transform: translateY(-2px); /* Slight lift effect */
-}
+        /* Right Sidebar Positioned Fixed */
+        .right-sidebar {
+            top: 10px;
+            right: 10px;
+            padding-left: 7px;
+        }
 
 
 
 
-/* Profile Section Styling */
-.profile-link {
-    width: 200px; /* Fixed width to match the sidebar */
-    background-color: #ffffff; /* Same background as the sidebar */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Same shadow as the sidebar */
-    border-radius: 10px; /* Same rounded corners as the sidebar */
-    text-decoration: none;
-    color: #333;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 10px; /* Position above the sidebar */
-    left: 10px;
- padding: 20px;
-}
+        /* Sidebar Items Styling */
+        .sidebar ul,
+        .right-sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.profile-link:hover {
-    background-color: #f0f2f5;
-}
-
-.create-post-link {
-    padding: 20px;
-    width: 200px; /* Fixed width to match the sidebar */
-    background-color: #007bff; /* Same background as the sidebar */
-    box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5); /* Same shadow as the sidebar */
-    border-radius: 30px; /* Same rounded corners as the sidebar */
-    text-decoration: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 130px; /* Position above the sidebar */
-    left: 10px;
-}
-
-.create-post-link:hover {
-    background-color: rgb(0, 0, 170);
-    transform: scale(1.05); /* Scale the button slightly larger */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Add a shadow to give depth */
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth animation */
-}
+        .sidebar ul li,
+        .right-sidebar ul li {
+            /* margin: 10px 0; */
+            font-weight: bold;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            padding-left: 20px;
+            padding-right: 20px;
+            position: relative;
+            padding-left: 25px;
+            /* Add space for the left bar */
+        }
 
 
-.profile-picture {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-right: 10px;
-}
 
-.profile-picture img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        .sidebar ul li a {
+            background-color: transparent;
+            /* No individual background */
+            color: #333;
+            /* Text color */
+            padding: 15px;
+            border-radius: 8px;
+            display: block;
 
-.profile-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
+            text-decoration: none;
+            transition: color 0.3s;
+            /* Smooth color transition */
+        }
 
-/* Feed Section */
-.feed {
-    width: 60%;
-    padding: 20px;
-    margin-left: 20%; /* Leaves space for fixed left sidebar */
-    margin-right: 20%; /* Leaves space for fixed right sidebar */
-}
+        .sidebar ul li a:hover {
+            color: #007bff;
+            /* Highlight text color on hover */
+            transform: translateY(-2px);
+            /* Slight lift effect */
+        }
 
-/* Story Carousel Styling */
-.story-carousel {
+
+
+
+        /* Profile Section Styling */
+        .profile-link {
+            width: 200px;
+            /* Fixed width to match the sidebar */
+            background-color: #ffffff;
+            /* Same background as the sidebar */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* Same shadow as the sidebar */
+            border-radius: 10px;
+            /* Same rounded corners as the sidebar */
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 10px;
+            /* Position above the sidebar */
+            left: 10px;
+            padding: 20px;
+        }
+
+        .profile-link:hover {
+            background-color: #f0f2f5;
+        }
+
+        .create-post-link {
+            padding: 20px;
+            width: 200px;
+            /* Fixed width to match the sidebar */
+            background-color: #007bff;
+            /* Same background as the sidebar */
+            box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
+            /* Same shadow as the sidebar */
+            border-radius: 30px;
+            /* Same rounded corners as the sidebar */
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 130px;
+            /* Position above the sidebar */
+            left: 10px;
+        }
+
+        .create-post-link:hover {
+            background-color: rgb(0, 0, 170);
+            transform: scale(1.05);
+            /* Scale the button slightly larger */
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            /* Add a shadow to give depth */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            /* Smooth animation */
+        }
+
+
+        .profile-picture {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Feed Section */
+        .feed {
+            width: 60%;
+            padding: 20px;
+            margin-left: 20%;
+            /* Leaves space for fixed left sidebar */
+            margin-right: 20%;
+            /* Leaves space for fixed right sidebar */
+        }
+
+        /* Story Carousel Styling */
+        .story-carousel {
             display: flex;
             overflow-x: auto;
             gap: 15px;
@@ -256,46 +289,48 @@ html {
         }
 
 
-/* Modal Styling */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-}
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
 
-.modal-content {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 500px;
-    position: relative;
-}
+        .modal-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
 
-.close {
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    font-size: 28px;
-    color: #aaa;
-    cursor: pointer;
-}
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            color: #aaa;
+            cursor: pointer;
+        }
 
-.close:hover {
-    color: black;
-}        .create-post-box:hover {
+        .close:hover {
+            color: black;
+        }
+
+        .create-post-box:hover {
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
         }
 
-  /* Post Button Styling */
-  .post-button {
+        /* Post Button Styling */
+        .post-button {
             width: 100%;
             padding: 10px;
             background-color: #007bff;
@@ -317,7 +352,7 @@ html {
 
 
 
-   
+
 
         #caption {
             width: 100%;
@@ -428,9 +463,10 @@ html {
             cursor: pointer;
         }
 
-        #searchTab{
+        #searchTab {
             cursor: pointer;
         }
+
         .button {
             color: #007bff;
             outline: none;
@@ -513,7 +549,7 @@ html {
         /* Delete button style */
         #notificationsList li button.delete-button {
             background-color: grey;
-       
+
             color: white;
         }
 
@@ -567,7 +603,7 @@ html {
 
 
 
-      
+
         /* Post Section Styling */
         .posts h2 {
             font-size: 20px;
@@ -598,162 +634,307 @@ html {
         }
 
         .sidebar ul li.active::before {
-    content: ""; /* Adds an empty content block */
-    position: absolute; /* Positions the pseudo-element relative to the li */
-    left: 0; /* Align it to the left of the li */
-    top: 0; /* Start from the top of the li */
-    height: 100%; /* Match the full height of the li */
-    width: 5px; /* Width of the blue bar */
-    background-color: #007bff; /* Blue color for the bar */
-    border-radius: 4px 0 0 4px; /* Optional: rounded edges */
+            content: "";
+            /* Adds an empty content block */
+            position: absolute;
+            /* Positions the pseudo-element relative to the li */
+            left: 0;
+            /* Align it to the left of the li */
+            top: 0;
+            /* Start from the top of the li */
+            height: 100%;
+            /* Match the full height of the li */
+            width: 5px;
+            /* Width of the blue bar */
+            background-color: #007bff;
+            /* Blue color for the bar */
+            border-radius: 4px 0 0 4px;
+            /* Optional: rounded edges */
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+
+        .commentSection {
+            margin-top: 10px;
+            border-top: 1px solid #dbdbdb;
+            padding-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+
+
+        /* Close button styling */
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Tabs styling */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .tabs button {
+            flex: 1;
+            padding: 10px;
+            background-color: #f0f4ff;
+            border: none;
+            border-radius: 5px;
+            color: #007bff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .tabs button.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .tabs button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Tab content styling */
+        .tab-content h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .tab-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tab-content ul li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .tab-content ul li img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .tab-content ul li span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        #confirm-delete {
+            background-color: #d9534f;
+            color: #fff;
+        }
+
+        #cancel-delete {
+            background-color: #5bc0de;
+            color: #fff;
+        }
+
+        /* Remove default list styling */
+        #searchResults {
+            list-style-type: none;
+            /* Remove bullet points */
+            padding: 0;
+            /* Remove padding from the list */
+            margin: 0;
+            /* Remove margin from the list */
+        }
+
+        #searchResults li {
+            list-style-type: none;
+            /* Ensure individual list items have no bullets */
+            margin: 10px 0;
+            /* Optional: Add spacing between items */
+            border-bottom: 1px solid #ccc;
+            /* Thin gray line between items */
+
+        }
+
+        /* Search Item Styling */
+        .search-item {
+            margin-bottom: 10px;
+        }
+
+        /* Search Card Layout */
+        .search-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .search-card:hover {
+            background-color: #f0f4ff;
+            transform: translateY(-2px);
+        }
+
+        /* Profile Image */
+        .search-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        /* Search Info */
+        .search-info {
+            flex: 1;
+        }
+
+        .search-username {
+            font-weight: bold;
+            color: black;
+            text-decoration: none;
+        }
+
+        /* Add Friend Button */
+        .add-friend-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .add-friend-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+/* Like Button Styles */
+.like-icon input {
+    position: absolute;
+    opacity: 0; /* Hide the checkbox */
+    cursor: pointer;
+    height: 0;
+    width: 0;
 }
 
-.post-actions {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        margin-top: 10px;
+.like-icon {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    font-size: 25px; /* Adjust icon size */
+    user-select: none;
+    transition: transform 0.2s ease; /* Smooth hover scaling */
+}
+
+/* Default state */
+.checkmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto; /* Auto size to match the icon */
+    width: auto;
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    transition: fill 0.3s ease, transform 0.2s ease; /* Smooth color and scaling */
+}
+
+.checkmark svg {
+    width: 1.4em; /* Scale SVG size */
+    height: 1.4em;
+    fill: #ccc; /* Default grey icon */
+    transition: fill 0.3s ease; /* Smooth color transition */
+}
+
+/* Hover effect */
+.like-icon:hover .checkmark svg {
+    transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
+
+/* Checked (liked) state */
+.like-icon input:checked ~ .checkmark svg {
+    fill: #007bff; /* Bright blue icon when liked */
+}
+
+/* Unchecked (unliked) state */
+.like-icon input:not(:checked) ~ .checkmark svg {
+    fill: #cccccc; /* Grey icon when unliked */
+}
+
+/* Animations for Like and Dislike */
+@keyframes like-animation {
+    0% {
+        transform: scale(0.9);
     }
-
-    .like-icon, .comment-icon {
-        cursor: pointer;
-        font-size: 16px;
+    50% {
+        transform: scale(1.2);
     }
-
-    .like-icon:hover, .comment-icon:hover {
-        opacity: 0.7;
+    100% {
+        transform: scale(1);
     }
-
-    .commentSection {
-        margin-top: 10px;
-        border-top: 1px solid #dbdbdb;
-        padding-top: 10px;
-        max-height: 200px;
-        overflow-y: auto;
-    }
-
-    
-
-/* Close button styling */
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #333;
 }
 
-/* Tabs styling */
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 15px;
-}
-
-.tabs button {
-  flex: 1;
-  padding: 10px;
-  background-color: #f0f4ff;
-  border: none;
-  border-radius: 5px;
-  color: #007bff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.tabs button.active {
-  background-color: #007bff;
-  color: white;
-}
-
-.tabs button:hover {
-  background-color: #0056b3;
-  color: white;
-}
-
-/* Tab content styling */
-.tab-content h3 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.tab-content ul {
-  list-style: none;
-  padding: 0;
-}
-
-.tab-content ul li {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.tab-content ul li img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.tab-content ul li span {
-  font-weight: bold;
-  color: #333;
-}
-
-#confirm-delete {
-  background-color: #d9534f;
-  color: #fff;
-}
-
-#cancel-delete {
-  background-color: #5bc0de;
-  color: #fff;
-}
     </style>
 </head>
 
 <body>
     <div class="container">
-            <a href="/home/profile" class="profile-link">
-                <div class="profile-picture">
-                    <img src="<%= user.profileImage || '/path/to/default-profile.png' %>" alt="Profile Picture">
-                </div>
-                <div class="profile-name">
-                    <%= user.firstName %>
-                        <%= user.lastName %>
-                </div>
-            </a>
-            
-            <a href="#" class="create-post-link" onclick="openModal()" >Create Post</a>
+        <a href="/home/profile" class="profile-link">
+            <div class="profile-picture">
+                <img src="<%= user.profileImage || '/path/to/default-profile.png' %>" alt="Profile Picture">
+            </div>
+            <div class="profile-name">
+                <%= user.firstName %>
+                    <%= user.lastName %>
+            </div>
+        </a>
+
+        <a href="#" class="create-post-link" onclick="openModal()">Create Post</a>
 
         <div class="sidebar">
-            
+
             <aside>
-              
+
                 <ul>
-                
+
                     <li><a href="/home" id="home-link">Home</a></li>
 
-                    <li id="friends"> 
+                    <li id="friends">
                         <a href="/friend" id="fr">Friends</a>
                     </li>
-                    
-                    
+
+
                     <li id="chats"><a href="/chats" id="ch">Chats</a></li>
-                    <li href="/home/notifications" class="notifications-link"> 
+                    <li href="/home/notifications" class="notifications-link">
                         <a onclick="openNotificationModal()" id="notify">Notifications</a>
                     </li>
                     <li href="/friend/list" class="search" id="searchTab">
-                        <a  onclick="openSearchModal()" id="search">Search Friends</a>
+                        <a onclick="openSearchModal()" id="search">Search Friends</a>
                     </li>
-                   
+
                 </ul>
             </aside>
         </div>
-    
+
         <div class="feed">
             <!-- Story Carousel -->
             <section class="story-carousel">
@@ -763,7 +944,7 @@ html {
                     </div>
                     <p>Your Story</p>
                 </div>
-    
+
                 <% stories.forEach(story=> { %>
                     <div class="story" onclick="viewStory('<%= story.mediaUrl %>')">
                         <div class="story-image-wrapper">
@@ -776,14 +957,14 @@ html {
                     </div>
                     <% }) %>
             </section>
-    
+
             <!-- Modal for Creating a Post -->
             <div id="uploadStoryModal" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closeUploadModal()">&times;</span>
                     <h3>Upload Story</h3>
                     <form action="/home/upload-story" method="POST" enctype="multipart/form-data">
-    
+
                         <div class="form-group">
                             <div class="custom-file-upload">
                                 <label for="storyFile" class="upload-button">Choose File</label>
@@ -792,7 +973,7 @@ html {
                                     onchange="updateFileNamen()">
                             </div>
                         </div>
-    
+
                         <div class="form-group">
                             <div for="privacy" class="radio-inputs">
                                 <label class="privacy">
@@ -810,7 +991,7 @@ html {
                     </form>
                 </div>
             </div>
-    
+
             <!-- Modal for Viewing a Story -->
             <div id="storyModal" class="modal">
                 <div class="modal-content">
@@ -819,91 +1000,116 @@ html {
                         style="width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
-    
+
             <!-- Posts Feed Section -->
             <section class="posts">
                 <h2>Posts</h2>
-                <% posts.forEach(post => { %>
+                <% posts.forEach(post=> { %>
                     <article class="post">
                         <!-- Post Author and Caption -->
                         <p>
                             <img src="<%= post.user.profileImage || '/path/to/default-profile.png' %>"
-                                alt="<%= post.user.firstName %>" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
-                        
-                                <strong>
-                                    <a href="<%= post.user._id.toString() === user._id.toString() ? '/home/profile' : `/home/profile/user/${post.user._id}` %>">
-                                      <%= post.user.username %>
-                                    </a>
-                                  </strong>
-                            <p><%= post.content %></p>
+                                alt="<%= post.user.firstName %>"
+                                style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
+
+                            <strong>
+                                <a
+                                    href="<%= post.user._id.toString() === user._id.toString() ? '/home/profile' : `/home/profile/user/${post.user._id}` %>">
+                                    <%= post.user.username %>
+                                </a>
+                            </strong>
+                        <p>
+                            <%= post.content %>
                         </p>
-                        <p class="privacy-level">Privacy: <%= post.privacy %></p>
+                        </p>
+                        <p class="privacy-level">Privacy: <%= post.privacy %>
+                        </p>
                         <p class="date">
-                            Posted on: <%= new Date(post.createdAt).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric'
-                            }) %>
+                            Posted on: <%= new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric' ,
+                                month: 'short' , day: 'numeric' }) %>
                         </p>
 
                         <% if (post.isOwner) { %>
                             <!-- Only show delete button for the post owner -->
                             <button onclick="confirmDelete('post', '<%= post._id %>')">Delete Post</button>
-                          <% } %>
-                          <br>
-
-                        <!-- Post Media -->
-                        <% if (post.mediaUrl) { %>
-                            <% if (post.mediaType === 'image') { %>
-                                <img src="<%= post.mediaUrl %>" alt="Post image" style="max-width: 100%;">
-                            <% } else if (post.mediaType === 'video') { %>
-                                <video controls style="max-width: 100%;">
-                                    <source src="<%= post.mediaUrl %>" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
                             <% } %>
-                        <% } %>
-            
-                        <!-- Like and Comment Buttons -->
-                        <div class="post-actions">
-                            <span class="like-icon" onclick="toggleLike(event, '<%= post._id %>')">❤️</span>
-                            <span id="likes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'likes')">
-                                <%= post.likes.length %> Likes
-                              </span>
+                                <br>
 
-                            <span class="like-icon" onclick="toggledisLike(event, '<%= post._id %>')">❤️</span>
-                            <span id="dislikes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'dislikes')">
-                                <%= post.dislikes.length %> Dislikes
-                              </span>
-                              
-            
-                            <span class="comment-icon" onclick="openCommentSection('<%= post._id %>')">💬</span>
-                            <span><%= post.comments.length %> Comments</span>
-                        </div>
-            
-                        <!-- Comment Section -->
-                        <div id="commentSection-<%= post._id %>" class="commentSection" style="display: none;">
-                            <h4>Comments</h4>
-                            <ul id="comments-list-<%= post._id %>">
-                                <!-- Comments will be dynamically loaded -->
-                            </ul>
-                            <input type="text" id="new-comment-<%= post._id %>" placeholder="Add a comment..." />
-                            <button onclick="addComment('<%= post._id %>')">Post</button>
-                        </div>
+                                <!-- Post Media -->
+                                <% if (post.mediaUrl) { %>
+                                    <% if (post.mediaType==='image' ) { %>
+                                        <img src="<%= post.mediaUrl %>" alt="Post image" style="max-width: 100%;">
+                                        <% } else if (post.mediaType==='video' ) { %>
+                                            <video controls style="max-width: 100%;">
+                                                <source src="<%= post.mediaUrl %>" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                            <% } %>
+                                                <% } %>
+
+                                                    <!-- Like and Comment Buttons -->
+                                                    <div class="post-actions">
+                                                        <label class="like-icon">
+                                                            <input type="checkbox" onclick="toggleLike(event, '<%= post._id %>')" />
+                                                            <div class="checkmark">
+                                                                <svg fill="none" viewBox="0 0 24 24">
+                                                                    <path
+                                                                        stroke-linejoin="round"
+                                                                        stroke-linecap="round"
+                                                                        stroke-width="1.3"
+                                                                        stroke="#FFFFFF"
+                                                                        d="M8 10V20M8 10L4 9.99998V20L8 20M8 10L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20L8 20">
+                                                                    </path>
+                                                                </svg>
+                                                            </div>
+                                                        </label>
+                                                        
+
+                                                        <span id="likes-count-<%= post._id %>"
+                                                            onclick="openReactionModal('post','<%= post._id %>', 'likes')">
+                                                            <%= post.likes.length %> Likes
+                                                        </span>
+
+                                                        <span class="like-icon"
+                                                            onclick="toggledisLike(event, '<%= post._id %>')">❤️</span>
+                                                        <span id="dislikes-count-<%= post._id %>"
+                                                            onclick="openReactionModal('post','<%= post._id %>', 'dislikes')">
+                                                            <%= post.dislikes.length %> Dislikes
+                                                        </span>
+
+
+                                                        <span class="comment-icon"
+                                                            onclick="openCommentSection('<%= post._id %>')">💬</span>
+                                                        <span>
+                                                            <%= post.comments.length %> Comments
+                                                        </span>
+                                                    </div>
+
+                                                    <!-- Comment Section -->
+                                                    <div id="commentSection-<%= post._id %>" class="commentSection"
+                                                        style="display: none;">
+                                                        <h4>Comments</h4>
+                                                        <ul id="comments-list-<%= post._id %>">
+                                                            <!-- Comments will be dynamically loaded -->
+                                                        </ul>
+                                                        <input type="text" id="new-comment-<%= post._id %>"
+                                                            placeholder="Add a comment..." />
+                                                        <button onclick="addComment('<%= post._id %>')">Post</button>
+                                                    </div>
                     </article>
 
                     <div id="delete-modal" class="modal" style="display: none;">
                         <div class="modal-content">
-                        <h3>Are you sure you want to delete this?</h3>
-                        <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
-                        <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
+                            <h3>Are you sure you want to delete this?</h3>
+                            <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
+                            <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
                         </div>
                     </div>
-                <% }) %>
+                    <% }) %>
             </section>
-            
+
         </div>
-    
+
         <div class="right-sidebar" id="right-sidebar">
             <aside>
                 <h2>Suggestions</h2>
@@ -918,7 +1124,7 @@ html {
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h3>Create a Post</h3>
                 <form action="/home/create-post" method="POST" enctype="multipart/form-data">
-    
+
                     <div class="form-group">
                         <div class="custom-file-upload">
                             <label for="mediaFile" class="upload-button">Choose File</label>
@@ -940,7 +1146,7 @@ html {
                                 <input type="radio" name="radio">
                                 <span class="name">Private</span>
                             </label>
-    
+
                             <label class="privacy">
                                 <input type="radio" name="radio">
                                 <span class="name">Friends</span>
@@ -953,8 +1159,8 @@ html {
             </div>
         </div>
     </div>
-    
-   
+
+
     <!-- Notification Modal -->
     <div id="notification-modal" class="modal">
         <div class="modal-content">
@@ -994,29 +1200,29 @@ html {
 
     <div id="reaction-modal" class="modal" style="display: none;">
         <div class="modal-content">
-          <span class="close" onclick="closeReactionModal()">&times;</span>
-          <div class="tabs">
-            <button id="likes-tab" onclick="showLikes()">Likes</button>
-            <button id="dislikes-tab" onclick="showDislikes()">Dislikes</button>
-          </div>
-          <div id="likes-section" class="tab-content">
-            <h3>Liked by</h3>
-            <ul id="likes-list">
-              <!-- Likes will be dynamically inserted here -->
-            </ul>
-          </div>
-          <div id="dislikes-section" class="tab-content" style="display: none;">
-            <h3>Disliked by</h3>
-            <ul id="dislikes-list">
-              <!-- Dislikes will be dynamically inserted here -->
-            </ul>
-          </div>
+            <span class="close" onclick="closeReactionModal()">&times;</span>
+            <div class="tabs">
+                <button id="likes-tab" onclick="showLikes()">Likes</button>
+                <button id="dislikes-tab" onclick="showDislikes()">Dislikes</button>
+            </div>
+            <div id="likes-section" class="tab-content">
+                <h3>Liked by</h3>
+                <ul id="likes-list">
+                    <!-- Likes will be dynamically inserted here -->
+                </ul>
+            </div>
+            <div id="dislikes-section" class="tab-content" style="display: none;">
+                <h3>Disliked by</h3>
+                <ul id="dislikes-list">
+                    <!-- Dislikes will be dynamically inserted here -->
+                </ul>
+            </div>
         </div>
-      </div>
+    </div>
 
-    
-      
-      
+
+
+
 
     <!-- JavaScript to handle modal behavior -->
     <script>
@@ -1070,8 +1276,8 @@ html {
             const storyModal = document.getElementById("storyModal");
             const uploadStoryModal = document.getElementById("uploadStoryModal");
             const notification = document.getElementById("notification-modal");
-            const search=document.getElementById("search-modal");
-            const friends=document.getElementById("friends-modal")
+            const search = document.getElementById("search-modal");
+            const friends = document.getElementById("friends-modal")
 
             if (event.target === postModal) {
                 closeModal();
@@ -1082,98 +1288,108 @@ html {
             }
             else if (event.target === notification) {
                 closeNotificationModal();
-        }
-        else if (event.target === search) {
+            }
+            else if (event.target === search) {
                 closeSearchModal();
-        }
-       
-    }
-  
+            }
 
-    function openSearchModal() {
-    document.getElementById("search-modal").style.display = "flex";
-    setActiveBackground('search'); // Highlight "Search Friends"
-}
-function closeSearchModal() {
-    document.getElementById("search-modal").style.display = "none";
-    resetStyles(); // Reset styles for all elements
-}
+        }
+
+
+        function openSearchModal() {
+            document.getElementById("search-modal").style.display = "flex";
+            setActiveBackground('search'); // Highlight "Search Friends"
+        }
+        function closeSearchModal() {
+            document.getElementById("search-modal").style.display = "none";
+            resetStyles(); // Reset styles for all elements
+        }
 
         function openNotificationModal() {
-    document.getElementById("notification-modal").style.display = "flex";
-    setActiveBackground('notify'); // Highlight "Notifications"
-}
+            document.getElementById("notification-modal").style.display = "flex";
+            setActiveBackground('notify'); // Highlight "Notifications"
+        }
 
-function closeNotificationModal() {
-    document.getElementById("notification-modal").style.display = "none";
-    resetStyles(); // Reset styles for all elements
-}
-
-
+        function closeNotificationModal() {
+            document.getElementById("notification-modal").style.display = "none";
+            resetStyles(); // Reset styles for all elements
+        }
 
 
-function setActiveBackground(targetId) {
-    const sidebarItems = document.querySelectorAll('.sidebar ul li');
 
-    // Remove the active class from all items
-    // sidebarItems.forEach(item => item.classList.remove('active'));
 
-    // Add the active class to the selected item's parent <li>
-    const targetLi = document.getElementById(targetId)?.parentElement;
-    if (targetLi) {
-        targetLi.classList.add('active');
-    }
-}
+        function setActiveBackground(targetId) {
+            const sidebarItems = document.querySelectorAll('.sidebar ul li');
 
-function resetStyles() {
-    // Simply remove the 'active' class from all items
-    const sidebarItems = document.querySelectorAll('.sidebar ul li');
-    sidebarItems.forEach(item => item.classList.remove('active'));
-}
+            // Remove the active class from all items
+            // sidebarItems.forEach(item => item.classList.remove('active'));
+
+            // Add the active class to the selected item's parent <li>
+            const targetLi = document.getElementById(targetId)?.parentElement;
+            if (targetLi) {
+                targetLi.classList.add('active');
+            }
+        }
+
+        function resetStyles() {
+            // Simply remove the 'active' class from all items
+            const sidebarItems = document.querySelectorAll('.sidebar ul li');
+            sidebarItems.forEach(item => item.classList.remove('active'));
+        }
 
 
 
 
         async function searchUsers() {
-            const query = document.getElementById('tab').value;
-            if (!query) return document.getElementById('searchResults').innerHTML = '';
+            const query = document.getElementById('tab').value.trim();
+            const resultsList = document.getElementById('searchResults');
+
+            // Clear results if query is empty
+            if (!query) {
+                resultsList.innerHTML = '<li>No results found</li>';
+                return;
+            }
 
             try {
                 const response = await fetch(`/home/search-users?query=${query}`);
                 const users = await response.json();
 
-                console.log("Users received:", users); // Log the received users on the client side
+                console.log("Users received:", users); // Log received users
 
-                const resultsList = document.getElementById('searchResults');
                 resultsList.innerHTML = ''; // Clear previous results
 
+                // Check if no users were found
+                if (!users || users.length === 0) {
+                    resultsList.innerHTML = '<li>No results found</li>';
+                    return;
+                }
+
+                // Populate search results
                 users.forEach(user => {
                     const li = document.createElement('li');
+                    li.className = 'search-item'; // Add class for styling
 
-                    const img = document.createElement('img');
-                    img.src=user.profileImage;
-                    
-                    // Display username or fallback to firstName
-                    const usernameSpan = document.createElement('span');
-                    const usernamelink = document.createElement('a');
-                    usernamelink.href=`/home/profile/user/${user._id}`;
-                    usernamelink.textContent=user.username;
-                    usernameSpan.appendChild(usernamelink);
-                    
-                    // Create add/remove button based on friend status
-                    const button = document.createElement('button');
-                    button.textContent = user.isFriend ? '-' : '+';
-                    button.onclick = () => user.isFriend ? removeFriend(user._id) : addFriend(user._id);
+                    // User card layout
+                    li.innerHTML = `
+                <div class="search-card">
+                    <img src="${user.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="search-image">
+                    <div class="search-info">
+                        <a href="/home/profile/user/${user._id}" class="search-username">${user.username || user.firstName}</a>
+                    </div>
+                    <button class="add-friend-btn" onclick="${user.isFriend ? `removeFriend('${user._id}')` : `addFriend('${user._id}')`}">
+                        ${user.isFriend ? '-' : '+'}
+                    </button>
+                </div>
+            `;
 
-                    li.appendChild(img);
-                    li.appendChild(usernameSpan);
-                    li.appendChild(button);
                     resultsList.appendChild(li);
                 });
             } catch (error) {
                 console.error("Error searching users:", error);
+                resultsList.innerHTML = '<li>Error loading results</li>';
             }
         }
+
 
         async function addFriend(userId) {
             try {
@@ -1205,7 +1421,7 @@ function resetStyles() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ friendId }),
                 });
-        
+
                 if (response.ok) {
                     alert('Friend removed successfully');
                     await loadFriends(); // Refresh friends list
@@ -1245,18 +1461,18 @@ function resetStyles() {
             }
         }
 
-        async function loadNotifications() { 
+        async function loadNotifications() {
             try {
                 const response = await fetch('/home/notifications'); // Fetch notifications from backend
                 const notifications = await response.json(); // Parse response data
-        
+
                 const notificationsList = document.getElementById('notificationsList');
                 notificationsList.innerHTML = ''; // Clear previous notifications
-        
+
                 notifications.forEach(notification => {
                     const li = document.createElement('li');
                     const senderName = notification.from?.username || notification.from?.firstName || "Unknown User";
-                    
+
                     // // Create a link for the sender's name
                     // const senderName = document.createElement('a');
                     // senderName.href = `/home/profile/user/${notification.from?._id}`; // Link to user's profile
@@ -1272,67 +1488,67 @@ function resetStyles() {
                             acceptButton.textContent = 'Accept';
                             acceptButton.className = 'accept-button';
                             acceptButton.onclick = () => handleAcceptRequest(notification._id);
-                            
+
                             const declineButton = document.createElement('button');
                             declineButton.textContent = 'Decline';
                             declineButton.className = 'decline-button';
                             declineButton.onclick = () => handleDeclineRequest(notification._id);
-                            
+
                             li.appendChild(acceptButton);
                             li.appendChild(declineButton);
                             break;
-        
+
                         case 'friend-accepted':
                             li.textContent = `Friend Request accepted by ${senderName}`;
                             break;
-        
+
                         case 'friend-declined':
                             li.textContent = `Friend Request declined by ${senderName}`;
                             break;
-        
+
                         case 'post-like':
                             li.textContent = `${senderName} liked your post`;
                             break;
-                            
+
                         case 'post-dislike':
-                        li.textContent = `${senderName} disliked your post`;
-                        break;
-        
+                            li.textContent = `${senderName} disliked your post`;
+                            break;
+
                         case 'story-like':
                             li.textContent = `${senderName} liked your story`;
                             break;
-        
+
                         case 'comment':
                             li.textContent = `${senderName} commented on your post`;
                             break;
                         case 'comment-reply':
-                        li.textContent = `${senderName} replied your comment`;
-                        break;
-        
+                            li.textContent = `${senderName} replied your comment`;
+                            break;
+
                         case 'comment-like':
                             li.textContent = `${senderName} liked your comment`;
                             break;
                         case 'comment-dislike':
-                        li.textContent = `${senderName} disliked your comment`;
-                        break;
+                            li.textContent = `${senderName} disliked your comment`;
+                            break;
                         case 'reply-like':
-                        li.textContent = `${senderName} disliked your comment`;
-                        break;
+                            li.textContent = `${senderName} disliked your comment`;
+                            break;
                         case 'reply-dislike':
-                        li.textContent = `${senderName} disliked your comment`;
-                        break;
-        
+                            li.textContent = `${senderName} disliked your comment`;
+                            break;
+
                         default:
                             li.textContent = `Unknown notification type from ${senderName}`;
                             break;
                     }
-        
+
                     // Add delete button for all notifications
                     const deleteButton = document.createElement('button');
                     deleteButton.textContent = 'Delete';
                     deleteButton.className = 'delete-button';
                     deleteButton.onclick = () => deleteNotification(notification._id);
-        
+
                     li.appendChild(deleteButton);
                     notificationsList.appendChild(li);
                 });
@@ -1340,14 +1556,14 @@ function resetStyles() {
                 console.error("Error loading notifications:", error);
             }
         }
-        
-        
+
+
         async function deleteNotification(notificationId) {
             try {
                 const response = await fetch(`/notifications/notifications/${notificationId}`, {
                     method: 'DELETE',
                 });
-        
+
                 if (response.ok) {
                     alert("Notification deleted successfully");
                     await loadNotifications(); // Reload notifications after deletion
@@ -1359,7 +1575,7 @@ function resetStyles() {
                 console.error("Error deleting notification:", error);
             }
         }
-        
+
         async function handleAcceptRequest(notificationId) {
             try {
                 const response = await fetch('/friend/accept-request', {
@@ -1367,7 +1583,7 @@ function resetStyles() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ notificationId }),
                 });
-        
+
                 if (response.ok) {
                     alert("Friend request accepted successfully");
                     await loadNotifications();
@@ -1377,7 +1593,7 @@ function resetStyles() {
                 console.error("Error accepting friend request:", error);
             }
         }
-        
+
         async function handleDeclineRequest(notificationId) {
             try {
                 const response = await fetch('/friend/decline-request', {
@@ -1385,7 +1601,7 @@ function resetStyles() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ notificationId }),
                 });
-        
+
                 if (response.ok) {
                     alert("Friend request declined successfully");
                     await loadNotifications();
@@ -1394,10 +1610,10 @@ function resetStyles() {
                 console.error("Error declining friend request:", error);
             }
         }
-        
+
         // Call the loadNotifications function on page load
         loadNotifications();
-        
+
 
         loadFriends();
 
@@ -1411,7 +1627,7 @@ function resetStyles() {
                 document.getElementById(`likes-count-${postId}`).textContent = `${data.likesCount} Likes`;
 
                 // If the likes modal is open, update it
-                 if (document.getElementById('likes-modal').style.display === 'block') {
+                if (document.getElementById('likes-modal').style.display === 'block') {
                     populateLikesModal(data.likedBy);
                 }
             } catch (error) {
@@ -1433,7 +1649,7 @@ function resetStyles() {
 
         function openCommentSection(postId) {
             const commentSection = document.getElementById(`commentSection-${postId}`);
-            
+
             if (commentSection.style.display === 'none' || commentSection.style.display === '') {
                 // Load comments only if the section is being opened
                 loadComments(postId);
@@ -1445,12 +1661,12 @@ function resetStyles() {
         }
 
         async function loadComments(postId) {
-  try {
-    const response = await fetch(`/posts/${postId}`);
-    const data = await response.json();
+            try {
+                const response = await fetch(`/posts/${postId}`);
+                const data = await response.json();
 
-    const commentsList = document.getElementById(`comments-list-${postId}`);
-    commentsList.innerHTML = data.comments.map((comment) => `
+                const commentsList = document.getElementById(`comments-list-${postId}`);
+                commentsList.innerHTML = data.comments.map((comment) => `
       <li>
         <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
              alt="${comment.user.username}'s profile image" 
@@ -1489,10 +1705,10 @@ function resetStyles() {
         </ul>
       </li>
     `).join('');
-  } catch (error) {
-    console.error('Error loading comments:', error);
-  }
-}
+            } catch (error) {
+                console.error('Error loading comments:', error);
+            }
+        }
 
 
 
@@ -1523,26 +1739,26 @@ function resetStyles() {
         }
 
         async function addReply(commentId) {
-  const replyInput = document.getElementById(`new-reply-${commentId}`);
-  const replyText = replyInput.value.trim();
+            const replyInput = document.getElementById(`new-reply-${commentId}`);
+            const replyText = replyInput.value.trim();
 
-  if (!replyText) return;
+            if (!replyText) return;
 
-  try {
-    const response = await fetch(`/comments/${commentId}/reply`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: replyText }),
-    });
+            try {
+                const response = await fetch(`/comments/${commentId}/reply`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: replyText }),
+                });
 
-    if (response.ok) {
-      const newReply = await response.json(); // Get the newly created reply data
-      replyInput.value = ''; // Clear the input field
+                if (response.ok) {
+                    const newReply = await response.json(); // Get the newly created reply data
+                    replyInput.value = ''; // Clear the input field
 
-      // Dynamically add the new reply to the DOM
-      const repliesList = document.getElementById(`replies-list-${commentId}`);
-      if (repliesList) {
-        const replyHTML = `
+                    // Dynamically add the new reply to the DOM
+                    const repliesList = document.getElementById(`replies-list-${commentId}`);
+                    if (repliesList) {
+                        const replyHTML = `
           <li id="reply-${newReply._id}">
             <img src="${newReply.user.profileImage || '/images/default-profile.png'}" 
                  alt="${newReply.user.username}'s profile image" 
@@ -1557,16 +1773,16 @@ function resetStyles() {
             </span>
           </li>
         `;
-        repliesList.insertAdjacentHTML('beforeend', replyHTML); // Add the new reply to the list
-        
-      }
-    } else {
-      console.error('Error adding reply:', await response.text());
-    }
-  } catch (error) {
-    console.error('Error adding reply:', error);
-  }
-}
+                        repliesList.insertAdjacentHTML('beforeend', replyHTML); // Add the new reply to the list
+
+                    }
+                } else {
+                    console.error('Error adding reply:', await response.text());
+                }
+            } catch (error) {
+                console.error('Error adding reply:', error);
+            }
+        }
 
 
 
@@ -1601,7 +1817,7 @@ function resetStyles() {
 
         async function toggleReplyLike(commentId, replyIndex) {
             try {
-        console.log("mohammad",replyIndex);
+                console.log("mohammad", replyIndex);
 
                 const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/like`, { method: 'POST' });
                 const data = await response.json();
@@ -1617,7 +1833,7 @@ function resetStyles() {
         }
         async function toggleReplydisLike(commentId, replyIndex) {
             try {
-        console.log("mohammad",replyIndex);
+                console.log("mohammad", replyIndex);
 
                 const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/dislike`, { method: 'POST' });
                 const data = await response.json();
@@ -1631,20 +1847,20 @@ function resetStyles() {
                 console.error("Error toggling reply Dislike:", error);
             }
         }
-        
+
         async function loadFriendSuggestions() {
             try {
                 const response = await fetch('/friend/suggestions');
                 const suggestions = await response.json();
-        
+
                 const suggestionsList = document.getElementById('suggestionsList');
                 suggestionsList.innerHTML = ''; // Clear previous suggestions
-        
+
                 if (!suggestions || suggestions.length === 0) {
                     suggestionsList.innerHTML = '<li>No suggestions available</li>';
                     return;
                 }
-        
+
                 suggestions.forEach(suggestion => {
                     const li = document.createElement('li');
                     li.className = 'suggestion-item'; // Add a class for styling
@@ -1659,136 +1875,136 @@ function resetStyles() {
                 console.error("Error loading friend suggestions:", error);
             }
         }
-        loadFriendSuggestions();        
+        loadFriendSuggestions();
 
         function showLikes() {
-  document.getElementById('likes-section').style.display = 'block';
-  document.getElementById('dislikes-section').style.display = 'none';
-  document.getElementById('likes-tab').classList.add('active');
-  document.getElementById('dislikes-tab').classList.remove('active');
-}
-
-function showDislikes() {
-  document.getElementById('likes-section').style.display = 'none';
-  document.getElementById('dislikes-section').style.display = 'block';
-  document.getElementById('dislikes-tab').classList.add('active');
-  document.getElementById('likes-tab').classList.remove('active');
-}
-
-async function openReactionModal(type, id, section) {
-  const modal = document.getElementById('reaction-modal');
-  modal.style.display = 'flex';
-
-  try {
-    const response = await fetch(`/posts/${type}/${id}/reactions`);
-    const data = await response.json();
-    if (response.ok) {
-      populateLikesList(data.likedBy);
-      populateDislikesList(data.dislikedBy);
-
-      // Show the appropriate section based on the clicked button
-      if (section === 'likes') {
-        showLikes();
-      } else if (section === 'dislikes') {
-        showDislikes();
-      }
-    } else {
-      console.error('Error fetching reactions:', data.message || 'Unknown error');
-    }
-  } catch (error) {
-    console.error('Error fetching reactions:', error);
-  }
-}
-
-
-function closeReactionModal() {
-  document.getElementById('reaction-modal').style.display = 'none';
-}
-
-function populateLikesList(likedBy) {
-  const likesList = document.getElementById('likes-list');
-  likesList.innerHTML = ''; // Clear previous list
-
-  likedBy.forEach(user => {
-    const listItem = document.createElement('li');
-    listItem.style.display = 'flex';
-    listItem.style.alignItems = 'center';
-    listItem.style.marginBottom = '10px';
-
-    const img = document.createElement('img');
-    img.src = user.profileImage;
-    img.alt = `${user.username}'s profile image`;
-    img.style.width = '40px';
-    img.style.height = '40px';
-    img.style.borderRadius = '50%';
-    img.style.marginRight = '10px';
-
-    const username = document.createElement('span');
-    username.textContent = user.username;
-
-    listItem.appendChild(img);
-    listItem.appendChild(username);
-    likesList.appendChild(listItem);
-  });
-}
-
-function populateDislikesList(dislikedBy) {
-  const dislikesList = document.getElementById('dislikes-list');
-  dislikesList.innerHTML = ''; // Clear previous list
-
-  dislikedBy.forEach(user => {
-    const listItem = document.createElement('li');
-    listItem.style.display = 'flex';
-    listItem.style.alignItems = 'center';
-    listItem.style.marginBottom = '10px';
-
-    const img = document.createElement('img');
-    img.src = user.profileImage;
-    img.alt = `${user.username}'s profile image`;
-    img.style.width = '40px';
-    img.style.height = '40px';
-    img.style.borderRadius = '50%';
-    img.style.marginRight = '10px';
-
-    const username = document.createElement('span');
-    username.textContent = user.username;
-
-    listItem.appendChild(img);
-    listItem.appendChild(username);
-    dislikesList.appendChild(listItem);
-  });
-}
-
-    let deleteType = '';
-    let deleteId = '';
-
-    function confirmDelete(type, id) {
-        deleteType = type;
-        deleteId = id;
-        document.getElementById('delete-modal').style.display = 'block';
-    }
-
-    function closeDeleteModal() {
-        document.getElementById('delete-modal').style.display = 'none';
-    }
-
-    async function performDelete(postid) {
-        try {
-            const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
-            if (response.ok) {
-                alert("Deleted successfully");
-                if(deleteType=='comment' || deleteType=='reply')
-                    loadComments(postid);
-                else
-                    location.reload();
-            } else {
-                console.error("Error deleting:", await response.json());
-            }
-        } catch (error) {
-            console.error("Error performing delete:", error);
+            document.getElementById('likes-section').style.display = 'block';
+            document.getElementById('dislikes-section').style.display = 'none';
+            document.getElementById('likes-tab').classList.add('active');
+            document.getElementById('dislikes-tab').classList.remove('active');
         }
-        closeDeleteModal();
-    }
+
+        function showDislikes() {
+            document.getElementById('likes-section').style.display = 'none';
+            document.getElementById('dislikes-section').style.display = 'block';
+            document.getElementById('dislikes-tab').classList.add('active');
+            document.getElementById('likes-tab').classList.remove('active');
+        }
+
+        async function openReactionModal(type, id, section) {
+            const modal = document.getElementById('reaction-modal');
+            modal.style.display = 'flex';
+
+            try {
+                const response = await fetch(`/posts/${type}/${id}/reactions`);
+                const data = await response.json();
+                if (response.ok) {
+                    populateLikesList(data.likedBy);
+                    populateDislikesList(data.dislikedBy);
+
+                    // Show the appropriate section based on the clicked button
+                    if (section === 'likes') {
+                        showLikes();
+                    } else if (section === 'dislikes') {
+                        showDislikes();
+                    }
+                } else {
+                    console.error('Error fetching reactions:', data.message || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Error fetching reactions:', error);
+            }
+        }
+
+
+        function closeReactionModal() {
+            document.getElementById('reaction-modal').style.display = 'none';
+        }
+
+        function populateLikesList(likedBy) {
+            const likesList = document.getElementById('likes-list');
+            likesList.innerHTML = ''; // Clear previous list
+
+            likedBy.forEach(user => {
+                const listItem = document.createElement('li');
+                listItem.style.display = 'flex';
+                listItem.style.alignItems = 'center';
+                listItem.style.marginBottom = '10px';
+
+                const img = document.createElement('img');
+                img.src = user.profileImage;
+                img.alt = `${user.username}'s profile image`;
+                img.style.width = '40px';
+                img.style.height = '40px';
+                img.style.borderRadius = '50%';
+                img.style.marginRight = '10px';
+
+                const username = document.createElement('span');
+                username.textContent = user.username;
+
+                listItem.appendChild(img);
+                listItem.appendChild(username);
+                likesList.appendChild(listItem);
+            });
+        }
+
+        function populateDislikesList(dislikedBy) {
+            const dislikesList = document.getElementById('dislikes-list');
+            dislikesList.innerHTML = ''; // Clear previous list
+
+            dislikedBy.forEach(user => {
+                const listItem = document.createElement('li');
+                listItem.style.display = 'flex';
+                listItem.style.alignItems = 'center';
+                listItem.style.marginBottom = '10px';
+
+                const img = document.createElement('img');
+                img.src = user.profileImage;
+                img.alt = `${user.username}'s profile image`;
+                img.style.width = '40px';
+                img.style.height = '40px';
+                img.style.borderRadius = '50%';
+                img.style.marginRight = '10px';
+
+                const username = document.createElement('span');
+                username.textContent = user.username;
+
+                listItem.appendChild(img);
+                listItem.appendChild(username);
+                dislikesList.appendChild(listItem);
+            });
+        }
+
+        let deleteType = '';
+        let deleteId = '';
+
+        function confirmDelete(type, id) {
+            deleteType = type;
+            deleteId = id;
+            document.getElementById('delete-modal').style.display = 'block';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').style.display = 'none';
+        }
+
+        async function performDelete(postid) {
+            try {
+                const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
+                if (response.ok) {
+                    alert("Deleted successfully");
+                    if (deleteType == 'comment' || deleteType == 'reply')
+                        loadComments(postid);
+                    else
+                        location.reload();
+                } else {
+                    console.error("Error deleting:", await response.json());
+                }
+            } catch (error) {
+                console.error("Error performing delete:", error);
+            }
+            closeDeleteModal();
+        }
     </script>
 </body>
 
