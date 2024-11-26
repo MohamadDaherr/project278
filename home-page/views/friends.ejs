@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+
 <html lang="en">
 
 
@@ -88,10 +89,12 @@ h1::after {
 
     transition: width 0.3s ease;
 
+
 }
 
 
 .group {
+
 
     width: 90%; /* Make sure the container is wide enough */
 
@@ -142,10 +145,13 @@ h1::after {
 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 
+
+    
 }
 
 
 .input::placeholder {
+
 
     color: #9e9ea7; /* Placeholder text color */
 
@@ -183,10 +189,12 @@ h1::after {
 
     height: 1.5rem;
 
+
 }
 
 
         /* Buttons Container */
+
 
         #buttons-container {
 
@@ -313,10 +321,12 @@ button.active::after {
 
     background-color: #e0ecff; /* Match the background color of the page */
 
+
 }
 
 
 /* Customize the scrollbar */
+
 
 #friendsList::-webkit-scrollbar {
 
@@ -369,10 +379,12 @@ button.active::after {
 
     transition: transform 0.2s;
 
+
 }
 
 
 /* Add a container for the image and name */
+
 
 .friend-list .info {
 
@@ -622,9 +634,13 @@ button.active::after {
 
         </div>
 
+
     </div>
+    
+
 
     
+
 
     <ul id="friendsList" class="friend-list"></ul>
 
@@ -632,6 +648,22 @@ button.active::after {
     <script>
 
         let currentList = 'friends'; // Default to friends list
+// Close modal when clicking outside of the modal content
+document.getElementById('confirmationModal').addEventListener('click', (e) => {
+    const modalContent = document.querySelector('.modal-content');
+    if (!modalContent.contains(e.target)) {
+        closeModal(); // Call the function to close the modal
+    }
+});
+
+        function setActive(activeButtonId) {
+            // Remove 'active' class from all buttons
+            const buttons = document.querySelectorAll('#buttons-container button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            // Add 'active' class to the clicked button
+            document.getElementById(activeButtonId).classList.add('active');
+        }
 
 // Close modal when clicking outside of the modal content
 
@@ -675,6 +707,7 @@ document.getElementById('confirmationModal').addEventListener('click', (e) => {
 
         async function loadTopContributors() {
 
+
     try {
 
         const response = await fetch('/friend/top-contributors');
@@ -684,6 +717,7 @@ document.getElementById('confirmationModal').addEventListener('click', (e) => {
             throw new Error(`HTTP error! Status: ${response.status}`);
 
         }
+
 
 
         const contributors = await response.json();
@@ -800,8 +834,8 @@ document.getElementById('confirmationModal').addEventListener('click', (e) => {
             }
 
         }
-
         function displayFriends(friends) {
+
 
     const friendsList = document.getElementById('friendsList');
 
@@ -845,12 +879,14 @@ function redirectToProfile(friendId) {
 
     window.location.href = `http://localhost:5000/home/profile/user/${friendId}`;
 
+
 }
 
 
 
 
         async function searchFriends() {
+
 
     const query = document.getElementById('tab').value.toLowerCase(); // Correct input ID
 
@@ -878,6 +914,7 @@ function redirectToProfile(friendId) {
         console.error("Error searching friends:", error);
 
     }
+
 
 }
 
@@ -916,6 +953,7 @@ function redirectToProfile(friendId) {
 
 
         window.onload = loadFriends; // Load friends list by default
+
 
         document.querySelectorAll('button').forEach(button => {
 
@@ -971,10 +1009,12 @@ function redirectToProfile(friendId) {
 
     });
 
+
 });
 
 
 let friendToRemove = null; // Store the friend to remove temporarily
+
 
 function openModal(friendId) {
 
@@ -1053,6 +1093,7 @@ document.getElementById('confirmRemove').addEventListener('click', async () => {
 document.getElementById('cancelRemove').addEventListener('click', () => {
 
     closeModal(); // Close modal without removing
+
 
 });
 
