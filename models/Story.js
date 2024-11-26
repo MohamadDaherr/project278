@@ -10,6 +10,12 @@ const storySchema = new mongoose.Schema({
             date: { type: Date, default: Date.now } // Date of the like
         }
     ],
+    dislikes: [
+        {
+            user: { type: Schema.Types.ObjectId, ref: 'User' }, // User who liked the story
+            date: { type: Date, default: Date.now } // Date of the like
+        }
+    ],
     visibility: { type: String, enum: ['public', 'friends', 'private'], default: 'public' },
     createdAt: { type: Date, default: Date.now },
     expiresAt: { type: Date, default: () => Date.now() + 24*60*60*1000 } // 24 hours from creation
