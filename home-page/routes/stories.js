@@ -114,11 +114,104 @@ router.post('/upload-story', isAuthenticated, upload.single('storyFile'), async 
 
 router.getStories = async (req, res) => {
     try {
-        const stories = await Story.find({ expiresAt: { $gte: new Date() } }).populate('user');
-        res.json(stories);
+        const friendIds = req.user.friends.map(friend => friend._id).concat(req.user.userId);
+        const stories = await Story.find({
+            user: { $in: friendIds },
+            expiresAt: { $gte: new Date() }
+        }).populate('user').sort({ createdAt: 1 });
+
+        const groupedStories = stories.reduce((acc, story) => {
+            acc[story.user._id] = acc[story.user._id] || [];
+            acc[story.user._id].push(story);
+            return acc;
+        }, {});
+
+        res.json(groupedStories);
     } catch (error) {
         console.error("Error fetching stories:", error);
         res.status(500).send("Server error");
     }
 };
+
+
+router.get('/:userId', isAuthenticated, async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const stories = await Story.find({
+            user: userId,
+            expiresAt: { $gte: new Date() }
+        }).populate('user', 'username firstName').sort({ createdAt: 1 });
+        res.json(stories);
+    } catch (error) {
+        console.error("Error fetching user stories:", error);
+        res.status(500).send("Server error");
+    }
+});
+
+
+// Like a story
+router.post('/:storyId/like', isAuthenticated, async (req, res) => {
+    try {
+        const { storyId } = req.params;
+        const userId = req.user.userId;
+
+        // Find the story
+        const story = await Story.findById(storyId);
+        if (!story) return res.status(404).json({ message: 'Story not found' });
+
+        // Check if the user has already liked the story
+        const alreadyLiked = story.likes.some(like => like.user.toString() === userId);
+        if (!alreadyLiked) {
+            // Add like
+            story.likes.push({ user: userId });
+            // Remove dislike if exists
+            story.dislikes = story.dislikes.filter(dislike => dislike.user.toString() !== userId);
+        }
+
+        await story.save();
+
+        res.json({
+            likesCount: story.likes.length,
+            dislikesCount: story.dislikes.length,
+            likes: story.likes,
+            dislikes: story.dislikes
+        });
+    } catch (error) {
+        console.error("Error liking story:", error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Dislike a story
+router.post('/:storyId/dislike', isAuthenticated, async (req, res) => {
+    try {
+        const { storyId } = req.params;
+        const userId = req.user.userId;
+
+        // Find the story
+        const story = await Story.findById(storyId);
+        if (!story) return res.status(404).json({ message: 'Story not found' });
+
+        // Check if the user has already disliked the story
+        const alreadyDisliked = story.dislikes.some(dislike => dislike.user.toString() === userId);
+        if (!alreadyDisliked) {
+            // Add dislike
+            story.dislikes.push({ user: userId });
+            // Remove like if exists
+            story.likes = story.likes.filter(like => like.user.toString() !== userId);
+        }
+
+        await story.save();
+
+        res.json({
+            likesCount: story.likes.length,
+            dislikesCount: story.dislikes.length,
+            likes: story.likes,
+            dislikes: story.dislikes
+        });
+    } catch (error) {
+        console.error("Error disliking story:", error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 module.exports = router;
