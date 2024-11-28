@@ -836,14 +836,13 @@
             transform: translateY(-2px);
         }
 
-        /* Profile Image */
         .search-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 10px;
-        }
+    width: 40px !important; /* Adjust the size as needed */
+    height: 40px !important;
+    border-radius: 50% !important; /* Makes it perfectly round */
+    object-fit: cover !important; /* Ensures the image fits within the circle without distortion */
+}
+
 
         /* Search Info */
         .search-info {
@@ -852,6 +851,7 @@
 
 
         .search-username {
+            margin-left: 15px;
             font-weight: bold;
             color: black;
             text-decoration: none;

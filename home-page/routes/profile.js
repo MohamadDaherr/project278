@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 // Profile route to render profile page with user data
 router.get('/', isAuthenticated, async (req, res) => {
   try {
-    const userId = req.user.userId; // Assuming userId is available in req.user from auth middleware
+    const userId = req.user.userId; // Assuming `userId` is available in `req.user` from the `authMiddleware`
 
     // Fetch user info and posts
     const user = await User.findById(userId).lean();
@@ -35,7 +35,7 @@ router.get('/', isAuthenticated, async (req, res) => {
     posts = posts.map(post => ({
       ...post,
       isOwner: post.user._id.toString() === userId, // Compare IDs and set boolean
-  }));
+    }));
 
     const formattedDateOfBirth = user.dateOfBirth
       ? new Date(user.dateOfBirth).toLocaleDateString('en-US', {
@@ -47,19 +47,22 @@ router.get('/', isAuthenticated, async (req, res) => {
 
     // Add formatted dateOfBirth to the user object
     user.formattedDateOfBirth = formattedDateOfBirth;
-    // Send data to be rendered on profile page
+
+    // Add `currentUser` to `res.render`
     res.render('profile', {
       user: {
         ...user,
         postsCount,
       },
       posts,
+      currentUser: req.user, // Pass the logged-in user's info as `currentUser`
     });
   } catch (error) {
     console.error("Error loading profile:", error);
     res.status(500).send("Server error");
   }
 });
+
 
 // Route to edit bio
 router.post('/edit', isAuthenticated, async (req, res) => {
@@ -125,11 +128,13 @@ router.get('/posts/:postId', async (req, res) => {
               path: 'likes.user',
               select: 'username profileImage' // Select relevant fields for likes
           })
-          .populate('user', 'username profileImage'); // Populate the author of the post
+          .populate('user', 'username profileImage','content'); // Populate the author of the post
+          
 
       if (!post) {
           return res.status(404).json({ message: 'Post not found' });
       }
+      console.log("Fetched Post:", post);
 
       res.json(post);
   } catch (err) {
@@ -163,6 +168,7 @@ router.get('/user/:userId', isAuthenticated, async (req, res) => {
       const isFriend = viewedUser.friends.includes(userId);
       const isOwner = userId === viewedUserId;
       const isPending = viewedUser.friendRequests.includes(req.user.userId);
+
       // Filter posts based on privacy
       const posts = await Post.find({
           user: viewedUserId,

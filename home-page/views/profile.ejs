@@ -1,17 +1,22 @@
 <!-- profile.ejs -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - <%= user.username %></title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Profile - <%= user.username %>
+    </title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: Arial, sans-serif;
             background-color: #fafafa;
@@ -19,118 +24,317 @@
             justify-content: center;
             padding-top: 20px;
         }
-        
+
         .profile-container {
             width: 100%;
             max-width: 935px;
             background-color: #fff;
             padding: 20px;
+            position: relative;
+            /* Set the container as the relative parent */
         }
-        
+
         .profile-header {
             display: flex;
             align-items: flex-start;
-            padding-bottom: 20px;
+            padding-bottom: 30px;
+            /* Increase spacing below header */
             border-bottom: 1px solid #dbdbdb;
             margin-bottom: 20px;
+            gap: 20px;
+            /* Space between the profile photo and info */
         }
-        
+
         .profile-photo {
             flex-shrink: 0;
-            margin-right: 30px;
         }
-        
+
         .profile-photo img {
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            border: 1px solid #dbdbdb;
+            /* Make it a circle */
+            object-fit: cover;
+            /* Ensure the image fits inside the circle without distortion */
+            display: block;
+            /* Ensure no inline spacing affects the layout */
         }
-        
+
         .profile-info {
             flex-grow: 1;
+            padding-left: 15px;
+            /* Reduce padding between profile photo and info */
         }
-        
+
         .profile-info h2 {
-            font-size: 28px;
-            font-weight: 300;
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
             margin-bottom: 10px;
+            /* Reduce spacing below the name */
         }
-        
-        .edit-profile-btn {
-            padding: 5px 16px;
-            font-size: 14px;
-            color: #0095f6;
-            border: 1px solid #dbdbdb;
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: transparent;
-            margin-bottom: 10px;
-        }
-        
-        .edit-profile-btn:hover {
-            background-color: #fafafa;
-        }
-        
+
         .profile-stats {
             display: flex;
-            gap: 20px;
+            gap: 15px;
+            /* Reduce gap between stats */
             font-size: 16px;
             color: #262626;
-            margin-top: 10px;
+            margin-top: 5px;
+            /* Bring stats closer to the name */
+            margin-bottom: 5px;
+            /* Reduce spacing below stats */
         }
-        
-        .profile-stats li {
-            list-style: none;
-            font-weight: 600;
+
+        .profile-stats {
+            display: flex;
+            gap: 10px;
+            /* Reduce gap between stats */
+            font-size: 16px;
+            color: #262626;
+            margin-top: 5px;
+            /* Bring stats closer to the name */
+            margin-bottom: 5px;
+            /* Reduce spacing below stats */
         }
-        
-        .profile-bio {
-            margin-top: 10px;
+
+        .profile-info h4 {
+            margin-top: 5px;
+            /* Bring username closer to stats */
+            margin-bottom: 5px;
+            /* Reduce spacing below username */
+            font-size: 16px;
+            font-weight: 400;
+            color: #555;
+        }
+
+
+        .edit-profile-btn {
+            padding: 8px 20px;
+            /* Add some padding for better spacing */
             font-size: 14px;
+            /* Standard font size */
+            font-weight: 600;
+            /* Bold font for emphasis */
+            color: #fff;
+            /* White text color */
+            background-color: #0095f6;
+            /* Primary blue color */
+            border: 1px solid transparent;
+            /* Remove border effect */
+            border-radius: 8px;
+            /* Smooth rounded edges */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: all 0.3s ease-in-out;
+            /* Smooth hover effect */
+            display: inline-block;
+            /* Ensures it’s inline with spacing */
+            text-align: center;
+            /* Center align text */
         }
-        
-        .profile-bio p {
-            margin: 4px 0;
+
+        .edit-profile-btn:hover {
+            background-color: #007bb5;
+            /* Slightly darker blue on hover */
+            color: #fff;
+            /* Keep white text */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow on hover */
         }
-        
+
+        .edit-profile-btn:active {
+            transform: translateY(0);
+            /* Button presses back on active click */
+            box-shadow: none;
+            /* Remove shadow when pressed */
+        }
+
+        .profile-bio {
+            width: 100%;
+            /* Ensure it spans the container */
+            max-width: 100%;
+            /* Prevent overflow */
+            word-break: break-word;
+            /* Break long words */
+            overflow-wrap: break-word;
+            /* Allow wrapping at any character */
+            white-space: normal;
+            /* Enable natural wrapping */
+            line-height: 1.5;
+            /* Improve readability */
+            font-size: 14px;
+            /* Ensure consistent font size */
+            color: #333;
+            /* Standard color for readability */
+        }
+
+        .bio {
+            margin-top: 10px;
+            word-break: break-word;
+            /* Allow wrapping of long words */
+            overflow-wrap: break-word;
+            /* Ensure wrapping for modern browsers */
+            white-space: normal;
+            /* Ensure multi-line support */
+            line-height: 1.5;
+            /* Improve readability */
+            max-width: 100%;
+            /* Restrict to container width */
+        }
+
+
+
+
+        button {
+            margin-top: 8px;
+            /* Reduce spacing above buttons */
+            padding: 8px 16px;
+            /* Keep button padding consistent */
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        ul {
+            margin-top: 15px;
+            /* Bring account actions closer */
+            padding-left: 0;
+            list-style: none;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+            /* Reduce spacing between each button */
+        }
+
         .profile-gallery {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(3, 30%);
+            /* Adjust column size to 30% to keep images closer */
+            justify-content: center;
+            /* Center the grid items */
+            gap: -5px;
+            /* Negative gap to reduce spacing further and bring items closer */
+            padding: 0;
+            margin: 0;
         }
-        
+
         .gallery-item img {
-            width: 100%;
-            height: 100%;
-            border-radius: 4px;
+            width: 95%;
+            /* Maintain specified size */
+            height: 95%;
+            /* Maintain specified size */
+            border-radius: 3px;
+            /* No border radius */
             object-fit: cover;
+            /* Keep scaling appropriate */
+            margin: 0;
+            /* Remove any additional spacing */
             aspect-ratio: 1/1;
+            /* Maintain square shape */
         }
-        
+
         .modal {
+            width: 600px;
+            /* Fixed width */
+            height: 500px;
+            /* Fixed height */
             display: none;
+            /* Initially hidden */
+            position: fixed;
+            top: 50%;
+            /* Center vertically */
+            left: 50%;
+            /* Center horizontally */
+            transform: translate(-50%, -50%);
+            /* Center the modal */
+            z-index: 1000;
+            display: flex;
+            /* Flex container */
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 90vw; /* Adjust modal width to be responsive */
+    height: 90vh; /* Adjust modal height to be responsive */
+    max-width: 1000px; /* Limit maximum width */
+    max-height: 800px; /* Limit maximum height */
+    background: #fff; /* Background color */
+    overflow: hidden; /* Ensure nothing overflows the modal */
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Add subtle shadow */
+    position: relative; /* Allow internal positioning */
+}
+
+        .modal-content img {
+            width: 100%;
+            /* Make the image fill the modal's width */
+            height: calc(100% - 50px);
+            /* Allow space for caption and other elements */
+            object-fit: contain;
+            /* Adjust image to fit the modal without cropping */
+            margin-bottom: 10px;
+            /* Space below the image */
+        }
+
+        .post-caption {
+    font-size: 16px; /* Adjust font size as needed */
+    color: #555; /* Text color */
+    width: 90%; /* Ensure it doesn't exceed the container width */
+    word-wrap: break-word; /* Break long words */
+    word-break: break-word; /* Ensure compatibility across browsers */
+    overflow-wrap: anywhere; /* Allow breaking at any point for long words */
+    white-space: normal; /* Allow text wrapping */
+    line-height: 1.5; /* Improve readability */
+    margin: 10px auto; /* Center and add spacing */
+    text-align: left; /* Align text to the left */
+}
+
+
+/* Make post-actions fixed at the bottom of the modal */
+.post-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0; /* Vertical padding */
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    z-index: 10; /* Ensure it stays above other content */
+}
+
+
+#postDetails {
+    overflow-y: scroll; /* Enable scrolling */
+    flex-grow: 1; /* Allow this section to grow */
+    margin-bottom: 10px; /* Add spacing before post actions */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+}
+
+#postDetails::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+}
+
+
+        .post-actions span {
+            font-size: 14px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            overflow: auto;
+            cursor: pointer;
         }
-        
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 500px;
-            width: 100%;
-            position: relative;
-        }
-        
+
         .close {
             position: absolute;
             top: 10px;
@@ -139,7 +343,8 @@
             cursor: pointer;
             color: #333;
         }
-        
+
+
         /* Tabs Styling */
         .tabs {
             display: flex;
@@ -148,7 +353,7 @@
             border-bottom: 1px solid #dbdbdb;
             padding-bottom: 5px;
         }
-        
+
         .tab-button {
             background-color: transparent;
             border: none;
@@ -157,27 +362,27 @@
             padding: 8px;
             color: #262626;
         }
-        
+
         .tab-button.active {
             border-bottom: 2px solid #0095f6;
             color: #0095f6;
         }
-        
+
         .tab-content {
             display: none;
         }
-        
+
         .tab-content.active {
             display: block;
         }
-        
+
         form label {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 14px;
         }
-        
+
         form input[type="file"],
         form textarea,
         form select {
@@ -188,60 +393,1235 @@
             border-radius: 4px;
             font-size: 14px;
         }
+
+
+        /* Modal Overlay */
+        #delete-modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            /* Set smaller width */
+            height: 200px;
+            /* Set smaller height */
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Semi-transparent black background */
+            z-index: 1100;
+            /* Ensure it is higher than other modals */
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            /* Rounded corners for better design */
+        }
+
+        /* Modal Content */
+        #delete-modal .modal-content {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            /* Smaller padding for compact size */
+            width: 100%;
+            /* Fit within the modal size */
+            max-width: 100%;
+            /* Ensure the content doesn’t exceed the modal */
+            max-height: 100%;
+            /* Restrict height */
+            text-align: center;
+            /* Center text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            /* Smaller font size */
+        }
+
+        /* Header */
+        #delete-modal h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            /* Smaller spacing */
+        }
+
+        /* Buttons Container */
+        #delete-modal .modal-content button {
+            padding: 13px 15px;
+            /* Smaller buttons */
+            margin: 8px;
+            /* Reduced margin for compact layout */
+            border-radius: 4px;
+            /* Rounded corners */
+            font-size: 13px;
+            /* Adjust font size */
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Confirm Delete Button */
+        #confirm-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        #confirm-delete:hover {
+            background-color: #c0392b;
+        }
+
+        /* Cancel Button */
+        #cancel-delete {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        #cancel-delete:hover {
+            background-color: #7f8c8d;
+        }
+
+        .home-btn {
+            position: fixed;
+            /* Fixed at the top-left corner */
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: transform 0.3s;
+            /* Smooth hover effect */
+            height: 50px;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.1);
+            /* Zoom effect on hover */
+        }
+
+        .home-btn i {
+            font-size: 24px;
+            /* Icon size */
+            color: black;
+            /* Grey icon color */
+            transition: color 0.3s;
+            /* Smooth hover color change */
+        }
+
+        .home-btn:hover i {
+            color: black;
+            /* Change to black on hover */
+        }
+
+
+
+        .menu-btn {
+            position: absolute;
+            /* Position relative to the .profile-container */
+            top: 20px;
+            /* Top-right corner of the container */
+            right: 20px;
+            font-size: 24px;
+            /* Icon size */
+            color: black;
+            /* Grey color for the icon */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: color 0.3s, transform 0.3s;
+            /* Smooth hover effect */
+        }
+
+        .menu-btn:hover {
+            color: black;
+            /* Change icon to black on hover */
+            transform: scale(1.1);
+            /* Slight zoom effect on hover */
+        }
+
+        .dropdown-menu {
+            display: none;
+            /* Initially hidden */
+            position: absolute;
+            /* Positioned relative to the .profile-container */
+            top: 60px;
+            /* Positioned below the menu button */
+            right: 20px;
+            background-color: #fff;
+            /* White background */
+            border: 1px solid #ccc;
+            /* Light border for the dropdown */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for effect */
+            z-index: 1000;
+            /* Make sure it appears above other content */
+            padding: 10px;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            /* Each option is a block for easier clicking */
+            text-decoration: none;
+            /* Remove underline */
+            color: grey;
+            /* Text color */
+            font-size: 16px;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+            /* Smooth hover effects */
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+            /* Light grey background on hover */
+            color: black;
+            /* Darker text color on hover */
+        }
+
+        .username-link {
+            cursor: pointer;
+            /* Add pointer cursor */
+            color: #555;
+            /* Default color */
+            transition: color 0.3s ease;
+        }
+
+        .username-link:hover {
+            color: #0095f6;
+            /* Highlight color on hover */
+        }
+
+        .modal-content .fa-trash {
+            transition: color 0.3s ease;
+        }
+
+        .modal-content .fa-trash:hover {
+            color: red;
+            /* Change color on hover */
+        }
+
+        /* Top-left controls styling */
+        .top-left-controls {
+            /* position: absolute; */
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
+
+
+        .top-left-controls .fa-trash {
+            font-size: 20px;
+            /* Adjust the size */
+            color: #333;
+            /* Adjust the color */
+            cursor: pointer;
+            /* Add pointer for interactivity */
+            transition: color 0.3s ease;
+        }
+
+        .top-left-controls .fa-trash:hover {
+            color: red;
+            /* Change color on hover */
+        }
+
+        #postModal {
+            position: fixed;
+            top: 50%;
+            left: 30%;
+            /* Adjust to position on the left */
+            max-height: 500px;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            width: 45%;
+            /* Adjust width */
+        }
+
+
+
+        /* Comments Modal */
+        #commentsModal {
+            position: fixed;
+            top: 50%;
+            left: 68.34%;
+            /* Adjust to move modal further right */
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            width: 90vw; /* Adjust modal width to be responsive */
+    height: 90vh; /* Adjust modal height to be responsive */
+    max-width: 400px; /* Limit maximum width */
+    max-height: 800px; /* Limit maximum height */
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
         
-        form button[type="submit"] {
+
+        /* Comments Header */
+        #commentsModal .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Comments List */
+        #commentsModal .comments-list {
+            list-style: none;
+            padding: 15px;
+            margin: 0;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        #commentsModal .comments-list {
+    overflow-y: scroll; /* Enable scrolling */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+#commentsModal .comments-list::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Edge */
+}
+
+
+        /* Add Comment Section */
+        #commentsModal .comment-footer {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background-color: #fff;
+        }
+
+        #commentsModal .comment-footer input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #commentsModal .comment-footer button {
             background-color: #0095f6;
             color: white;
             padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
-        
-        form button[type="submit"]:hover {
+
+        #commentsModal .comment-footer button:hover {
             background-color: #007bb5;
         }
 
-        #delete-modal {
-    z-index: 1100; /* Ensure it is higher than other modals */
+
+        .comment-container {
+            cursor: pointer;
+            /* Indicate interactivity */
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comment-container:hover {
+            background-color: #f9f9f9;
+            /* Highlight on hover */
+        }
+
+        #comment-trash {
+            cursor: pointer;
+            color: #000;
+            /* Default color */
+            transition: color 0.3s ease;
+            float: right;
+        }
+
+
+
+        #comment-reply {
+            cursor: pointer;
+            color: #000;
+            /* Default color */
+            transition: color 0.3s ease;
+            margin-left: 50px;
+            /* Adjust this value to control spacing from the trash icon */
+        }
+
+        /* Generalized selector for comment trash icons */
+        [id^="comment-trash"]:hover {
+            color: red;
+            /* Highlight on hover */
+            transition: color 0.3s ease;
+        }
+
+        .replies-container .fa-trash {
+            cursor: pointer;
+            color: #000;
+            /* Default black color */
+            transition: color 0.3s ease;
+        }
+
+        .replies-container .fa-trash:hover {
+            color: red;
+            /* Change to red on hover */
+        }
+
+
+        #comment-reply:hover {
+            color: blue;
+            /* Highlight on hover */
+        }
+
+        [id^="comment-reply-"]:hover {
+            color: blue;
+            /* Highlight on hover */
+        }
+
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.5);
+                /* Scale up the icon briefly */
+            }
+        }
+
+        .comment-container.highlight {
+            background-color: #f0f8ff;
+            /* Light blue */
+            transition: background-color 0.3s ease;
+        }
+
+        /* Reply Box Design */
+        .reply-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            /* Light gray background */
+            border-radius: 8px;
+            /* Smooth corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow */
+        }
+
+        /* Reply Input Field */
+        .reply-box input[type="text"] {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        /* Focus Effect for Input Field */
+        .reply-box input[type="text"]:focus {
+            border-color: #0095f6;
+            /* Blue border on focus */
+        }
+
+        /* Reply Post Button */
+        .reply-box button {
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .reply-box button:hover {
+            background-color: #007bb5;
+            /* Slightly darker blue on hover */
+        }
+
+        /* Replies container styling */
+        /* General Container for Replies */
+        /* Ensure long text wraps properly inside reply containers */
+        .replies-container li .reply-content {
+            flex: 1;
+            /* Allow the content to expand and fill available space */
+            word-break: break-word;
+            /* Ensure long words break onto the next line */
+            overflow-wrap: anywhere;
+            /* Allow text to break at any point if needed */
+            white-space: normal;
+            /* Ensure text wraps naturally */
+            line-height: 1.5;
+            /* Improve readability */
+        }
+
+        /* Apply the same fix for comment content */
+        .comment-content {
+            word-break: break-word;
+            /* Break long words */
+            overflow-wrap: anywhere;
+            /* Allow breaking at any character */
+            white-space: normal;
+            /* Wrap text naturally */
+            line-height: 1.5;
+            /* Enhance readability */
+        }
+
+        .replies-container {
+            margin-top: 10px;
+            border-left: 2px solid #ddd;
+            /* Keeps the line visible */
+            padding-left: 15px;
+            /* Slightly increase padding to adjust spacing */
+            margin-left: 40px;
+            /* Increase margin-left to align with the red line */
+        }
+
+        .replies-container li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            /* Light background for replies */
+            border-radius: 8px;
+            /* Rounded corners */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            /* Ensure text wraps properly */
+            white-space: normal;
+        }
+
+
+        /* Reply Items */
+        .replies-container ul {
+            list-style: none;
+            /* Remove bullet points */
+            padding: 0;
+            /* Remove default padding */
+            margin: 0;
+            /* Remove default margin */
+        }
+
+
+        /* Reply User Profile Image */
+        .replies-container li img {
+            width: 35px;
+            /* Adjust profile image size */
+            height: 35px;
+            /* Ensure consistent height */
+            border-radius: 50%;
+            /* Circular image */
+            object-fit: cover;
+            /* Ensure the image fits properly */
+            flex-shrink: 0;
+            /* Prevent image from shrinking */
+        }
+
+        /* Username Styling */
+        .replies-container li .reply-content strong {
+            font-size: 14px;
+            /* Username font size */
+            font-weight: bold;
+            /* Highlight the username */
+            color: #333;
+            /* Dark text for username */
+        }
+
+        /* Reply Text Styling */
+        .replies-container li .reply-content span {
+            display: block;
+            /* Ensure content starts on a new line */
+            font-size: 14px;
+            /* Reply content font size */
+            color: #555;
+            /* Slightly lighter text color */
+            margin-top: 5px;
+            /* Space between username and reply text */
+        }
+
+        /* Prevent Icons from Overflowing */
+        .replies-container li .reply-actions i {
+            cursor: pointer;
+            /* Pointer cursor for interactive icons */
+            color: #555;
+            /* Default icon color */
+            transition: color 0.3s ease;
+            /* Smooth color transition on hover */
+        }
+
+        /* Additional Styling for Like/Dislike Actions */
+        .reply-actions i:hover {
+            color: #0095f6;
+            /* Highlight on hover */
+        }
+
+
+        /* Additional Styling for Long Words */
+        .reply-content,
+        .comment-content {
+            word-wrap: break-word;
+            /* Break long words into the next line */
+            overflow-wrap: break-word;
+            /* Ensure compatibility with modern browsers */
+            white-space: normal;
+            /* Allow proper text wrapping */
+        }
+
+
+        /* Reply actions count styling */
+        .action {
+            display: inline-flex;
+            /* Align icon and text horizontally */
+            align-items: center;
+            /* Center them vertically */
+            margin-right: 10px;
+            /* Add spacing between actions */
+        }
+
+        .action span {
+            font-size: 14px;
+            /* Match font size with icon */
+            color: #555;
+            /* Default color for numbers */
+        }
+
+        .post-actions .fa {
+            font-size: 24px;
+            /* Increase the size to make icons larger */
+            color: #333;
+            /* Default color */
+            transition: color 0.3s ease;
+            /* Smooth transition for hover */
+        }
+
+
+
+
+        /* Ensure like-active and dislike-active colors are applied correctly */
+        .like-active {
+            animation: bounce 0.3s ease-in-out;
+            color: blue !important;
+            /* Use !important to override any conflicting styles */
+        }
+
+        .dislike-active {
+            animation: bounce 0.3s ease-in-out;
+            color: red !important;
+            /* Use !important to override any conflicting styles */
+        }
+
+        /* Default state for icons to ensure there's no color conflict */
+        .fa-thumbs-up,
+        .fa-thumbs-down {
+            color: #333;
+            /* Default color */
+            transition: color 0.3s ease;
+            /* Smooth transition for color change */
+        }
+
+        /* Wrapper for each action (like, dislike, delete) */
+        .action {
+            display: inline-flex;
+            /* Aligns icon and text horizontally */
+            align-items: center;
+            /* Centers them vertically */
+            margin-right: 10px;
+            /* Add spacing between actions */
+        }
+
+        /* Adjust icon spacing */
+        .action i {
+            margin-right: 2px;
+            /* Space between the icon and the number */
+            font-size: 18px;
+            /* Adjust size of the icons */
+            transition: color 0.3s ease;
+            /* Smooth color change on hover */
+        }
+
+
+
+        /* Adjust count styling */
+        .action span {
+            font-size: 14px;
+            /* Match font size with icon */
+            color: #555;
+            /* Default color for numbers */
+        }
+
+        .comment-content {
+            flex: 1;
+            /* Allow the content to take up the remaining space */
+            word-wrap: break-word;
+            /* Break overly long words */
+            overflow-wrap: break-word;
+            /* Ensure modern browser compatibility */
+            white-space: normal;
+            /* Ensure text wraps within the container */
+            line-height: 1.5;
+            /* Improve readability */
+        }
+
+        .comments-header {
+            width: 100%;
+            /* Prevent horizontal overflow */
+            overflow: hidden;
+            /* Ensure no unwanted scrollbars appear */
+        }
+
+        .comment-footer input[type="text"] {
+            width: 100%;
+            /* Ensure the input spans the full width */
+            box-sizing: border-box;
+            /* Include padding in width calculation */
+            word-wrap: break-word;
+            /* Handle long words */
+            overflow-wrap: break-word;
+            /* Modern compatibility */
+        }
+
+        /* Change Photo Tab */
+        #change-photo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 20px;
+            /* Space between elements */
+            background-color: #f9f9f9;
+            /* Light gray background */
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+        }
+
+        /* Form Label */
+        #change-photo form label {
+            font-size: 16px;
+            /* Slightly larger font for readability */
+            font-weight: bold;
+            /* Make the label stand out */
+            color: #555;
+            /* Subtle text color */
+            margin-bottom: 10px;
+            /* Space below the label */
+            display: block;
+            /* Ensure the label is on a separate line */
+            text-align: center;
+            /* Center the label */
+        }
+
+        /* File Input Styling */
+        #change-photo form input[type="file"] {
+            padding: 10px;
+            /* Add padding for comfort */
+            font-size: 14px;
+            /* Ensure readability */
+            border: 1px solid #ccc;
+            /* Light border for definition */
+            border-radius: 5px;
+            /* Smooth corners */
+            background-color: #fff;
+            /* Neutral background */
+            color: #555;
+            /* Subtle text color */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth hover effect */
+            width: 100%;
+            /* Make it responsive */
+            max-width: 300px;
+            /* Limit width */
+            text-align: center;
+            /* Align text for consistency */
+        }
+
+        #change-photo form input[type="file"]:hover {
+            border-color: #0095f6;
+            /* Blue border on hover */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow on hover */
+        }
+
+        #change-photo form input[type="file"]:focus {
+            border-color: #007bb5;
+            /* Darker blue border on focus */
+            outline: none;
+            /* Remove default outline */
+        }
+
+        /* Upload Button */
+        #change-photo form button {
+            background-color: #0095f6;
+            /* Primary blue */
+            color: #fff;
+            /* White text for contrast */
+            padding: 10px 20px;
+            /* Comfortable padding */
+            border: none;
+            /* Remove border */
+            border-radius: 5px;
+            /* Smooth corners */
+            font-size: 16px;
+            /* Standard button font size */
+            font-weight: bold;
+            /* Make the text stand out */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            /* Smooth transitions */
+            width: 100%;
+            /* Make it responsive */
+            max-width: 200px;
+            /* Limit button width */
+        }
+
+        #change-photo form button:hover {
+            background-color: #007bb5;
+            /* Darker blue on hover */
+            transform: scale(1.05);
+            /* Slight zoom effect */
+        }
+
+        #change-photo form button:active {
+            background-color: #005f99;
+            /* Even darker blue on active */
+            transform: scale(1);
+            /* Remove zoom on click */
+        }
+
+        /* Center alignment for small screens */
+        @media (max-width: 768px) {
+            #change-photo {
+                padding: 15px;
+                gap: 15px;
+            }
+
+            #change-photo form input[type="file"],
+            #change-photo form button {
+                width: 100%;
+                /* Full-width for smaller screens */
+                max-width: none;
+            }
+        }
+
+        /* Edit Info Tab */
+        #edit-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            /* Space between elements */
+            background-color: #f9f9f9;
+            /* Light gray background */
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+            max-width: 600px;
+            /* Limit form width */
+            margin: 0 auto;
+            /* Center horizontally */
+        }
+
+        /* Form Label Styling */
+        #edit-info form label {
+            font-size: 16px;
+            /* Standard font size */
+            font-weight: bold;
+            /* Make the label stand out */
+            color: #333;
+            /* Dark text color for contrast */
+            margin-bottom: 8px;
+            /* Spacing below the label */
+            display: block;
+            /* Ensure labels are on separate lines */
+            text-align: left;
+            /* Align labels to the left */
+            width: 100%;
+            /* Full width for consistency */
+        }
+
+        /* Form Input and Select Styling */
+        #edit-info form input[type="date"],
+        #edit-info form select,
+        #edit-info form input[type="text"] {
+            width: 100%;
+            /* Full width for all input fields */
+            max-width: 500px;
+            /* Limit input width */
+            padding: 10px;
+            /* Comfortable padding */
+            margin-bottom: 15px;
+            /* Spacing below each input */
+            border: 1px solid #ccc;
+            /* Light border */
+            border-radius: 5px;
+            /* Smooth corners */
+            font-size: 14px;
+            /* Standard font size */
+            color: #555;
+            /* Subtle text color */
+            background-color: #fff;
+            /* Neutral background */
+            box-sizing: border-box;
+            /* Include padding in width calculation */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth hover/focus effect */
+        }
+
+        /* Focus Effect */
+        #edit-info form input:focus,
+        #edit-info form select:focus {
+            border-color: #0095f6;
+            /* Blue border on focus */
+            outline: none;
+            /* Remove default outline */
+            box-shadow: 0 0 5px rgba(0, 149, 246, 0.2);
+            /* Subtle glow effect */
+        }
+
+        /* Fixed Size Textarea Styling */
+        #edit-info form textarea {
+            width: 100%;
+            /* Keep it responsive */
+            max-width: 500px;
+            /* Limit the maximum width */
+            height: 120px;
+            /* Fixed height */
+            resize: none;
+            /* Disable resizing */
+            padding: 10px;
+            /* Add comfortable padding */
+            border: 1px solid #ccc;
+            /* Light border */
+            border-radius: 5px;
+            /* Smooth corners */
+            font-size: 14px;
+            /* Standard font size */
+            color: #555;
+            /* Subtle text color */
+            background-color: #fff;
+            /* Neutral background */
+            box-sizing: border-box;
+            /* Include padding in width/height calculations */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth hover/focus effect */
+        }
+
+        /* Focus Effect for Fixed Size Textarea */
+        #edit-info form textarea:focus {
+            border-color: #0095f6;
+            /* Blue border on focus */
+            outline: none;
+            /* Remove default outline */
+            box-shadow: 0 0 5px rgba(0, 149, 246, 0.2);
+            /* Subtle glow effect */
+        }
+
+
+        /* Submit Button Styling */
+        #edit-info form button[type="submit"] {
+            background-color: #0095f6;
+            /* Vibrant blue for call-to-action */
+            color: white;
+            /* White text for contrast */
+            padding: 10px 20px;
+            /* Comfortable padding */
+            border: none;
+            /* Remove border */
+            border-radius: 5px;
+            /* Smooth corners */
+            font-size: 16px;
+            /* Standard button font size */
+            font-weight: bold;
+            /* Make the text stand out */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            /* Smooth hover/click effect */
+            width: 100%;
+            /* Full width for consistency */
+            max-width: 200px;
+            /* Limit button width */
+        }
+
+        #edit-info form button[type="submit"]:hover {
+            background-color: #007bb5;
+            /* Slightly darker blue on hover */
+            transform: scale(1.05);
+            /* Slight zoom effect */
+        }
+
+        #edit-info form button[type="submit"]:active {
+            background-color: #005f99;
+            /* Even darker blue on click */
+            transform: scale(1);
+            /* Remove zoom effect on click */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #edit-info {
+                padding: 15px;
+                gap: 15px;
+            }
+
+            #edit-info form input[type="date"],
+            #edit-info form select,
+            #edit-info form textarea,
+            #edit-info form input[type="text"],
+            #edit-info form button {
+                max-width: 100%;
+                /* Full width for smaller screens */
+            }
+        }
+        /* Reaction Modal Styling */
+#reaction-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: 40%;
+    max-width: 500px;
+    height: 70%;
+    max-height: 600px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
 }
-        
+
+/* Modal Content */
+#reaction-modal .modal-content {
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    height: 100%; /* Ensure the content spans the modal */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Close Button */
+#reaction-modal .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#reaction-modal .close:hover {
+    color: #000;
+}
+
+/* Tabs Styling */
+#reaction-modal .tabs {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+#reaction-modal .tabs button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    color: #555;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
+}
+
+#reaction-modal .tabs button:hover {
+    color: #007bb5;
+}
+
+#reaction-modal .tabs button.active {
+    color: #007bb5;
+    border-bottom: 2px solid #007bb5;
+}
+
+/* Tab Content */
+#reaction-modal .tab-content {
+    flex: 1;
+    overflow-y: auto; /* Makes the content scrollable */
+    padding: 10px 0;
+}
+
+/* Likes/Dislikes Section */
+#reaction-modal h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* User List */
+#reaction-modal ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#reaction-modal ul li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 30px 50px; /* Increased padding for taller and wider boxes */
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    height: 80px; /* Increased height for a taller box */
+}
+
+#reaction-modal ul li:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* User Profile Image */
+#reaction-modal ul li img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Username */
+#reaction-modal ul li span {
+    font-size: 16px;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Scrollbar Styling */
+#reaction-modal .tab-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#reaction-modal .tab-content::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 4px;
+}
+
+#reaction-modal .tab-content::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+}
+
+#reaction-modal .tab-content::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+}
+.comment-actions i {
+    position: relative; /* Ensures the icon moves with the flow of the document */
+    display: inline-block; /* Default behavior for icons */
+}
+.fa-thumbs-up,.fa-thumbs-down, .fa-comments {
+    cursor: pointer;
+}
+.overlay {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 999; /* Ensure it is behind the modal but above other elements */
+}
+
     </style>
 </head>
+
 <body>
+    <a href="/home" class="home-btn">
+        <i class="fa fa-home"></i>
+    </a>
     <div class="profile-container">
         <div class="profile-header">
             <div class="profile-photo">
                 <img src="<%= user.profileImage || '/images/default-profile.png' %>" alt="Profile Photo">
             </div>
             <div class="profile-info">
-                <h2><%= user.firstName %> <%=user.lastName %></h2>
+                <h2>
+                    <%= user.firstName %>
+                        <%=user.lastName %>
+                </h2>
                 <br>
-                <h4><%= user.username %></h4>
-                <button onclick="openEditProfileModal()">Edit Profile</button>
                 <div class="profile-stats">
-                    <p><strong>Posts</strong>: <%= user.postsCount || 0 %></p>
-                    <p><strong>Friends</strong>: <%= user.friends.length || 0 %></p>
+                    <p><strong>Posts</strong>: <%= user.postsCount || 0 %>
+                    </p>
+                    <p><strong>Friends</strong>: <%= user.friends.length || 0 %>
+                    </p>
                 </div>
+                <h4 class="username">
+                    <span class="username-link" onclick="copyToClipboard('<%= user._id %>')">@<%= user.username %>
+                    </span>
+                </h4>
+
+
+                <button class="edit-profile-btn" onclick="openEditProfileModal()">Edit Profile</button>
+
                 <br>
-                <p class="bio"><%= user.bio %></p>
-                <p class="dateOfBirth"><%= user.formattedDateOfBirth %></p>
-                <p class="gender"><%= user.gender%></p>
-                <p class="address"><%= user.address %></p>
+                <div class="profile-bio">
+                    <p class="bio">
+                        <%= user.bio || "Bio not provided" %>
+                    </p>
+                    <p class="dateOfBirth">
+                        <%= user.formattedDateOfBirth || "Date of birth not provided" %>
+                    </p>
+                    <p class="gender">
+                        <%= user.gender || "Gender not specified" %>
+                    </p>
+                    <p class="address">
+                        <%= user.address || "Address not provided" %>
+                    </p>
+                </div>
+
+
             </div>
-            <ul>
-            <li><button id="deactivateAccount">Deactivate Account</button>
-            </li>
-            <li><button id="deleteAccount">Delete Account</button>
-            </li>
-            <a href="/home/logout" id="logout">Logout</a>
-            </ul>
+            <div>
+                <!-- Menu button -->
+                <i class="fa fa-bars menu-btn" onclick="toggleMenu()"></i>
+
+                <!-- Dropdown menu -->
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="#" id="deactivateAccount">Deactivate Account</a>
+                    <a href="#" id="deleteAccount">Delete Account</a>
+                    <a href="/home/logout" id="logout">Logout</a>
+                </div>
+            </div>
+
         </div>
 
         <div class="profile-gallery">
-            <% posts.forEach(post => { %>
+            <% posts.forEach(post=> { %>
                 <div class="gallery-item" onclick="openPostModal('<%= post._id %>')">
                     <img src="<%= post.mediaUrl %>" alt="User's Post">
                 </div>
@@ -249,53 +1629,61 @@
 
                 <div id="delete-modal" class="modal" style="display: none;">
                     <div class="modal-content">
-                    <h3>Are you sure you want to delete this?</h3>
-                    <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
-                    <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
+                        <h3>Are you sure you want to delete this?</h3>
+                        <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
+                        <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
                     </div>
                 </div>
-            <% }) %>
+                <% }) %>
         </div>
-        
+
     </div>
 
-    <div id="postModal" class="modal">
+    <!-- Updated Post Modal -->
+    <!-- Updated Trash Icon in the Post Modal -->
+    <div id="postModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close" onclick="closePostModal()">&times;</span>
+            <!-- Close and Delete Icons -->
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="close" onclick="closePostModal()">&times;</span>
+            </div>
             <div id="postDetails">
                 <!-- Post details will be dynamically loaded here -->
             </div>
         </div>
     </div>
-    
-    
+
+
+
+
     <!-- Edit Profile Modal -->
     <div id="editProfileModal" style="display: none;">
-        <div class="modal-content">
+        <div class="modal-content-edit">
             <span class="close" onclick="closeEditProfileModal()">&times;</span>
             <h3>Edit Profile</h3>
-            
+
             <div class="tabs">
                 <button onclick="openTab(event, 'edit-info')" class="tab-button active">Edit Info</button>
                 <button onclick="openTab(event, 'change-photo')" class="tab-button">Change Photo</button>
             </div>
-    
+
             <!-- Edit Info Tab -->
             <!-- Edit Info Tab -->
             <div id="edit-info" class="tab-content active">
                 <form onsubmit="submitEditProfile(event)">
                     <label for="bio">Bio:</label>
                     <textarea id="bio" name="bio"><%= user.bio %></textarea>
-                    
+
                     <label for="dateOfBirth">Date of Birth:</label>
-                    <input type="date" id="dateOfBirth" name="dateOfBirth" value="<%= user.dateOfBirth ? user.dateOfBirth.toISOString().split('T')[0] : '' %>">
+                    <input type="date" id="dateOfBirth" name="dateOfBirth"
+                        value="<%= user.dateOfBirth ? user.dateOfBirth.toISOString().split('T')[0] : '' %>">
 
                     <label for="gender">Gender:</label>
                     <select id="gender" name="gender">
                         <option value="" disabled selected>Select your gender</option>
-                        <option value="Male" <%= user.gender === 'Male' ? 'selected' : '' %>>Male</option>
-                        <option value="Female" <%= user.gender === 'Female' ? 'selected' : '' %>>Female</option>
-                        <option value="Other" <%= user.gender === 'Other' ? 'selected' : '' %>>Other</option>
+                        <option value="Male" <%=user.gender==='Male' ? 'selected' : '' %>>Male</option>
+                        <option value="Female" <%=user.gender==='Female' ? 'selected' : '' %>>Female</option>
+                        <option value="Other" <%=user.gender==='Other' ? 'selected' : '' %>>Other</option>
                     </select>
 
                     <label for="address">Address:</label>
@@ -305,13 +1693,13 @@
                 </form>
             </div>
 
-    
+
             <!-- Change Photo Tab -->
             <div id="change-photo" class="tab-content">
                 <form onsubmit="submitProfilePhoto(event)" enctype="multipart/form-data">
                     <label for="profileImage">Choose a Profile Photo:</label>
                     <input type="file" id="profileImage" name="profileImage" accept="image/*" required>
-                    
+
                     <button type="submit">Upload Photo</button>
                 </form>
             </div>
@@ -320,27 +1708,54 @@
 
     <div id="reaction-modal" class="modal" style="display: none;">
         <div class="modal-content">
-          <span class="close" onclick="closeReactionModal()">&times;</span>
-          <div class="tabs">
-            <button id="likes-tab" onclick="showLikes()">Likes</button>
-            <button id="dislikes-tab" onclick="showDislikes()">Dislikes</button>
-          </div>
-          <div id="likes-section" class="tab-content">
-            <h3>Liked by</h3>
-            <ul id="likes-list">
-              <!-- Likes will be dynamically inserted here -->
-            </ul>
-          </div>
-          <div id="dislikes-section" class="tab-content" style="display: none;">
-            <h3>Disliked by</h3>
-            <ul id="dislikes-list">
-              <!-- Dislikes will be dynamically inserted here -->
-            </ul>
-          </div>
+            <span class="close" onclick="closeReactionModal()">&times;</span>
+            <div class="tabs">
+                <button id="likes-tab" onclick="showLikes()">Likes</button>
+                <button id="dislikes-tab" onclick="showDislikes()">Dislikes</button>
+            </div>
+            <div id="likes-section" class="tab-content">
+                <h3>Liked by</h3>
+                <ul id="likes-list">
+                    <!-- Likes will be dynamically inserted here -->
+                </ul>
+            </div>
+            <div id="dislikes-section" class="tab-content" style="display: none;">
+                <h3>Disliked by</h3>
+                <ul id="dislikes-list">
+                    <!-- Dislikes will be dynamically inserted here -->
+                </ul>
+            </div>
         </div>
-      </div>
-    
+    </div>
+
+
+    <div id="overlay" class="overlay"></div>
+
     <script>
+
+        function copyToClipboard(userId) {
+            // Define the base URL
+            const baseUrl = window.location.origin; // e.g., http://localhost:5000
+            const profileUrl = `${baseUrl}/home/profile/user/${userId}`;
+
+            // Create a temporary input element
+            const tempInput = document.createElement('input');
+            tempInput.value = profileUrl;
+            document.body.appendChild(tempInput);
+
+            // Select the text in the input and copy it
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+
+            // Remove the temporary input
+            document.body.removeChild(tempInput);
+
+            // Optionally, display a success message
+            alert(`Profile URL "${profileUrl}" copied to clipboard!`);
+        }
+
+
         function openEditProfileModal() {
             document.getElementById('editProfileModal').style.display = 'block';
             openTab(null, 'edit-info');
@@ -370,40 +1785,59 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ bio, dateOfBirth, gender, address })
                 });
+
                 if (response.ok) {
                     const data = await response.json();
-                    document.querySelector('.bio').textContent = data.bio;
-                    const dateOfBirthElement = document.querySelector('.dateOfBirth');
+
+                    // Update the DOM dynamically
+                    document.querySelector('.bio').textContent = data.bio || "Bio not provided";
+
+                    const dateOfBirthElement = document.querySelector('.profile-bio .dateOfBirth');
                     if (data.dateOfBirth) {
                         const formattedDate = new Date(data.dateOfBirth).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric',
-                        }); 
-                        dateOfBirthElement.textContent = formattedDate;
+                        });
+                        if (dateOfBirthElement) {
+                            dateOfBirthElement.textContent = formattedDate;
+                        }
                     }
-                    document.querySelector('.gender').textContent = data.gender;
-                    document.querySelector('.address').textContent = data.address;
+
+                    const genderElement = document.querySelector('.profile-bio .gender');
+                    if (genderElement) {
+                        genderElement.textContent = data.gender || "Not specified";
+                    }
+
+                    const addressElement = document.querySelector('.profile-bio .address');
+                    if (addressElement) {
+                        addressElement.textContent = data.address || "Address not provided";
+                    }
+
+                    // Close the modal after updating
                     closeEditProfileModal();
+                } else {
+                    console.error("Failed to update profile:", await response.text());
                 }
             } catch (error) {
                 console.error('Error updating profile:', error);
             }
         }
 
+
         async function submitProfilePhoto(event) {
             event.preventDefault();
             const profileImage = document.getElementById('profileImage').files[0];
-        
+
             const formData = new FormData();
             formData.append('profileImage', profileImage);
-        
+
             try {
                 const response = await fetch('/home/profile/edit/photo', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     document.querySelector('.profile-photo img').src = data.profileImage; // Update the profile photo
@@ -415,9 +1849,10 @@
                 console.error("Error uploading profile photo:", error);
             }
         }
- 
+
         async function openPostModal(postId) {
             document.getElementById('postModal').style.display = 'flex';
+            document.getElementById('overlay').style.display = 'block'; // Show overlay
 
             try {
                 const response = await fetch(`/posts/${postId}`);
@@ -425,139 +1860,185 @@
 
                 const postDetails = document.getElementById('postDetails');
                 postDetails.innerHTML = `
-                    <img src="${data.mediaUrl}" alt="Post Media" style="width: 100%; border-radius: 8px;">
-                    <div class="post-actions">
-                            <span class="like-icon" onclick="toggleLike(event, '${data._id}')">❤️</span>
-                            <span id="likes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'likes')">
-                                ${data.likesCount}Likes
-                              </span>
+            <!-- Top Controls (Trash Icon) -->
+            <div class="top-left-controls">
+                <i class="fa fa-trash" title="Delete Post" onclick="confirmDelete('post', '${data._id}')"></i>
+            </div>
 
-                            <span class="like-icon" onclick="toggledisLike(event, '${data._id}')">❤️</span>
-                            <span id="dislikes-count-${data._id}" onclick="openReactionModal('post','${data._id}>', 'dislikes')">
-                                ${data.dislikesCount} Dislikes
-                              </span>
-                              
-            
-                            <span class="comment-icon" onclick="openCommentSection('${data._id}')">💬</span>
-                            <span class="commentcount">${data.comments.length} Comments</span>
-                            <button onclick="confirmDelete('post', '${data._id}')">Delete Post</button>
-                        </div>
-            
-                        <!-- Comment Section -->
-                        <div id="commentSection-${data._id}" class="commentSection" style="display: none;">
-                            <h4>Comments</h4>
-                            <ul id="comments-list-${data._id}">
-                                <!-- Comments will be dynamically loaded -->
-                            </ul>
-                            <input type="text" id="new-comment-${data._id}" placeholder="Add a comment..." />
-                            <button onclick="addComment('${data._id}')">Post</button>
-                        </div>
-                `;
+            <!-- Post Media -->
+            <img src="${data.mediaUrl}" alt="Post Media" style="width: 90%; max-height: 90%; object-fit: contain; margin-top: 0px;">
+
+            <!-- Post Caption -->
+<div id="postCaption-${data._id}" class="post-caption">
+    ${data.content ? data.content : 'No caption providedddfwuefbiuwfbiwbfp;wifp;wuifbp;waiudfcolwvf;qwevf;ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddkkkkkkkkkkkk.'}
+</div>
+
+
+            <!-- Post Actions -->
+        <div class="post-actions">
+            <i class="fa fa-thumbs-up" onclick="toggleLike(event, '${data._id}')"></i>
+            <span id="likes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'likes')">
+                ${data.likesCount}
+            </span>
+            <i class="fa fa-thumbs-down" onclick="toggleDislike(event, '${data._id}')"></i>
+            <span id="dislikes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'dislikes')">
+                ${data.dislikesCount}
+            </span>
+            <i class="fa fa-comments" onclick="loadComments('${data._id}')"></i>
+            <span class="commentcount">${data.comments.length}</span>
+        </div>
+        `;
             } catch (error) {
                 console.error("Error loading post details:", error);
             }
         }
 
-
         function closePostModal() {
             document.getElementById('postModal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none'; // remove overlay
+
+            closeDeleteModal();
+            closeReactionModal();
+            closeCommentModal();
         }
-
-        async function toggleLike(event, postId) {
-            event.stopPropagation();
-            try {
-                const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
-                const data = await response.json();
-
-                // Update the like count
-                document.getElementById(`likes-count-${postId}`).textContent = `${data.likesCount} Likes`;
-
-                // If the likes modal is open, update it
-                 if (document.getElementById('likes-modal').style.display === 'block') {
-                    populateLikesModal(data.likedBy);
-                }
-            } catch (error) {
-                console.error("Error toggling like:", error);
-            }
-        }
-        async function toggledisLike(event, postId) {
-            event.stopPropagation();
-            try {
-                const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
-                const data = await response.json();
-
-                // Update the like count
-                document.getElementById(`dislikes-count-${postId}`).textContent = `${data.dislikesCount} DisLikes`;
-            } catch (error) {
-                console.error("Error toggling like:", error);
-            }
-        }
-
-        function openCommentSection(postId) {
-            const commentSection = document.getElementById(`commentSection-${postId}`);
-            
-            if (commentSection.style.display === 'none' || commentSection.style.display === '') {
-                // Load comments only if the section is being opened
-                loadComments(postId);
-                commentSection.style.display = 'block';
-            } else {
-                // Toggle visibility to close the comment section
-                commentSection.style.display = 'none';
+        function closeCommentModal() {
+            const commentsModal = document.getElementById('commentsModal');
+            if (commentsModal) {
+                commentsModal.style.display = 'none';
             }
         }
 
         async function loadComments(postId) {
-  try {
-    const response = await fetch(`/posts/${postId}`);
-    const data = await response.json();
+            try {
+                const response = await fetch(`/posts/${postId}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch comments: ${response.statusText}`);
+                }
 
-    const commentsList = document.getElementById(`comments-list-${postId}`);
-    commentsList.innerHTML = data.comments.map((comment) => `
-      <li>
-        <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
-             alt="${comment.user.username}'s profile image" 
-             style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
-        <strong>${comment.user.username}:</strong> ${comment.content}
-        <span>
-          <button onclick="toggleCommentLike('${comment._id}')">❤️</button>
-          <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'likes')">${comment.likesCount} Likes</span>
-          <button onclick="toggleCommentdisLike('${comment._id}')">❤️</button>
-          <span id="comment-dislikes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'dislikes')">${comment.dislikesCount} Dislikes</span>
-        </span>
-        ${comment.isOwner ? `<button onclick="confirmDelete('comment', '${comment._id}')">Delete Comment</button>` : ''}
-        <button onclick="toggleReplyBox('${comment._id}')">Reply</button>
+                const data = await response.json();
 
-        <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
-          <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply...">
-          <button onclick="addReply('${comment._id}')">Post Reply</button>
-        </div>
+                let commentsModal = document.getElementById('commentsModal');
+                if (!commentsModal) {
+                    commentsModal = document.createElement('div');
+                    commentsModal.id = 'commentsModal';
+                    document.body.appendChild(commentsModal);
+                }
 
-        <ul id="replies-list-${comment._id}" class="replies-list" style="margin-top: 10px; padding-left: 20px;">
-          ${comment.replies.map((reply) => `
+                commentsModal.innerHTML = `
+    <div class="comments-header">
+        <h3>Comments</h3>
+        <span class="close" onclick="closeCommentModal()">&times;</span>
+    </div>
+    <ul class="comments-list" id="comments-list-${postId}">
+        ${data.comments.map(comment => `
             <li>
-              <img src="${reply.user.profileImage || '/images/default-profile.png'}" 
-                   alt="${reply.user.username}'s profile image" 
-                   style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
-              <strong>${reply.user.username}:</strong> ${reply.content}
-              <span>
-                <button onclick="toggleReplyLike('${comment._id}', '${reply._id}')">❤️</button>
-                <span id="reply-likes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'likes')">${reply.likesCount} Likes</span>
-                <button onclick="toggleReplydisLike('${comment._id}', '${reply._id}')">❤️</button>
-                <span id="reply-dislikes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'dislikes')">${reply.dislikesCount} Dislikes</span>
-                ${reply.isOwner ? `<button onclick="confirmDelete('reply', '${reply._id}')">Delete Reply</button>` : ''}
-              </span>
+                <div class="comment-container" onclick="toggleReplies('${comment._id}')">
+                    <!-- Comment Header -->
+                    <div class="comment-header" style="display: flex; align-items: center; justify-content: space-between;">
+                        <div class="comment-user" style="display: flex; align-items: center; gap: 10px;">
+                            <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
+                                 alt="${comment.user.username}'s profile image" 
+                                 style="width: 40px; height: 40px; border-radius: 50%;" />
+                            <strong>${comment.user.username}</strong>
+                        </div>
+                        <div class="comment-actions" style="display: flex; gap: 10px; align-items: center;">
+                            <i class="fa fa-thumbs-up" id="comment-thumb-up-${comment._id}" 
+                               onclick="toggleCommentLike('${comment._id}', event); event.stopPropagation()"></i>
+                            <span id="comment-likes-${comment._id}">${comment.likesCount}</span>
+
+                            <i class="fa fa-thumbs-down" id="comment-thumb-down-${comment._id}" 
+                               onclick="toggleCommentdisLike('${comment._id}', event); event.stopPropagation()"></i>
+                            <span id="comment-dislikes-${comment._id}">${comment.dislikesCount}</span>
+
+                            <i class="fa-solid fa-reply" id="comment-reply-${comment._id}" 
+                               onclick="toggleReplyBox('${comment._id}'); event.stopPropagation()"></i>
+
+                            ${comment.isOwner ? `
+                            <i class="fa fa-trash" id="comment-trash-${comment._id}" 
+                               onclick="confirmDelete('comment', '${comment._id}', event); event.stopPropagation()"></i>` : ''}
+                        </div>
+                    </div>
+                    <!-- Comment Content -->
+                    <div class="comment-content" style="margin-left: 50px; color: #555; margin-top: 5px;">
+                        ${comment.content}
+                    </div>
+                    <!-- Reply Box -->
+                    <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
+                        <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply..." />
+                        <button onclick="addReply('${comment._id}', event)">Post Reply</button>
+                    </div>
+                    <!-- Replies Section -->
+                    <div id="replies-${comment._id}" class="replies-container" style="display: none; margin-left: 20px;">
+                        <ul>
+                            ${comment.replies.map(reply => `
+                                <li>
+                                    <div class="reply" style="display: flex; align-items: flex-start; gap: 10px;">
+                                        <img src="${reply.user.profileImage || '/images/default-profile.png'}" 
+                                             alt="${reply.user.username}'s profile picture" 
+                                             class="reply-user-img" 
+                                             style="width: 35px; height: 35px; border-radius: 50%;" />
+                                        <div class="reply-content">
+                                            <strong>${reply.user.username}</strong>
+                                            <span>${reply.content}</span>
+                                        </div>
+                                        <div class="reply-actions" style="display: flex; gap: 10px; align-items: center;">
+                                            <i class="fa fa-thumbs-up" id="reply-thumb-up-${reply._id}" 
+                                               onclick="toggleReplyLike('${comment._id}', '${reply._id}', event); event.stopPropagation()"></i>
+                                            <span id="reply-likes-${reply._id}">${reply.likesCount}</span>
+
+                                            <i class="fa fa-thumbs-down" id="reply-thumb-down-${reply._id}" 
+                                               onclick="toggleReplydisLike('${comment._id}', '${reply._id}', event); event.stopPropagation()"></i>
+                                            <span id="reply-dislikes-${reply._id}">${reply.dislikesCount}</span>
+
+                                            ${reply.isOwner ? `
+                                            <i class="fa fa-trash" id="reply-trash-${reply._id}" 
+                                               onclick="confirmDelete('reply', '${reply._id}', event); event.stopPropagation()"></i>` : ''}
+                                        </div>
+                                    </div>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
             </li>
-          `).join('')}
-        </ul>
-      </li>
-    `).join('');
-  } catch (error) {
-    console.error('Error loading comments:', error);
-  }
-}
+        `).join('')}
+    </ul>
+    <!-- Add New Comment Section -->
+    <div class="comment-footer">
+        <input type="text" id="new-comment-${postId}" placeholder="Add a comment..." 
+               onkeydown="if (event.key === 'Enter') { event.preventDefault(); addComment('${postId}', event); }" />
+        <button class="post-btn" onclick="addComment('${postId}', event)">Post</button>
+    </div>
+`;
 
 
+                commentsModal.style.display = 'flex';
+            } catch (error) {
+                console.error('Error loading comments:', error);
+            }
+        }
 
+
+        function toggleReplies(commentId) {
+            const repliesContainer = document.getElementById(`replies-${commentId}`);
+            if (repliesContainer) {
+                repliesContainer.style.display =
+                    repliesContainer.style.display === 'none' || repliesContainer.style.display === ''
+                        ? 'block'
+                        : 'none';
+            }
+        }
+
+        function toggleReplyBox(commentId) {
+            const replyBox = document.getElementById(`reply-box-${commentId}`);
+            replyBox.style.display =
+                replyBox.style.display === 'none' || replyBox.style.display === ''
+                    ? 'block'
+                    : 'none';
+        }
+
+
+        // Function to add a comment
         async function addComment(postId) {
             const commentText = document.getElementById(`new-comment-${postId}`).value.trim();
             if (!commentText) return;
@@ -570,9 +2051,7 @@
                 });
 
                 if (response.ok) {
-                    const data = await response.json(); // Get the newly created reply data
                     loadComments(postId); // Reload comments after posting a new one
-                    document.querySelector(".commentcount").innerHTML = `${data.CommentCount} Comment`
                     document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
                 }
             } catch (error) {
@@ -581,286 +2060,378 @@
         }
 
 
-        function toggleReplyBox(commentId) {
-            const replyBox = document.getElementById(`reply-box-${commentId}`);
-            replyBox.style.display = replyBox.style.display === 'none' || replyBox.style.display === '' ? 'block' : 'none';
-        }
+
 
         async function addReply(commentId) {
-  const replyInput = document.getElementById(`new-reply-${commentId}`);
-  const replyText = replyInput.value.trim();
+            const replyInput = document.getElementById(`new-reply-${commentId}`);
+            const replyText = replyInput.value.trim();
 
-  if (!replyText) return;
+            if (!replyText) return; // Don't proceed if the input is empty
 
-  try {
-    const response = await fetch(`/comments/${commentId}/reply`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: replyText }),
-    });
+            try {
+                const response = await fetch(`/comments/${commentId}/reply`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: replyText })
+                });
 
-    if (response.ok) {
-      const newReply = await response.json(); // Get the newly created reply data
-      replyInput.value = ''; // Clear the input field
+                if (response.ok) {
+                    const newReply = await response.json(); // Get the newly added reply from the server
 
-      // Dynamically add the new reply to the DOM
-      const repliesList = document.getElementById(`replies-list-${commentId}`);
-      if (repliesList) {
-        const replyHTML = `
-          <li id="reply-${newReply._id}">
-            <img src="${newReply.user.profileImage || '/images/default-profile.png'}" 
-                 alt="${newReply.user.username}'s profile image" 
-                 style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
-            <strong>${newReply.user.username}:</strong> ${newReply.content}
-            <span>
-              <button onclick="toggleReplyLike('${commentId}', '${newReply._id}')">❤️</button>
-              <span id="reply-likes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'likes')">0 Likes</span>
-              <button onclick="toggleReplydisLike('${commentId}', '${newReply._id}')">❤️</button>
-              <span id="reply-dislikes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'dislikes')">0 Dislikes</span>
-                ${newReply.isOwner ? `<button onclick="confirmDelete('reply', '${newReply._id}')">Delete Reply</button>` : ''}
-            </span>
-          </li>
-        `;
-        repliesList.insertAdjacentHTML('beforeend', replyHTML); // Add the new reply to the list
-        
-      }
-    } else {
-      console.error('Error adding reply:', await response.text());
-    }
-  } catch (error) {
-    console.error('Error adding reply:', error);
-  }
-}
+                    // Clear the input field
+                    replyInput.value = '';
+
+                    // Dynamically add the new reply to the replies list
+                    const repliesContainer = document.getElementById(`replies-${commentId}`);
+                    if (repliesContainer) {
+                        const replyHTML = `
+                    <li>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <img src="${newReply.user.profileImage || '/images/default-profile.png'}" 
+                                 alt="${newReply.user.username}'s profile image" 
+                                 style="width: 25px; height: 25px; border-radius: 50%;" />
+                            <div>
+                                <strong>${newReply.user.username}</strong>
+                                <span>${newReply.content}</span>
+                            </div>
+                        </div>
+                    </li>
+                `;
+                        repliesContainer.insertAdjacentHTML('beforeend', replyHTML);
+                        repliesContainer.style.display = 'block'; // Ensure the replies container is visible
+                    }
+                } else {
+                    console.error('Failed to add reply:', await response.text());
+                }
+            } catch (error) {
+                console.error('Error adding reply:', error);
+            }
+        }
 
 
 
-        async function toggleCommentLike(commentId) {
+        async function toggleCommentLike(commentId, event) {
             try {
                 const response = await fetch(`/comments/${commentId}/like`, { method: 'POST' });
                 const data = await response.json();
 
-                // Update the like count dynamically
                 const likeCountElement = document.getElementById(`comment-likes-${commentId}`);
+                const likeIcon = document.getElementById(`comment-thumb-up-${commentId}`);
+
                 if (likeCountElement) {
-                    likeCountElement.textContent = `${data.likesCount} Likes`;
+                    likeCountElement.textContent = `${data.likesCount}`;
                 }
+
+                likeIcon.classList.add('like-active');
+                setTimeout(() => likeIcon.classList.remove('like-active'), 300);
             } catch (error) {
                 console.error("Error toggling comment like:", error);
             }
         }
+
+
         async function toggleCommentdisLike(commentId) {
             try {
                 const response = await fetch(`/comments/${commentId}/dislike`, { method: 'POST' });
                 const data = await response.json();
 
-                // Update the like count dynamically
+                // Update the dislike count dynamically
                 const dislikeCountElement = document.getElementById(`comment-dislikes-${commentId}`);
+                const dislikeIcon = document.getElementById(`comment-thumb-down-${commentId}`);
+
                 if (dislikeCountElement) {
-                    dislikeCountElement.textContent = `${data.dislikesCount} DisLikes`;
+                    dislikeCountElement.textContent = `${data.dislikesCount}`;
                 }
+
+                // Add the animation class
+                dislikeIcon.classList.add('dislike-active');
+
+                // Remove the class after animation ends
+                setTimeout(() => dislikeIcon.classList.remove('dislike-active'), 300);
             } catch (error) {
                 console.error("Error toggling comment dislike:", error);
             }
         }
 
-        async function toggleReplyLike(commentId, replyIndex) {
+        async function toggleReplyLike(commentId, replyId) {
             try {
-        console.log("mohammad",replyIndex);
-
-                const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/like`, { method: 'POST' });
+                const response = await fetch(`/comments/${commentId}/replies/${replyId}/like`, { method: 'POST' });
                 const data = await response.json();
 
-                // Update the like count dynamically
-                const likeCountElement = document.getElementById(`reply-likes-${replyIndex}`);
+                const likeCountElement = document.getElementById(`reply-likes-${replyId}`);
+                const likeIcon = document.querySelector(`#reply-likes-${replyId}`).previousElementSibling;
+
                 if (likeCountElement) {
-                    likeCountElement.textContent = `${data.likesCount} Likes`;
+                    likeCountElement.textContent = `${data.likesCount}`;
                 }
+
+                // Add the animation class
+                likeIcon.classList.add('like-active');
+
+                // Remove the class after animation ends
+                setTimeout(() => likeIcon.classList.remove('like-active'), 300);
             } catch (error) {
-                console.error("Error toggling reply like:", error);
+                console.error('Error toggling reply like:', error);
             }
         }
-        async function toggleReplydisLike(commentId, replyIndex) {
-            try {
-        console.log("mohammad",replyIndex);
 
-                const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/dislike`, { method: 'POST' });
+
+        async function toggleReplydisLike(commentId, replyId) {
+            try {
+                const response = await fetch(`/comments/${commentId}/replies/${replyId}/dislike`, { method: 'POST' });
                 const data = await response.json();
 
-                // Update the like count dynamically
-                const dislikeCountElement = document.getElementById(`reply-dislikes-${replyIndex}`);
+                const dislikeCountElement = document.getElementById(`reply-dislikes-${replyId}`);
+                const dislikeIcon = document.querySelector(`#reply-dislikes-${replyId}`).previousElementSibling;
+
                 if (dislikeCountElement) {
-                    dislikeCountElement.textContent = `${data.dislikesCount} Likes`;
+                    dislikeCountElement.textContent = `${data.dislikesCount}`;
                 }
+
+                // Add the animation class
+                dislikeIcon.classList.add('dislike-active');
+
+                // Remove the class after animation ends
+                setTimeout(() => dislikeIcon.classList.remove('dislike-active'), 300);
             } catch (error) {
-                console.error("Error toggling reply Dislike:", error);
+                console.error('Error toggling reply dislike:', error);
             }
         }
-document.getElementById('deactivateAccount').addEventListener('click', async () => {
-    try {
-        const response = await fetch('/account/deactivate-account', { method: 'POST' });
-        if (response.ok) {
-            alert('Account deactivated successfully');
-            window.location.href = '/home/logout'; // Redirect the user to logout
-        } else {
-            alert('Failed to deactivate account');
+
+
+        document.getElementById('deactivateAccount').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/account/deactivate-account', { method: 'POST' });
+                if (response.ok) {
+                    alert('Account deactivated successfully');
+                    window.location.href = '/home/logout'; // Redirect the user to logout
+                } else {
+                    alert('Failed to deactivate account');
+                }
+            } catch (error) {
+                console.error("Error deactivating account:", error);
+            }
+        });
+
+        document.getElementById('deleteAccount').addEventListener('click', async () => {
+            if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) return;
+
+            try {
+                const response = await fetch('/account/delete-account', { method: 'POST' });
+                if (response.ok) {
+                    alert('Account deleted successfully');
+                    window.location.href = '/home/logout'; // Redirect the user to logout
+                } else {
+                    alert('Failed to delete account');
+                }
+            } catch (error) {
+                console.error("Error deleting account:", error);
+            }
+        });
+
+
+        function showLikes() {
+            document.getElementById('likes-section').style.display = 'block';
+            document.getElementById('dislikes-section').style.display = 'none';
+            document.getElementById('likes-tab').classList.add('active');
+            document.getElementById('dislikes-tab').classList.remove('active');
         }
-    } catch (error) {
-        console.error("Error deactivating account:", error);
-    }
-});
 
-document.getElementById('deleteAccount').addEventListener('click', async () => {
-    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) return;
-
-    try {
-        const response = await fetch('/account/delete-account', { method: 'POST' });
-        if (response.ok) {
-            alert('Account deleted successfully');
-            window.location.href = '/home/logout'; // Redirect the user to logout
-        } else {
-            alert('Failed to delete account');
+        function showDislikes() {
+            document.getElementById('likes-section').style.display = 'none';
+            document.getElementById('dislikes-section').style.display = 'block';
+            document.getElementById('dislikes-tab').classList.add('active');
+            document.getElementById('likes-tab').classList.remove('active');
         }
-    } catch (error) {
-        console.error("Error deleting account:", error);
-    }
-});
+
+        async function openReactionModal(type, id, section) {
+            const modal = document.getElementById('reaction-modal');
+            modal.style.display = 'flex';
+
+            try {
+                const response = await fetch(`/posts/${type}/${id}/reactions`);
+                const data = await response.json();
+                if (response.ok) {
+                    populateLikesList(data.likedBy);
+                    populateDislikesList(data.dislikedBy);
+
+                    // Show the appropriate section based on the clicked button
+                    if (section === 'likes') {
+                        showLikes();
+                    } else if (section === 'dislikes') {
+                        showDislikes();
+                    }
+                } else {
+                    console.error('Error fetching reactions:', data.message || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Error fetching reactions:', error);
+            }
+        }
 
 
-function showLikes() {
-  document.getElementById('likes-section').style.display = 'block';
-  document.getElementById('dislikes-section').style.display = 'none';
-  document.getElementById('likes-tab').classList.add('active');
-  document.getElementById('dislikes-tab').classList.remove('active');
-}
+        function closeReactionModal() {
+            document.getElementById('reaction-modal').style.display = 'none';
+        }
 
-function showDislikes() {
-  document.getElementById('likes-section').style.display = 'none';
-  document.getElementById('dislikes-section').style.display = 'block';
-  document.getElementById('dislikes-tab').classList.add('active');
-  document.getElementById('likes-tab').classList.remove('active');
-}
+        function populateLikesList(likedBy) {
+            const likesList = document.getElementById('likes-list');
+            likesList.innerHTML = ''; // Clear previous list
 
-async function openReactionModal(type, id, section) {
-  const modal = document.getElementById('reaction-modal');
-  modal.style.display = 'flex';
+            likedBy.forEach(user => {
+                const listItem = document.createElement('li');
+                listItem.style.display = 'flex';
+                listItem.style.alignItems = 'center';
+                listItem.style.marginBottom = '10px';
 
-  try {
-    const response = await fetch(`/posts/${type}/${id}/reactions`);
-    const data = await response.json();
-    if (response.ok) {
-      populateLikesList(data.likedBy);
-      populateDislikesList(data.dislikedBy);
+                const img = document.createElement('img');
+                img.src = user.profileImage;
+                img.alt = `${user.username}'s profile image`;
+                img.style.width = '40px';
+                img.style.height = '40px';
+                img.style.borderRadius = '50%';
+                img.style.marginRight = '10px';
 
-      // Show the appropriate section based on the clicked button
-      if (section === 'likes') {
-        showLikes();
-      } else if (section === 'dislikes') {
-        showDislikes();
-      }
-    } else {
-      console.error('Error fetching reactions:', data.message || 'Unknown error');
-    }
-  } catch (error) {
-    console.error('Error fetching reactions:', error);
-  }
-}
+                const username = document.createElement('span');
+                username.textContent = user.username;
 
+                listItem.appendChild(img);
+                listItem.appendChild(username);
+                likesList.appendChild(listItem);
+            });
+        }
 
-function closeReactionModal() {
-  document.getElementById('reaction-modal').style.display = 'none';
-}
+        function populateDislikesList(dislikedBy) {
+            const dislikesList = document.getElementById('dislikes-list');
+            dislikesList.innerHTML = ''; // Clear previous list
 
-function populateLikesList(likedBy) {
-  const likesList = document.getElementById('likes-list');
-  likesList.innerHTML = ''; // Clear previous list
+            dislikedBy.forEach(user => {
+                const listItem = document.createElement('li');
+                listItem.style.display = 'flex';
+                listItem.style.alignItems = 'center';
+                listItem.style.marginBottom = '10px';
 
-  likedBy.forEach(user => {
-    const listItem = document.createElement('li');
-    listItem.style.display = 'flex';
-    listItem.style.alignItems = 'center';
-    listItem.style.marginBottom = '10px';
+                const img = document.createElement('img');
+                img.src = user.profileImage;
+                img.alt = `${user.username}'s profile image`;
+                img.style.width = '40px';
+                img.style.height = '40px';
+                img.style.borderRadius = '50%';
+                img.style.marginRight = '10px';
 
-    const img = document.createElement('img');
-    img.src = user.profileImage;
-    img.alt = `${user.username}'s profile image`;
-    img.style.width = '40px';
-    img.style.height = '40px';
-    img.style.borderRadius = '50%';
-    img.style.marginRight = '10px';
+                const username = document.createElement('span');
+                username.textContent = user.username;
 
-    const username = document.createElement('span');
-    username.textContent = user.username;
+                listItem.appendChild(img);
+                listItem.appendChild(username);
+                dislikesList.appendChild(listItem);
+            });
+        }
 
-    listItem.appendChild(img);
-    listItem.appendChild(username);
-    likesList.appendChild(listItem);
-  });
-}
+        let deleteType = '';
+        let deleteId = '';
 
-function populateDislikesList(dislikedBy) {
-  const dislikesList = document.getElementById('dislikes-list');
-  dislikesList.innerHTML = ''; // Clear previous list
+        function confirmDelete(type, id) {
+            deleteType = type;
+            deleteId = id;
+            document.getElementById('delete-modal').style.display = 'block';
+        }
+        async function toggleLike(event, postId) {
+            try {
+                const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+                if (response.ok) {
+                    const data = await response.json();
 
-  dislikedBy.forEach(user => {
-    const listItem = document.createElement('li');
-    listItem.style.display = 'flex';
-    listItem.style.alignItems = 'center';
-    listItem.style.marginBottom = '10px';
+                    // Update the like count dynamically
+                    const likeCountElement = document.getElementById(`likes-count-${postId}`);
+                    const likeIcon = event.target; // Get the clicked like icon
 
-    const img = document.createElement('img');
-    img.src = user.profileImage;
-    img.alt = `${user.username}'s profile image`;
-    img.style.width = '40px';
-    img.style.height = '40px';
-    img.style.borderRadius = '50%';
-    img.style.marginRight = '10px';
+                    if (likeCountElement) {
+                        likeCountElement.textContent = `${data.likesCount}`;
+                    }
 
-    const username = document.createElement('span');
-    username.textContent = user.username;
+                    // Add animation class for effect
+                    likeIcon.classList.add('like-active');
 
-    listItem.appendChild(img);
-    listItem.appendChild(username);
-    dislikesList.appendChild(listItem);
-  });
-}
+                    // Remove animation class after the animation is complete
+                    setTimeout(() => likeIcon.classList.remove('like-active'), 300);
+                } else {
+                    console.error("Failed to like the post:", await response.text());
+                }
+            } catch (error) {
+                console.error("Error toggling like:", error);
+            }
+        }
 
-    let deleteType = '';
-    let deleteId = '';
+        async function toggleDislike(event, postId) {
+            try {
+                const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
+                if (response.ok) {
+                    const data = await response.json();
 
-    function confirmDelete(type, id) {
-        deleteType = type;
-        deleteId = id;
-        document.getElementById('delete-modal').style.display = 'block';
-    }
+                    // Update the dislike count dynamically
+                    const dislikeCountElement = document.getElementById(`dislikes-count-${postId}`);
+                    const dislikeIcon = event.target; // Get the clicked dislike icon
 
-    function closeDeleteModal() {
-        document.getElementById('delete-modal').style.display = 'none';
-    }
+                    if (dislikeCountElement) {
+                        dislikeCountElement.textContent = `${data.dislikesCount}`;
+                    }
 
-    async function performDelete(postid) {
-          try {
-              const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
-              const data = await response.json();
-              if (response.ok) {
-                  alert("Deleted successfully");
-                  if(deleteType=='comment' || deleteType=='reply'){
-                    loadComments(postid);
-                    if(deleteType=='comment')
-                        document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} Comments`  
-                  }
-                  else
-                      location.reload();
-              } else {
-                  console.error("Error deleting:", await response.json());
-              }
-          } catch (error) {
-              console.error("Error performing delete:", error);
-          }
-          closeDeleteModal();
-      }
-        
+                    // Add animation class for effect
+                    dislikeIcon.classList.add('dislike-active');
+
+                    // Remove animation class after the animation is complete
+                    setTimeout(() => dislikeIcon.classList.remove('dislike-active'), 300);
+                } else {
+                    console.error("Failed to dislike the post:", await response.text());
+                }
+            } catch (error) {
+                console.error("Error toggling dislike:", error);
+            }
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').style.display = 'none';
+        }
+
+        async function performDelete(postid) {
+            try {
+                const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
+                const data = await response.json();
+                if (response.ok) {
+                    alert("Deleted successfully");
+                    if (deleteType == 'comment' || deleteType == 'reply') {
+                        loadComments(postid);
+                        if (deleteType == 'comment')
+                            document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} Comments`
+                    }
+                    else
+                        location.reload();
+                } else {
+                    console.error("Error deleting:", await response.json());
+                }
+            } catch (error) {
+                console.error("Error performing delete:", error);
+            }
+            closeDeleteModal();
+        }
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close the menu when clicking outside of it
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('dropdownMenu');
+            const menuButton = document.querySelector('.menu-btn');
+            if (!menu.contains(event.target) && !menuButton.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
     </script>
 
     <!-- <script src="/js/profile.js"></script> -->
 </body>
+
 </html>
