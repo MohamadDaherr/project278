@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
     <title>Profile - <%= user.username %>
     </title>
     <style>
@@ -19,10 +21,11 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #fafafa;
+            background-color: #e0e7f8;
             display: flex;
             justify-content: center;
             padding-top: 20px;
+            /* background: linear-gradient(120deg, #1fc0ff 0%, #ffb9a6 100%); */
         }
 
         .profile-container {
@@ -75,80 +78,41 @@
             /* Reduce spacing below the name */
         }
 
-        .profile-stats {
+        .username {
             display: flex;
-            gap: 15px;
-            /* Reduce gap between stats */
-            font-size: 16px;
-            color: #262626;
-            margin-top: 5px;
-            /* Bring stats closer to the name */
-            margin-bottom: 5px;
-            /* Reduce spacing below stats */
+            align-items: center;
+            /* Align username and stats vertically */
         }
 
         .profile-stats {
             display: flex;
-            gap: 10px;
-            /* Reduce gap between stats */
-            font-size: 16px;
+            gap: 20px;
+            /* Space between "Posts" and "Friends" */
+            font-size: 14px;
             color: #262626;
-            margin-top: 5px;
-            /* Bring stats closer to the name */
-            margin-bottom: 5px;
-            /* Reduce spacing below stats */
+            margin-left: 40px;
+            /* Add more space to the right of the username */
         }
+
+        .profile-stats p {
+            font-size: 1.3em;
+            margin: 0;
+            /* Remove default paragraph margins */
+            line-height: 1.5;
+            /* Improve readability */
+        }
+
+
+
 
         .profile-info h4 {
-            margin-top: 5px;
+            margin-top: 0;
             /* Bring username closer to stats */
             margin-bottom: 5px;
             /* Reduce spacing below username */
             font-size: 16px;
             font-weight: 400;
             color: #555;
-        }
-
-
-        .edit-profile-btn {
-            padding: 8px 20px;
-            /* Add some padding for better spacing */
-            font-size: 14px;
-            /* Standard font size */
-            font-weight: 600;
-            /* Bold font for emphasis */
-            color: #fff;
-            /* White text color */
-            background-color: #0095f6;
-            /* Primary blue color */
-            border: 1px solid transparent;
-            /* Remove border effect */
-            border-radius: 8px;
-            /* Smooth rounded edges */
-            cursor: pointer;
-            /* Pointer cursor for interactivity */
-            transition: all 0.3s ease-in-out;
-            /* Smooth hover effect */
-            display: inline-block;
-            /* Ensures it’s inline with spacing */
-            text-align: center;
-            /* Center align text */
-        }
-
-        .edit-profile-btn:hover {
-            background-color: #007bb5;
-            /* Slightly darker blue on hover */
-            color: #fff;
-            /* Keep white text */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            /* Add a subtle shadow on hover */
-        }
-
-        .edit-profile-btn:active {
-            transform: translateY(0);
-            /* Button presses back on active click */
-            box-shadow: none;
-            /* Remove shadow when pressed */
         }
 
         .profile-bio {
@@ -214,7 +178,7 @@
             /* Adjust column size to 30% to keep images closer */
             justify-content: center;
             /* Center the grid items */
-            gap: -5px;
+            gap: 0px;
             /* Negative gap to reduce spacing further and bring items closer */
             padding: 0;
             margin: 0;
@@ -257,20 +221,59 @@
         }
 
 
+        .modal-content,
+        #commentsModal {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 90vw;
+            /* Responsive width */
+            height: 90vh;
+            /* Same height for both modals */
+            max-height: 800px;
+            /* Limit maximum height */
+            background-color: #fff;
+            /* White background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            /* Subtle shadow */
+            overflow: hidden;
+            /* Prevent overflow */
+            font-family: Arial, sans-serif;
+            padding: 0;
+            /* Reset padding */
+            margin: 0;
+            /* Reset margin */
+            box-sizing: border-box;
+            /* Include padding and border in height */
+        }
+
+
+        /* Additional specific styles for each modal */
         .modal-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 90vw; /* Adjust modal width to be responsive */
-    height: 90vh; /* Adjust modal height to be responsive */
-    max-width: 1000px; /* Limit maximum width */
-    max-height: 800px; /* Limit maximum height */
-    background: #fff; /* Background color */
-    overflow: hidden; /* Ensure nothing overflows the modal */
-    padding: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Add subtle shadow */
-    position: relative; /* Allow internal positioning */
-}
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            max-width: 1000px;
+            /* Specific width for the main modal */
+            padding: 10px;
+            position: relative;
+        }
+
+        #commentsModal {
+            position: fixed;
+            top: 50%;
+            left: 68.34%;
+            /* Adjust to move modal further right */
+            height: 84.1%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            max-width: 400px;
+            /* Specific width for the comments modal */
+            display: none;
+            flex-direction: column;
+        }
+
 
         .modal-content img {
             width: 100%;
@@ -284,47 +287,65 @@
         }
 
         .post-caption {
-    font-size: 16px; /* Adjust font size as needed */
-    color: #555; /* Text color */
-    width: 90%; /* Ensure it doesn't exceed the container width */
-    word-wrap: break-word; /* Break long words */
-    word-break: break-word; /* Ensure compatibility across browsers */
-    overflow-wrap: anywhere; /* Allow breaking at any point for long words */
-    white-space: normal; /* Allow text wrapping */
-    line-height: 1.5; /* Improve readability */
-    margin: 10px auto; /* Center and add spacing */
-    text-align: left; /* Align text to the left */
-}
+            font-size: 16px;
+            /* Adjust font size as needed */
+            color: #555;
+            /* Text color */
+            width: 90%;
+            /* Ensure it doesn't exceed the container width */
+            word-wrap: break-word;
+            /* Break long words */
+            word-break: break-word;
+            /* Ensure compatibility across browsers */
+            overflow-wrap: anywhere;
+            /* Allow breaking at any point for long words */
+            white-space: normal;
+            /* Allow text wrapping */
+            line-height: 1.5;
+            /* Improve readability */
+            text-align: left;
+            /* Align text to the left */
+            margin-top: -10%;
+            margin-bottom: 15%;
+        }
 
 
-/* Make post-actions fixed at the bottom of the modal */
-.post-actions {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding: 10px 0; /* Vertical padding */
-    background-color: #fff;
-    border-top: 1px solid #ddd;
-    z-index: 10; /* Ensure it stays above other content */
-}
+        /* Make post-actions fixed at the bottom of the modal */
+        .post-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            /* Vertical padding */
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            z-index: 10;
+            /* Ensure it stays above other content */
+        }
 
 
-#postDetails {
-    overflow-y: scroll; /* Enable scrolling */
-    flex-grow: 1; /* Allow this section to grow */
-    margin-bottom: 10px; /* Add spacing before post actions */
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
-}
+        #postDetails {
+            overflow-y: scroll;
+            /* Enable scrolling */
+            flex-grow: 1;
+            /* Allow this section to grow */
+            margin-bottom: 10px;
+            /* Add spacing before post actions */
+            scrollbar-width: none;
+            /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none;
+            /* Hide scrollbar for IE and Edge */
+        }
 
-#postDetails::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
-}
+        #postDetails::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for Chrome, Safari, and Edge */
+        }
 
 
         .post-actions span {
@@ -335,15 +356,19 @@
             cursor: pointer;
         }
 
-        .close {
+        .modal-content .close {
             position: absolute;
-            top: 10px;
+            /* Always fixed in the modal */
+            top: 20px;
+            /* Position from the top */
             right: 15px;
+            /* Position from the right */
             font-size: 24px;
             cursor: pointer;
             color: #333;
+            z-index: 100;
+            /* Ensure it stays on top of other content */
         }
-
 
         /* Tabs Styling */
         .tabs {
@@ -543,21 +568,25 @@
         .dropdown-menu {
             display: none;
             /* Initially hidden */
-            position: absolute;
+            position: relative;
             /* Positioned relative to the .profile-container */
-            top: 60px;
-            /* Positioned below the menu button */
+            top: 40px;
+            /* Adjust spacing below the menu button */
             right: 20px;
+            width: 180px;
+            /* Smaller width */
             background-color: #fff;
             /* White background */
             border: 1px solid #ccc;
             /* Light border for the dropdown */
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            /* Smaller border radius */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             /* Subtle shadow for effect */
             z-index: 1000;
             /* Make sure it appears above other content */
-            padding: 10px;
+            padding: 5px;
+            /* Reduce padding for a compact design */
         }
 
         .dropdown-menu a {
@@ -567,9 +596,12 @@
             /* Remove underline */
             color: grey;
             /* Text color */
-            font-size: 16px;
-            padding: 8px;
-            border-radius: 4px;
+            font-size: 14px;
+            /* Smaller font size */
+            padding: 6px;
+            /* Reduce padding */
+            border-radius: 3px;
+            /* Smaller border radius */
             transition: background-color 0.3s, color 0.3s;
             /* Smooth hover effects */
         }
@@ -580,6 +612,7 @@
             color: black;
             /* Darker text color on hover */
         }
+
 
         .username-link {
             cursor: pointer;
@@ -605,12 +638,14 @@
 
         /* Top-left controls styling */
         .top-left-controls {
-            /* position: absolute; */
-            top: 10px;
-            left: 10px;
+            position: relative;
+            /* Ensure it's positioned within the flow of the modal */
+            top: 15px;
+            /* Adjust this value to move it further down */
+            left: 5px;
+            /* Keep it aligned on the left */
             z-index: 10;
         }
-
 
         .top-left-controls .fa-trash {
             font-size: 20px;
@@ -641,26 +676,6 @@
 
 
 
-        /* Comments Modal */
-        #commentsModal {
-            position: fixed;
-            top: 50%;
-            left: 68.34%;
-            /* Adjust to move modal further right */
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            width: 90vw; /* Adjust modal width to be responsive */
-    height: 90vh; /* Adjust modal height to be responsive */
-    max-width: 400px; /* Limit maximum width */
-    max-height: 800px; /* Limit maximum height */
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-        }
-        
 
         /* Comments Header */
         #commentsModal .comments-header {
@@ -681,14 +696,18 @@
         }
 
         #commentsModal .comments-list {
-    overflow-y: scroll; /* Enable scrolling */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
+            overflow-y: scroll;
+            /* Enable scrolling */
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
 
-#commentsModal .comments-list::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, and Edge */
-}
+        #commentsModal .comments-list::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, and Edge */
+        }
 
 
         /* Add Comment Section */
@@ -708,17 +727,33 @@
             border-radius: 5px;
         }
 
-        #commentsModal .comment-footer button {
-            background-color: #0095f6;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
 
         #commentsModal .comment-footer button:hover {
             background-color: #007bb5;
+        }
+
+        .comment-footer {
+            border-top: 1px solid #ddd;
+            /* Separate the footer with a border */
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+
+        .comment-footer button {
+            padding: 10px 20px;
+            background-color: #0095f6;
+            /* Blue for the "Post" button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .comment-footer button:hover {
+            background-color: #007bb5;
+            /* Slightly darker blue on hover */
         }
 
 
@@ -1393,170 +1428,436 @@
                 /* Full width for smaller screens */
             }
         }
+
         /* Reaction Modal Styling */
-#reaction-modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    width: 40%;
-    max-width: 500px;
-    height: 70%;
-    max-height: 600px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-}
+        #reaction-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            width: 40%;
+            max-width: 500px;
+            height: 70%;
+            max-height: 600px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
 
-/* Modal Content */
-#reaction-modal .modal-content {
-    padding: 20px;
-    text-align: center;
-    position: relative;
-    height: 100%; /* Ensure the content spans the modal */
-    display: flex;
-    flex-direction: column;
-}
+        /* Modal Content */
+        #reaction-modal .modal-content {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            height: 100%;
+            /* Ensure the content spans the modal */
+            display: flex;
+            flex-direction: column;
+        }
 
-/* Close Button */
-#reaction-modal .close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 20px;
-    color: #555;
-    cursor: pointer;
-    transition: color 0.3s;
-}
+        /* Close Button */
+        #reaction-modal .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            color: #555;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
 
-#reaction-modal .close:hover {
-    color: #000;
-}
+        #reaction-modal .close:hover {
+            color: #000;
+        }
 
-/* Tabs Styling */
-#reaction-modal .tabs {
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 10px;
-}
+        /* Tabs Styling */
+        #reaction-modal .tabs {
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
 
-#reaction-modal .tabs button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px 20px;
-    color: #555;
-    transition: color 0.3s, border-bottom 0.3s;
-    border-bottom: 2px solid transparent;
-}
+        #reaction-modal .tabs button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            color: #555;
+            transition: color 0.3s, border-bottom 0.3s;
+            border-bottom: 2px solid transparent;
+        }
 
-#reaction-modal .tabs button:hover {
-    color: #007bb5;
-}
+        #reaction-modal .tabs button:hover {
+            color: #007bb5;
+        }
 
-#reaction-modal .tabs button.active {
-    color: #007bb5;
-    border-bottom: 2px solid #007bb5;
-}
+        #reaction-modal .tabs button.active {
+            color: #007bb5;
+            border-bottom: 2px solid #007bb5;
+        }
 
-/* Tab Content */
-#reaction-modal .tab-content {
-    flex: 1;
-    overflow-y: auto; /* Makes the content scrollable */
-    padding: 10px 0;
-}
+        /* Tab Content */
+        #reaction-modal .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            /* Makes the content scrollable */
+            padding: 10px 0;
+        }
 
-/* Likes/Dislikes Section */
-#reaction-modal h3 {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 15px;
-}
+        /* Likes/Dislikes Section */
+        #reaction-modal h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
 
-/* User List */
-#reaction-modal ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        /* User List */
+        #reaction-modal ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-#reaction-modal ul li {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 30px 50px; /* Increased padding for taller and wider boxes */
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    height: 80px; /* Increased height for a taller box */
-}
+        #reaction-modal ul li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 30px 50px;
+            /* Increased padding for taller and wider boxes */
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            height: 80px;
+            /* Increased height for a taller box */
+        }
 
-#reaction-modal ul li:hover {
-    background-color: #f0f0f0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
+        #reaction-modal ul li:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
 
-/* User Profile Image */
-#reaction-modal ul li img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
+        /* User Profile Image */
+        #reaction-modal ul li img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-/* Username */
-#reaction-modal ul li span {
-    font-size: 16px;
-    color: #555;
-    font-weight: bold;
-}
+        /* Username */
+        #reaction-modal ul li span {
+            font-size: 16px;
+            color: #555;
+            font-weight: bold;
+        }
 
-/* Scrollbar Styling */
-#reaction-modal .tab-content::-webkit-scrollbar {
-    width: 8px;
-}
+        /* Scrollbar Styling */
+        #reaction-modal .tab-content::-webkit-scrollbar {
+            width: 8px;
+        }
 
-#reaction-modal .tab-content::-webkit-scrollbar-thumb {
-    background-color: #bbb;
-    border-radius: 4px;
-}
+        #reaction-modal .tab-content::-webkit-scrollbar-thumb {
+            background-color: #bbb;
+            border-radius: 4px;
+        }
 
-#reaction-modal .tab-content::-webkit-scrollbar-thumb:hover {
-    background-color: #888;
-}
+        #reaction-modal .tab-content::-webkit-scrollbar-thumb:hover {
+            background-color: #888;
+        }
 
-#reaction-modal .tab-content::-webkit-scrollbar-track {
-    background-color: #f0f0f0;
-}
-.comment-actions i {
-    position: relative; /* Ensures the icon moves with the flow of the document */
-    display: inline-block; /* Default behavior for icons */
-}
-.fa-thumbs-up,.fa-thumbs-down, .fa-comments {
-    cursor: pointer;
-}
-.overlay {
-    display: none; /* Initially hidden */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-    z-index: 999; /* Ensure it is behind the modal but above other elements */
-}
+        #reaction-modal .tab-content::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+        }
 
+        .comment-actions i {
+            position: relative;
+            /* Ensures the icon moves with the flow of the document */
+            display: inline-block;
+            /* Default behavior for icons */
+            margin-left: 10px;
+        }
+
+        .fa-thumbs-up,
+        .fa-thumbs-down,
+        .fa-comments {
+            cursor: pointer;
+        }
+
+        .overlay {
+            display: none;
+            /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent black */
+            z-index: 999;
+            /* Ensure it is behind the modal but above other elements */
+        }
+
+        .post-media {
+            width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            margin: 0 auto;
+            /* Center horizontally */
+            margin-top: 0px;
+            /* Set top margin to 0 */
+            margin-bottom: 0px;
+        }
+
+        .fa-thumbs-up.like-active {
+            color: blue;
+        }
+
+        .fa-thumbs-down.dislike-active {
+            color: red;
+        }
+
+        .header-actions {
+            display: flex;
+            /* Align elements horizontally */
+            align-items: center;
+            /* Vertically center the icons */
+            justify-content: flex-end;
+            /* Align the icons to the right */
+            gap: 10px;
+            /* Space between the pen and the menu bar */
+            padding-inline: 30px;
+        }
+
+        .header-actions i {
+            font-size: 20px;
+            /* Adjust icon size */
+            color: #333;
+            /* Default icon color */
+            cursor: pointer;
+            /* Show pointer on hover */
+            transition: color 0.3s ease, transform 0.3s ease;
+            /* Smooth hover effect */
+        }
+
+        #menu-edit {
+            position: absolute;
+            /* Position relative to the .profile-container */
+            top: 23px;
+            /* Top-right corner of the container */
+            right: 60px;
+            font-size: 15px;
+            /* Reduced icon size */
+            color: black;
+            /* Icon color */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: color 0.3s, transform 0.3s;
+            /* Smooth hover effect */
+
+
+        }
+
+
+        #menu-edit:hover {
+            color: black;
+            /* Keep icon black on hover */
+            transform: scale(1.1);
+            /* Slight zoom effect on hover */
+        }
+
+        .modal-content-edit .close {
+            right: 20px;
+            /* Move it 10px more to the left */
+            top: 10px;
+            /* Maintain the current top position */
+            position: absolute;
+            /* Ensure it stays positioned correctly */
+            font-size: 20px;
+            /* Optional: Adjust size */
+            cursor: pointer;
+            /* Make it clickable */
+        }
+
+        .comments-list li {
+            border: 1px solid #ddd;
+            /* Add a light border for separation */
+            border-radius: 8px;
+            /* Rounded corners */
+            padding: 10px;
+            /* Spacing within the comment */
+            margin-bottom: 10px;
+            /* Space between comments */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+            background-color: #fff;
+        }
+
+        /* Large tablets and small desktops (between 768px and 1200px) */
+        @media (max-width: 1200px) {
+
+            .modal-content,
+            #commentsModal {
+                max-width: 80vw;
+                /* Reduce width */
+                padding: 15px;
+                /* Decrease padding */
+            }
+
+            .profile-container {
+                max-width: 80%;
+                /* Shrink profile container width */
+            }
+
+            .profile-photo img {
+                width: 120px;
+                /* Resize profile image */
+                height: 120px;
+            }
+        }
+
+        /* Tablets and large phones (between 480px and 768px) */
+        @media (max-width: 768px) {
+
+            .modal-content,
+            #commentsModal {
+                width: 95%;
+                /* Take almost full width */
+                max-width: 95vw;
+                max-height: 70vh;
+                padding: 10px;
+                font-size: 14px;
+                /* Adjust font size for smaller screens */
+            }
+
+            .profile-header {
+                flex-direction: column;
+                /* Stack items vertically */
+                align-items: center;
+                /* Center align content */
+                text-align: center;
+                /* Align text to center */
+            }
+
+            .profile-photo img {
+                width: 100px;
+                /* Adjust image size */
+                height: 100px;
+            }
+
+            .profile-info {
+                margin-top: 10px;
+                /* Add spacing */
+                padding: 0;
+                /* Remove unnecessary padding */
+            }
+
+            .profile-stats {
+                gap: 10px;
+                /* Reduce spacing between stats */
+            }
+
+
+            /* Tabs on tablets */
+            .tabs {
+                flex-direction: column;
+                /* Stack tabs vertically */
+                gap: 10px;
+            }
+        }
+
+        /* Small phones (below 480px) */
+        @media (max-width: 480px) {
+
+            .modal-content,
+            #commentsModal {
+                width: 100%;
+                /* Take full width */
+                height: auto;
+                max-height: 60vh;
+                /* Reduce height further */
+                padding: 10px;
+                border-radius: 5px;
+                /* Reduce border radius */
+                font-size: 12px;
+                /* Smaller font size for content */
+            }
+
+            /* Profile Header for phones */
+            .profile-header {
+                gap: 10px;
+                /* Reduce spacing */
+            }
+
+            .profile-photo img {
+                width: 80px;
+                /* Resize image for small screens */
+                height: 80px;
+            }
+
+            .profile-info h2 {
+                font-size: 20px;
+                /* Reduce font size */
+            }
+
+
+            /* Comment footer input field */
+            #commentsModal .comment-footer input[type="text"] {
+                font-size: 12px;
+                /* Adjust font size for readability */
+                padding: 5px;
+            }
+
+            /* Post Reaction Modal */
+            #reaction-modal {
+                width: 95%;
+                /* Shrink width */
+                max-height: 60%;
+                /* Adjust height */
+                padding: 10px;
+            }
+
+            #reaction-modal ul li {
+                padding: 15px 10px;
+                /* Reduce padding for smaller items */
+                height: auto;
+                /* Let the list items adjust height */
+            }
+
+            /* Buttons for small phones */
+            button {
+                font-size: 12px;
+                /* Reduce button font size */
+                padding: 8px 10px;
+            }
+        }
+
+        .profile-stats a {
+            text-decoration: none;
+            /* Remove underline */
+            color: inherit;
+            /* Use the same color as the parent */
+        }
+
+        .profile-gallery .gallery-item img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-gallery .gallery-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
     </style>
+
 </head>
 
 <body>
@@ -1571,54 +1872,63 @@
             <div class="profile-info">
                 <h2>
                     <%= user.firstName %>
-                        <%=user.lastName %>
+                        <%= user.lastName %>
                 </h2>
                 <br>
-                <div class="profile-stats">
-                    <p><strong>Posts</strong>: <%= user.postsCount || 0 %>
-                    </p>
-                    <p><strong>Friends</strong>: <%= user.friends.length || 0 %>
-                    </p>
-                </div>
-                <h4 class="username">
-                    <span class="username-link" onclick="copyToClipboard('<%= user._id %>')">@<%= user.username %>
+                <h4 class="username" style="display: flex; align-items: center; gap: 10px;">
+                    <span class="username-link" onclick="copyToClipboard('<%= user._id %>')">
+                        <%= user.username %>
                     </span>
+                    <span class="profile-stats">
+                        <p><strong>Posts</strong>: <%= user.postsCount || 0 %>
+                        </p>
+                        <a href="/friend">
+                            <p><strong>Friends</strong>: <%= user.friends.length || 0 %>
+                            </p>
+                        </a>
+                    </span>
+
                 </h4>
-
-
-                <button class="edit-profile-btn" onclick="openEditProfileModal()">Edit Profile</button>
-
                 <br>
                 <div class="profile-bio">
-                    <p class="bio">
-                        <%= user.bio || "Bio not provided" %>
-                    </p>
+
                     <p class="dateOfBirth">
+                        <i class="far fa-calendar-alt" style="color: #389c9c;"></i>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" style="width: 17px; ">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0L3 16.5m15-3.379a48.474 48.474 0 0 0-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 0 1 3 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 0 1 6 13.12M12.265 3.11a.375.375 0 1 1-.53 0L12 2.845l.265.265Zm-3 0a.375.375 0 1 1-.53 0L9 2.845l.265.265Zm6 0a.375.375 0 1 1-.53 0L15 2.845l.265.265Z" />
+                          </svg>
+                           -->
                         <%= user.formattedDateOfBirth || "Date of birth not provided" %>
                     </p>
                     <p class="gender">
+                        <i class="glyphicon glyphicon-user" style="color: #389c9c;"></i>
                         <%= user.gender || "Gender not specified" %>
                     </p>
                     <p class="address">
+                        <i class="fa fa-map-marker" style="color: #389c9c;"></i>
                         <%= user.address || "Address not provided" %>
                     </p>
-                </div>
-
-
-            </div>
-            <div>
-                <!-- Menu button -->
-                <i class="fa fa-bars menu-btn" onclick="toggleMenu()"></i>
-
-                <!-- Dropdown menu -->
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="#" id="deactivateAccount">Deactivate Account</a>
-                    <a href="#" id="deleteAccount">Delete Account</a>
-                    <a href="/home/logout" id="logout">Logout</a>
+                    <p class="bio">
+                        <i class="	far fa-newspaper" style="color: #389c9c;"></i>
+                        <%= user.bio || "Bio not provided" %>
+                    </p>
                 </div>
             </div>
+            <div class="header-actions"
+                style="display: flex; align-items: center; justify-content: flex-end; gap: 10px;">
+                <i class="fas fa-user-edit" id="menu-edit" style="cursor: pointer;" onclick="openEditProfileModal()"></i>
+                <i class="fa fa-bars menu-btn" style="cursor: pointer;" onclick="toggleMenu()"></i>
+            </div>
 
+
+            <!-- Dropdown menu -->
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="#" id="deactivateAccount">Deactivate Account</a>
+                <a href="#" id="deleteAccount">Delete Account</a>
+                <a href="/home/logout" id="logout">Logout</a>
+            </div>
         </div>
+
 
         <div class="profile-gallery">
             <% posts.forEach(post=> { %>
@@ -1660,7 +1970,6 @@
     <div id="editProfileModal" style="display: none;">
         <div class="modal-content-edit">
             <span class="close" onclick="closeEditProfileModal()">&times;</span>
-            <h3>Edit Profile</h3>
 
             <div class="tabs">
                 <button onclick="openTab(event, 'edit-info')" class="tab-button active">Edit Info</button>
@@ -1851,46 +2160,60 @@
         }
 
         async function openPostModal(postId) {
-            document.getElementById('postModal').style.display = 'flex';
-            document.getElementById('overlay').style.display = 'block'; // Show overlay
+            const postModal = document.getElementById('postModal');
+            const overlay = document.getElementById('overlay');
+            const postDetails = document.getElementById('postDetails');
+
+            postModal.style.display = 'flex';
+            overlay.style.display = 'block'; // Show overlay
 
             try {
+                // Fetch post details dynamically
                 const response = await fetch(`/posts/${postId}`);
                 const data = await response.json();
 
-                const postDetails = document.getElementById('postDetails');
                 postDetails.innerHTML = `
-            <!-- Top Controls (Trash Icon) -->
             <div class="top-left-controls">
                 <i class="fa fa-trash" title="Delete Post" onclick="confirmDelete('post', '${data._id}')"></i>
             </div>
-
-            <!-- Post Media -->
-            <img src="${data.mediaUrl}" alt="Post Media" style="width: 90%; max-height: 90%; object-fit: contain; margin-top: 0px;">
-
-            <!-- Post Caption -->
-<div id="postCaption-${data._id}" class="post-caption">
-    ${data.content ? data.content : 'No caption providedddfwuefbiuwfbiwbfp;wifp;wuifbp;waiudfcolwvf;qwevf;ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddkkkkkkkkkkkk.'}
-</div>
-
-
-            <!-- Post Actions -->
-        <div class="post-actions">
-            <i class="fa fa-thumbs-up" onclick="toggleLike(event, '${data._id}')"></i>
-            <span id="likes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'likes')">
-                ${data.likesCount}
-            </span>
-            <i class="fa fa-thumbs-down" onclick="toggleDislike(event, '${data._id}')"></i>
-            <span id="dislikes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'dislikes')">
-                ${data.dislikesCount}
-            </span>
-            <i class="fa fa-comments" onclick="loadComments('${data._id}')"></i>
-            <span class="commentcount">${data.comments.length}</span>
-        </div>
+            <img src="${data.mediaUrl}" alt="Post Media" class="post-media">
+            <div id="postCaption-${data._id}" class="post-caption">
+                ${data.content || 'No caption provided'}
+            </div>
+            <div class="post-actions">
+                <i 
+                    class="fa fa-thumbs-up ${data.isLiked ? 'like-active' : ''}" 
+                    onclick="toggleLike(event, '${data._id}')">
+                </i>
+                <span id="likes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'likes')">
+                    ${data.likesCount}
+                </span>
+                <i 
+                    class="fa fa-thumbs-down ${data.isDisliked ? 'dislike-active' : ''}" 
+                    onclick="toggleDislike(event, '${data._id}')">
+                </i>
+                <span id="dislikes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'dislikes')">
+                    ${data.dislikesCount}
+                </span>
+                <i class="fa fa-comments" onclick="loadComments('${data._id}')"></i>
+                <span class="commentcount">${data.comments.length}</span>
+            </div>
         `;
             } catch (error) {
                 console.error("Error loading post details:", error);
             }
+        }
+
+        function closePostModal() {
+            const postModal = document.getElementById('postModal');
+            const overlay = document.getElementById('overlay');
+            const postDetails = document.getElementById('postDetails');
+
+            postModal.style.display = 'none';
+            overlay.style.display = 'none';
+
+            // Clear modal content to avoid carrying over outdated states
+            postDetails.innerHTML = '';
         }
 
         function closePostModal() {
@@ -1944,11 +2267,11 @@
                         <div class="comment-actions" style="display: flex; gap: 10px; align-items: center;">
                             <i class="fa fa-thumbs-up" id="comment-thumb-up-${comment._id}" 
                                onclick="toggleCommentLike('${comment._id}', event); event.stopPropagation()"></i>
-                            <span id="comment-likes-${comment._id}">${comment.likesCount}</span>
+                            <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'likes')">${comment.likesCount}</span>
 
                             <i class="fa fa-thumbs-down" id="comment-thumb-down-${comment._id}" 
                                onclick="toggleCommentdisLike('${comment._id}', event); event.stopPropagation()"></i>
-                            <span id="comment-dislikes-${comment._id}">${comment.dislikesCount}</span>
+                            <span id="comment-dislikes-${comment._id}"  onclick="openReactionModal('comment','${comment._id}', 'dislikes')">${comment.dislikesCount}</span>
 
                             <i class="fa-solid fa-reply" id="comment-reply-${comment._id}" 
                                onclick="toggleReplyBox('${comment._id}'); event.stopPropagation()"></i>
@@ -1984,11 +2307,11 @@
                                         <div class="reply-actions" style="display: flex; gap: 10px; align-items: center;">
                                             <i class="fa fa-thumbs-up" id="reply-thumb-up-${reply._id}" 
                                                onclick="toggleReplyLike('${comment._id}', '${reply._id}', event); event.stopPropagation()"></i>
-                                            <span id="reply-likes-${reply._id}">${reply.likesCount}</span>
+                                            <span id="reply-likes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'likes')">${reply.likesCount}</span>
 
                                             <i class="fa fa-thumbs-down" id="reply-thumb-down-${reply._id}" 
                                                onclick="toggleReplydisLike('${comment._id}', '${reply._id}', event); event.stopPropagation()"></i>
-                                            <span id="reply-dislikes-${reply._id}">${reply.dislikesCount}</span>
+                                            <span id="reply-dislikes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'dislikes')">${reply.dislikesCount}</span>
 
                                             ${reply.isOwner ? `
                                             <i class="fa fa-trash" id="reply-trash-${reply._id}" 
@@ -2038,10 +2361,11 @@
         }
 
 
-        // Function to add a comment
         async function addComment(postId) {
-            const commentText = document.getElementById(`new-comment-${postId}`).value.trim();
-            if (!commentText) return;
+            const commentInput = document.getElementById(`new-comment-${postId}`);
+            const commentText = commentInput.value.trim();
+
+            if (!commentText) return; // Don't proceed if the input is empty
 
             try {
                 const response = await fetch(`/posts/${postId}/comment`, {
@@ -2051,13 +2375,33 @@
                 });
 
                 if (response.ok) {
-                    loadComments(postId); // Reload comments after posting a new one
-                    document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
+                    const data = await response.json(); // Server response with updated comment count
+
+                    // Reload comments dynamically
+                    loadComments(postId);
+
+                    // Update the comment count in the modal
+                    const commentCountElement = document.querySelector(`#postModal .commentcount`);
+                    if (commentCountElement) {
+                        commentCountElement.textContent = `${data.updatedCommentCount}`;
+                    }
+
+                    // Update the comment count on the main post
+                    const postCommentCountElement = document.querySelector(`#post-${postId} .commentcount`);
+                    if (postCommentCountElement) {
+                        postCommentCountElement.textContent = `${data.updatedCommentCount}`;
+                    }
+
+                    // Clear the input field
+                    commentInput.value = '';
+                } else {
+                    console.error('Error adding comment:', await response.text());
                 }
             } catch (error) {
-                console.error("Error adding comment:", error);
+                console.error('Error adding comment:', error);
             }
         }
+
 
 
 
@@ -2336,59 +2680,63 @@
             deleteId = id;
             document.getElementById('delete-modal').style.display = 'block';
         }
+
+
+
         async function toggleLike(event, postId) {
+            const likeIcon = event.target;
+            const dislikeIcon = document.querySelector(`#dislikes-count-${postId}`).previousElementSibling;
+            const likesCountElement = document.getElementById(`likes-count-${postId}`);
+            const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
+
             try {
                 const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+                const data = await response.json();
+
                 if (response.ok) {
-                    const data = await response.json();
+                    // Update counts
+                    likesCountElement.textContent = `${data.likesCount}`;
+                    dislikesCountElement.textContent = `${data.dislikesCount}`;
 
-                    // Update the like count dynamically
-                    const likeCountElement = document.getElementById(`likes-count-${postId}`);
-                    const likeIcon = event.target; // Get the clicked like icon
-
-                    if (likeCountElement) {
-                        likeCountElement.textContent = `${data.likesCount}`;
-                    }
-
-                    // Add animation class for effect
-                    likeIcon.classList.add('like-active');
-
-                    // Remove animation class after the animation is complete
-                    setTimeout(() => likeIcon.classList.remove('like-active'), 300);
+                    // Toggle like/dislike classes
+                    likeIcon.classList.toggle('like-active', data.isLiked);
+                    dislikeIcon.classList.toggle('dislike-active', data.isDisliked);
                 } else {
-                    console.error("Failed to like the post:", await response.text());
+                    console.error("Failed to like the post:", data.message);
                 }
             } catch (error) {
                 console.error("Error toggling like:", error);
             }
         }
 
+
         async function toggleDislike(event, postId) {
+            const dislikeIcon = event.target;
+            const likeIcon = document.querySelector(`#likes-count-${postId}`).previousElementSibling;
+            const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
+            const likesCountElement = document.getElementById(`likes-count-${postId}`);
+
             try {
                 const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
+                const data = await response.json();
+
                 if (response.ok) {
-                    const data = await response.json();
+                    // Update counts
+                    dislikesCountElement.textContent = `${data.dislikesCount}`;
+                    likesCountElement.textContent = `${data.likesCount}`;
 
-                    // Update the dislike count dynamically
-                    const dislikeCountElement = document.getElementById(`dislikes-count-${postId}`);
-                    const dislikeIcon = event.target; // Get the clicked dislike icon
-
-                    if (dislikeCountElement) {
-                        dislikeCountElement.textContent = `${data.dislikesCount}`;
-                    }
-
-                    // Add animation class for effect
-                    dislikeIcon.classList.add('dislike-active');
-
-                    // Remove animation class after the animation is complete
-                    setTimeout(() => dislikeIcon.classList.remove('dislike-active'), 300);
+                    // Toggle dislike/like classes
+                    dislikeIcon.classList.toggle('dislike-active', data.isDisliked);
+                    likeIcon.classList.toggle('like-active', data.isLiked);
                 } else {
-                    console.error("Failed to dislike the post:", await response.text());
+                    console.error("Failed to dislike the post:", data.message);
                 }
             } catch (error) {
                 console.error("Error toggling dislike:", error);
             }
         }
+
+
 
         function closeDeleteModal() {
             document.getElementById('delete-modal').style.display = 'none';

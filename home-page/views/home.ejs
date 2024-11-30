@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Home - Social Media</title>
     <link rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 
 <style>
@@ -19,7 +20,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e0ecff;
+            background-color: #e0e7f8;
             overflow-x: hidden;
             /* Prevents horizontal scrolling */
         }
@@ -35,26 +36,10 @@
             justify-content: space-between;
         }
 
-        /* Media Query to Collapse Sidebars on Smaller Screens */
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .right-sidebar {
-                transform: translateX(100%);
-            }
-
-            .feed {
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
 
         /* Sidebar Styling */
         .right-sidebar {
-            width: 15%;
+            width: 18%;
             /* Sidebar width */
             height: calc(100vh - 20px);
             /* Full viewport height minus padding */
@@ -74,7 +59,7 @@
 
 
         .sidebar {
-            width: 240px;
+            width: 18%;
             /* Fixed width to match the profile link */
 
 
@@ -101,16 +86,17 @@
         .right-sidebar {
             top: 10px;
             right: 10px;
-            padding-left: 7px;
+           
         }
 
 
         /* Sidebar Items Styling */
         .sidebar ul,
         .right-sidebar ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+            padding: 0; /* Ensure no extra padding around ul */
+    margin: 0; /* Remove margin */
+    width: 100%; /* Set ul to full width */
+    list-style: none; /* Remove bullets */
         }
 
       .sidebar ul li,
@@ -122,86 +108,136 @@
             padding-left: 20px;
             padding-right: 20px;
             position: relative;
-            padding-left: 25px;
+            
             /* Add space for the left bar */
         }
 
 
 
 
-        .sidebar ul li a {
-            background-color: transparent;
-            /* No individual background */
-            color: #333;
-            /* Text color */
-            padding: 15px;
-            border-radius: 8px;
-            display: block;
+.sidebar i{
+    padding-right: 8px;
+}
+.sidebar ul {
+    width: 100%; /* Set the ul to occupy full sidebar width */
+    padding: 10px; /* Add padding around ul */
+    background-color: #ffffff; /* Optional: Different background for ul */
+    border-radius: 12px; /* Optional: Rounded corners for ul */
+    list-style: none; /* Remove bullet points */
+    box-sizing: border-box; /* Ensure padding doesn't overflow */
+}
 
+.sidebar ul li {
+    height: auto; /* Allow flexible height */
+    line-height: 1.5; /* Adjust line height for better spacing */
+    width: 80%; /* Make li smaller than ul */
+    margin: 5px auto; /* Center the li elements horizontally */
+    padding: 10px; /* Add padding for a better appearance */
+    background-color: rgb(243, 243, 243); /* Background for li */
+    border-radius: 10px; /* Rounded corners for li */
+    text-align: left; /* Align text inside the li */
+    transition: all 0.3s ease-in-out; /* Smooth transitions on hover */
+    margin-top: 10px;
+}
 
-            text-decoration: none;
-            transition: color 0.3s;
-            /* Smooth color transition */
-        }
+.sidebar ul li a {
+    display: block; /* Make the link fill the list item */
+    color: #389c9c; /* Text color */
+    text-decoration: none; /* Remove underline */
+    font-size: 18px; /* Slightly larger font for readability */
+    border-radius: 8px; /* Optional: rounded corners for a */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover transition */
+}
 
-        .sidebar ul li a:hover {
-            color: #007bff;
-            /* Highlight text color on hover */
-            transform: translateY(-2px);
-            /* Slight lift effect */
-        }
+.sidebar ul li:hover {
+    transform: scale(1.05); /* Slightly scale li on hover */
+    background-color: #ddd; /* Change li background on hover */
+}
 
+/* Profile Link Styling */
+.profile-link {
+    width: 16.5%; /* Adjust width dynamically */
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    padding: 10px; /* Reduce padding for better shrinkability */
+    transition: all 0.3s ease;
+}
 
+/* Profile Picture */
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent the image from shrinking */
+}
 
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        /* Profile Section Styling */
-        .profile-link {
-            width: 200px;
-            /* Fixed width to match the sidebar */
-            background-color: #ffffff;
-            /* Same background as the sidebar */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            /* Same shadow as the sidebar */
-            border-radius: 10px;
-            /* Same rounded corners as the sidebar */
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            align-items: center;
-            position: fixed;
-            top: 10px;
-            /* Position above the sidebar */
-            left: 10px;
-            padding: 20px;
-        }
+/* Profile Name */
+.profile-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-left: 10px; /* Space between name and picture */
+    transition: opacity 0.3s ease; /* Smooth transition for visibility */
+}
+
+/* Media Query for Shrinking */
+@media (max-width: 900px) {
+    .profile-link {
+        width: 50px; /* Match the profile picture size */
+        padding: 0; /* Remove extra padding */
+        top: 10px; /* Adjust top position */
+        left: 10px; /* Adjust left position */
+        justify-content: center; /* Center align the picture */
+    }
+
+    .profile-name {
+        display: none; /* Hide the profile name */
+    }
+
+    .profile-picture {
+        width: 40px; /* Slightly smaller for mobile view */
+        height: 40px;
+    }
+}
 
         .profile-link:hover {
             background-color: #f0f2f5;
         }
-
         .create-post-link {
-            padding: 20px;
-            width: 200px;
-            /* Fixed width to match the sidebar */
-            background-color: #007bff;
-            /* Same background as the sidebar */
-            box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
-            /* Same shadow as the sidebar */
-            border-radius: 30px;
-            /* Same rounded corners as the sidebar */
-            text-decoration: none;
-            color: white;
-            display: flex;
-            align-items: center;
-            position: fixed;
-            top: 130px;
-            /* Position above the sidebar */
-            left: 10px;
-        }
+    padding: 20px;
+    width: 15%;
+    background-color: #389c9c;
+    box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
+    border-radius: 30px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the text inside the button */
+    position: fixed;
+    top: 130px;
+    left: 10px;
+    transition: all 0.3s ease; /* Smooth shrinking */
+}
 
         .create-post-link:hover {
-            background-color: rgb(0, 0, 170);
-            transform: scale(1.05);
+            background-color: #1f7878;
+            transform: scale(1.03);
             /* Scale the button slightly larger */
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
             /* Add a shadow to give depth */
@@ -225,11 +261,7 @@
         }
 
 
-        .profile-name {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
+
 
         /* Feed Section */
         .feed {
@@ -250,13 +282,14 @@
     overflow-x: auto;
     white-space: nowrap;
     background-color: #fff;
+    border-radius: 10px;
+    width: 90%;
     border-bottom: 1px solid #dbdbdb;
 }
 /* User name styling */
 .story-details {
     position: absolute;
     top: 10px;
-    left: 50%;
     transform: translateX(-50%);
     color: white;
     font-size: 16px;
@@ -274,15 +307,32 @@
     width: 70px;
     height: 70px;
     margin: auto;
-    border-radius: 50%;
+    border-radius: 50%; /* Makes it a circle */
     overflow: hidden;
-    border: 2px solid #0095f6;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee, #89f7fe, #fbc2eb); /* Multicolor gradient */
+    background-size: 200% 200%; /* Double the size for animation */
+    border: 3px solid transparent; /* Create space for the gradient border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Needed for pseudo-element */
+    animation: gradient-animation 3s infinite; /* Gradient animation */
 }
 
-.story img {
+.story-image-wrapper img {
+    border-radius: 50%; /* Ensures the image is a circle */
     width: 100%;
     height: 100%;
     object-fit: cover;
+    position: relative; /* To sit inside the circle */
+    z-index: 1; /* Ensures the image is above the pseudo-element */
+}
+
+/* Optional: Add a glowing animation around the border */
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .story p {
@@ -353,14 +403,7 @@
 .nav-arrow:hover {
     background: rgba(0, 0, 0, 0.8);
 }
-        .close {
-            position: absolute;
-            right: 20px;
-            top: 10px;
-            font-size: 28px;
-            color: #aaa;
-            cursor: pointer;
-        }
+ 
 
         .close:hover {
             color: black;
@@ -374,7 +417,7 @@
         .post-button {
             width: 100%;
             padding: 10px;
-            background-color: #007bff;
+            background-color: #389c9c;
             color: white;
             border: none;
             border-radius: 5px;
@@ -384,7 +427,7 @@
         }
 
         .post-button:hover {
-            background-color: #0056b3;
+            background-color: #1f7878;
             transform: translateY(-3px);
             /* Moves the button up slightly to create a "pop" effect */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -411,7 +454,7 @@
         }
 
         #caption:focus {
-            border-color: #007bff;
+            border-color: #1f7878;
             outline: none;
             background-color: #fff;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
@@ -536,67 +579,6 @@
             height: 30px;
         }
 
-        /* Remove bullets from the notification list */
-        #notificationsList {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        /* Style each notification item */
-        #notificationsList li {
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Button styling for Accept, Decline, and Delete */
-        #notificationsList li button {
-            margin-left: 10px;
-            padding: 5px 10px;
-            font-size: 14px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Accept button style */
-        #notificationsList li button.accept-button {
-            background-color: #007bff;
-            /* Green */
-            color: white;
-        }
-
-        #notificationsList li button.accept-button:hover {
-            background-color: #006adb;
-        }
-
-        /* Decline button style */
-        #notificationsList li button.decline-button {
-            background-color: #f44336;
-            /* Red */
-            color: white;
-        }
-
-        #notificationsList li button.decline-button:hover {
-            background-color: #d30400;
-        }
-
-        /* Delete button style */
-        #notificationsList li button.delete-button {
-            background-color: grey;
-
-            color: white;
-        }
-
-        #notificationsList li button.delete-button:hover {
-            background-color: rgb(90, 90, 90);
-        }
 
         /* From Uiverse.io by alexruix */
         .group {
@@ -693,12 +675,6 @@
             /* Optional: rounded edges */
         }
 
-        .post-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 10px;
-        }
 
 
         .commentSection {
@@ -862,7 +838,7 @@
             background-color: #007bff;
             color: #fff;
             border: none;
-            border-radius: 20px;
+            border-radius: 50%;
             padding: 5px 10px;
             font-size: 14px;
             cursor: pointer;
@@ -961,6 +937,568 @@
     font-size: 16px;
 }
 
+/* Notification Modal Scroll Styling */
+#notification-modal .modal-content {
+    max-height: 70vh; /* Set a fixed height */
+    width: 50%; /* Set a width as per your design */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    padding: 20px; /* Add padding for the content */
+    box-sizing: border-box; /* Include padding and borders in size calculations */
+    background-color: #ffffff; /* Background color of the modal */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* Subtle shadow */
+}
+
+/* Custom Scrollbar Styling */
+#notification-modal .modal-content::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar track */
+}
+
+#notification-modal .modal-content::-webkit-scrollbar-track {
+    background: #f0f4ff; /* Light background for the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+#notification-modal .modal-content::-webkit-scrollbar-thumb {
+    background-color: #007bff; /* Bright blue scrollbar */
+    border-radius: 10px; /* Rounded corners for the scrollbar */
+    border: 2px solid #f0f4ff; /* Add a border for a smooth edge */
+}
+
+#notification-modal .modal-content::-webkit-scrollbar-thumb:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border: 2px solid #e0e7f8; /* Update border on hover */
+}
+
+/* Optional Scrollbar Styling for Cross-Browser Support */
+#notification-modal .modal-content {
+    scrollbar-width: thin; /* For Firefox: thin scrollbar */
+    scrollbar-color: #007bff #f0f4ff; /* Blue thumb and light track */
+}
+
+/* Default state for the profile link and create post button */
+.profile-link, .create-post-link {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    /* Smooth transition for transform and opacity */
+}
+
+
+/* Adjust for smaller screens */
+@media (max-width: 900px) {
+    .sidebar ul li {
+        padding: 10px; /* Add padding for smaller screens */
+        font-size: 14px; /* Adjust font size */
+    }
+
+    .sidebar ul li a {
+        font-size: 14px; /* Adjust font size for links */
+    }
+}
+/* Media Query to Collapse Sidebars on Smaller Screens */
+@media (max-width: 900px) {
+    .sidebar {
+        transform: translateX(-100%); /* Hide the sidebar by moving it off-screen */
+    }
+
+    .right-sidebar {
+        transform: translateX(100%); /* Hide the right sidebar by moving it off-screen */
+    }
+
+    .feed {
+        width: 100%; /* Expand the feed to full width */
+        margin-left: 0; /* Remove left margin */
+        margin-right: 0; /* Remove right margin */
+    }
+}
+
+@media (max-width: 900px) {
+    .create-post-link {
+        transform: translateX(-100%); /* Hide the sidebar by moving it off-screen */
+    }
+}
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.posts {
+    width: 90%;
+    max-width: 800px;
+    color: #333;
+}
+
+/* Heading */
+.posts-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Post Styling */
+.post {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Post Header */
+.post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.post-author-image-container {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.post-author-image {
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Ensure it's equal to width for a perfect circle */
+    border-radius: 50%; /* Makes the image round */
+    object-fit: cover; /* Ensures the image fits without being cut */
+    overflow: hidden; /* Prevents overflow if any */
+}
+
+
+.post-author-details {
+    flex: 1;
+}
+
+.post-author-username {
+    position: relative;
+    top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}
+
+
+/* Username Hover Effect */
+.post-author-username:hover {
+    font-size: 17px; /* Slightly larger */
+    color: black; /* A brighter blue shade */
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Adds a subtle glow effect */
+    transition: all 0.3s ease; /* Smooth transition for the effect */
+}
+
+
+.post-date {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Delete Button */
+.post-delete-button {
+    
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: black;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.post-delete-button:hover {
+    color: red;
+}
+
+/* Post Content */
+.post-content {
+    margin: 15px 0;
+}
+.post-caption {
+    font-size: 16px;
+    margin-bottom: 10px;
+    word-wrap: break-word; /* Break long words to prevent overflow */
+    white-space: pre-wrap; /* Preserve line breaks and allow wrapping */
+    overflow-wrap: break-word; /* Break words if necessary */
+}
+
+
+.post-media {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
+/* Post Actions */
+.post-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    color: black;
+}
+.post-actions span{
+    cursor: default;
+}
+
+.reaction-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: black;
+}
+
+.reaction-button i {
+    margin-right: 5px;
+}
+
+.reaction-button:hover {
+    color: #333;
+}
+
+/* Ensure comment section is hidden initially */
+.comment-section {
+    display: none; /* Hidden by default */
+    margin-top: 10px;
+    border-top: 1px solid #dbdbdb;
+    padding-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+
+.comment-section h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.comment-input {
+    width: calc(100% - 100px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.comment-post-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.comment-post-button:hover {
+    background-color: #0056b3;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+}
+
+.modal-content button {
+    padding: 10px 15px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#confirm-delete {
+    background-color: red;
+    color: white;
+}
+
+#confirm-delete:hover {
+    background-color: darkred;
+}
+
+#cancel-delete {
+    background-color: #ddd;
+    color: #333;
+}
+
+#cancel-delete:hover {
+    background-color: #bbb;
+}
+
+.fa-comment,.fa-thumbs-up,.fa-thumbs-down{
+    cursor: pointer;
+}
+
+/* Modal Background */
+#reaction-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000; /* Make sure it's above other content */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal Content */
+#reaction-modal .modal-content {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+}
+
+/* Close Button */
+#reaction-modal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#reaction-modal .close:hover {
+    color: red; /* Highlight on hover */
+}
+
+/* Tabs Section */
+#reaction-modal .tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+}
+
+#reaction-modal .tabs button {
+    flex: 1; /* Equal width for both tabs */
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#reaction-modal .tabs button.active {
+    background-color: #007bff;
+    color: #ffffff;
+    border-radius: 10px 10px 0 0; /* Rounded corners for active tab */
+}
+
+#reaction-modal .tabs button:hover {
+    background-color: #0056b3;
+    color: #ffffff;
+}
+
+/* Tab Content */
+#reaction-modal .tab-content {
+    display: none; /* Hide content by default */
+}
+
+#reaction-modal .tab-content.active {
+    display: block; /* Show active tab content */
+}
+
+/* List Styling */
+#reaction-modal ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#reaction-modal ul li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+
+
+/* User Profile Image */
+#reaction-modal ul li img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Username Styling */
+#reaction-modal ul li span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Fade-In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+        /* Remove bullets from the notification list */
+        #notificationsList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+#notificationsList li {
+    list-style: none;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align text and buttons to the start */
+}
+
+#notificationsList .button-group {
+    display: flex;
+    gap: 10px; /* Add space between buttons */
+    margin-top: 10px; /* Add spacing between text and buttons */
+}
+
+#notificationsList a {
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+}
+
+#notificationsList button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#notificationsList .accept-button {
+    background-color: #007bff;
+    color: white;
+}
+
+#notificationsList .accept-button:hover {
+    background-color: #0056b3;
+}
+
+#notificationsList .decline-button {
+    background-color: #f44336;
+    color: white;
+}
+
+#notificationsList .decline-button:hover {
+    background-color: #d32f2f;
+}
+
+#notificationsList .delete-button {
+    background-color: gray;
+    color: white;
+}
+
+#notificationsList .delete-button:hover {
+    background-color: #333;
+}
+
+/* Add Friend Button (Circular) */
+.add-friend-btn {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White icon color */
+    border: none;
+    border-radius: 50%; /* Makes it circular */
+    width: 40px; /* Fixed width for circle */
+    height: 40px; /* Fixed height for circle */
+    display: flex; /* Flexbox for centering content */
+    align-items: center; /* Vertically center icon */
+    justify-content: center; /* Horizontally center icon */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
+    font-size: 18px; /* FontAwesome icon size */
+}
+
+.add-friend-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Remove Friend Button (Circular) */
+.remove-friend-btn {
+    background-color: #f44336; /* Red background */
+    color: #fff; /* White icon color */
+    border: none;
+    border-radius: 50%; /* Makes it circular */
+    width: 40px; /* Fixed width for circle */
+    height: 40px; /* Fixed height for circle */
+    display: flex; /* Flexbox for centering content */
+    align-items: center; /* Vertically center icon */
+    justify-content: center; /* Horizontally center icon */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
+    font-size: 18px; /* FontAwesome icon size */
+}
+
+.remove-friend-btn:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
 
     </style>
 </head>
@@ -977,27 +1515,30 @@
             </div>
         </a>
 
-        <a href="#" class="create-post-link" onclick="openModal()">Create Post</a>
-
+        <a href="#" class="create-post-link" onclick="openModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon" style="width: 20px; height: 20px; vertical-align: middle;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>Create Post</a>
+          
         <div class="sidebar">
 
             <aside>
 
                 <ul>
 
-                    <li><a href="/home" id="home-link">Home</a></li>
+                    <li><a href="/home" id="home-link"><i class="fa fa-home"></i>Home</a></li>
 
                     <li id="friends">
-                        <a href="/friend" id="fr">Friends</a>
+                        <a href="/friend" id="fr"><i class='fas fa-user-friends'></i>Friends</a>
                     </li>
 
 
-                    <li id="chats"><a href="/chats" id="ch">Chats</a></li>
+                    <li id="chats"><a href="/chats" id="ch">    <i class="fa fa-comments"></i>Chats</a></li>
                     <li href="/home/notifications" class="notifications-link">
-                        <a onclick="openNotificationModal()" id="notify">Notifications</a>
+                        <a onclick="openNotificationModal()" id="notify"><i class="fa fa-bell"></i>Notifications</a>
                     </li>
                     <li href="/friend/list" class="search" id="searchTab">
-                        <a onclick="openSearchModal()" id="search">Search Friends</a>
+                        <a onclick="openSearchModal()" id="search"><i class="fa fa-search"></i>Search</a>
                     </li>
 
                 </ul>
@@ -1098,105 +1639,83 @@
             </div> -->
 
 
-            <!-- Posts Feed Section -->
             <section class="posts">
-                <h2>Posts</h2>
-                <% posts.forEach(post=> { %>
+                <h2 class="posts-heading">Posts</h2>
+                <% posts.forEach(post => { %>
                     <article class="post">
-                        <!-- Post Author and Caption -->
-                        <p>
-                            <img src="<%= post.user.profileImage || '/path/to/default-profile.png' %>"
-                                alt="<%= post.user.firstName %>"
-                                style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
-
-                            <strong>
-                                <a
-                                    href="<%= post.user._id.toString() === user._id.toString() ? '/home/profile' : `/home/profile/user/${post.user._id}` %>">
-                                    <%= post.user.username %>
-                                </a>
-                            </strong>
-                        <p>
-                            <%= post.content %>
-                        </p>
-                        </p>
-                        <p class="privacy-level">Privacy: <%= post.privacy %>
-                        </p>
-                        <p class="date">
-                            Posted on: <%= new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric' ,
-                                month: 'short' , day: 'numeric' }) %>
-                        </p>
-
-                        <% if (post.isOwner) { %>
-                            <!-- Only show delete button for the post owner -->
-                            <button onclick="confirmDelete('post', '<%= post._id %>')">Delete Post</button>
+                        <!-- Post Header -->
+                        <div class="post-header">
+                            <div class="post-author-image-container">
+                                <img src="<%= post.user.profileImage || '/path/to/default-profile.png' %>" 
+                                     alt="<%= post.user.firstName %>" class="post-author-image">
+                            </div>
+                            <div class="post-author-details">
+                                <a href="<%= post.user._id.toString() === user._id.toString() ? '/home/profile' : `/home/profile/user/${post.user._id}` %>"
+                                   class="post-author-username"><%= post.user.username %></a>
+                                <p class="post-date"><%= new Date(post.createdAt).toLocaleDateString('en-US', {
+                                    year: 'numeric', month: 'short', day: 'numeric'
+                                }) %></p>
+                            </div>
+                            <% if (post.isOwner) { %>
+                                <button class="post-delete-button" onclick="confirmDelete('post', '<%= post._id %>')">
+                                    <i class="fa fa-trash"></i>
+                                </button>
                             <% } %>
-
-                            <br>
-                            <!-- Post Media -->
-                            <% if (post.mediaUrl) { %>
-                                <% if (post.mediaType==='image' ) { %>
-                                    <img src="<%= post.mediaUrl %>" alt="Post image" style="max-width: 100%;">
-                                    <% } else if (post.mediaType==='video' ) { %>
-                                        <video controls style="max-width: 100%;">
-                                            <source src="<%= post.mediaUrl %>" type="video/mp4">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                        <% } %>
-                                            <% } %>
-                        <!-- Like and Comment Buttons -->
-                        <div class="post-actions">
-
-                            <label class="like-icon">
-                                <input type="checkbox" onclick="toggleLike(event, '<%= post._id %>')" />
-                                <div class="checkmark">
-                                    <svg fill="none" viewBox="0 0 24 24">
-                                        <path
-                                            stroke-linejoin="round"
-                                            stroke-linecap="round"
-                                            stroke-width="1.3"
-                                            stroke="#FFFFFF"
-                                            d="M8 10V20M8 10L4 9.99998V20L8 20M8 10L13.1956 3.93847C13.6886 3.3633 14.4642 3.11604 15.1992 3.29977L15.2467 3.31166C16.5885 3.64711 17.1929 5.21057 16.4258 6.36135L14 9.99998H18.5604C19.8225 9.99998 20.7691 11.1546 20.5216 12.3922L19.3216 18.3922C19.1346 19.3271 18.3138 20 17.3604 20L8 20">
-                                        </path>
-                                    </svg>
-                                </div>
-                            </label>
-
-                            <span id="likes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'likes')">
-                                <%= post.likes.length %> Likes
-                              </span>
-
-                            <span class="like-icon" onclick="toggledisLike(event, '<%= post._id %>')">❤️</span>
-                            <span id="dislikes-count-<%= post._id %>" onclick="openReactionModal('post','<%= post._id %>', 'dislikes')">
-                                <%= post.dislikes.length %> Dislikes
-                              </span>
-                              
+                        </div>
             
-                            <span class="comment-icon" onclick="openCommentSection('<%= post._id %>')">💬</span>
-                            <span class="commentcount"><%= post.comments.length %> Comments</span>
+                        <!-- Post Content -->
+                        <div class="post-content">
+                            <p class="post-caption"><%= post.content %></p>
+                            <% if (post.mediaUrl) { %>
+                                <% if (post.mediaType === 'image') { %>
+                                    <img src="<%= post.mediaUrl %>" alt="Post image" class="post-media">
+                                <% } else if (post.mediaType === 'video') { %>
+                                    <video controls class="post-media">
+                                        <source src="<%= post.mediaUrl %>" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                <% } %>
+                            <% } %>
+                        </div>
+            
+                        <!-- Post Actions -->
+                        <div class="post-actions">
+                                <i class="fa fa-thumbs-up" onclick="toggleLike(event, '<%= post._id %>')"></i> 
+                                <span id="likes-count-<%= post._id %>" onclick="openReactionModal('post', '<%= post._id %>', 'likes')">
+                                <%= post.likes.length %>
+                                </span>
+            
+                                <i class="fa fa-thumbs-down" onclick="toggledisLike(event, '<%= post._id %>')"></i> 
+                                <span id="dislikes-count-<%= post._id %>" onclick="openReactionModal('post', '<%= post._id %>', 'dislikes')">
+                                 <%= post.dislikes.length %>
+                                </span>
+            
+                            <!-- <button class="reaction-button" onclick="openCommentSection('<%= post._id %>')"> -->
+                                <i class="fa fa-comment" onclick="openCommentSection('<%= post._id %>')"></i> <span class="comment-count"><%= post.comments.length %></span>
+                            </button>
                         </div>
             
                         <!-- Comment Section -->
-                        <div id="commentSection-<%= post._id %>" class="commentSection" style="display: none;">
+                        <div id="commentSection-<%= post._id %>" class="comment-section">
                             <h4>Comments</h4>
-                            <ul id="comments-list-<%= post._id %>">
-                                <!-- Comments will be dynamically loaded -->
-                            </ul>
-                            <input type="text" id="new-comment-<%= post._id %>" placeholder="Add a comment..." />
-                            <button onclick="addComment('<%= post._id %>')">Post</button>
+                            <ul id="comments-list-<%= post._id %>"></ul>
+                            <input type="text" id="new-comment-<%= post._id %>" placeholder="Add a comment..." class="comment-input">
+                            <button class="comment-post-button" onclick="addComment('<%= post._id %>')">Post</button>
                         </div>
-
                     </article>
-
-                    <div id="delete-modal" class="modal" style="display: none;">
+            
+                    <!-- Delete Modal -->
+                    <div id="delete-modal" class="modal">
                         <div class="modal-content">
                             <h3>Are you sure you want to delete this?</h3>
                             <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
                             <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
                         </div>
                     </div>
-                    <% }) %>
+                <% }) %>
             </section>
-
+            
+            
         </div>
 
         <div class="right-sidebar" id="right-sidebar">
@@ -1315,6 +1834,37 @@
 
     <!-- JavaScript to handle modal behavior -->
     <script>
+
+window.addEventListener('resize', () => {
+    const container = document.querySelector('.container');
+    const feed = document.querySelector('.feed');
+    const sidebar = document.querySelector('.sidebar');
+    const rightSidebar = document.querySelector('.right-sidebar');
+
+    if (window.innerWidth <= 768) {
+        sidebar.style.display = 'none'; // Hide left sidebar
+        rightSidebar.style.display = 'none'; // Hide right sidebar
+        feed.style.marginLeft = '0'; // Adjust feed margin
+        feed.style.marginRight = '0';
+    } else {
+        sidebar.style.display = ''; // Reset to default
+        rightSidebar.style.display = '';
+        feed.style.marginLeft = '15%'; // Restore feed margin
+        feed.style.marginRight = '15%';
+    }
+});
+
+function toggleCommentSection(postId) {
+    const commentSection = document.getElementById(`commentSection-${postId}`);
+    
+    // Toggle the display property
+    if (commentSection.style.display === 'none' || commentSection.style.display === '') {
+        commentSection.style.display = 'block'; // Show the comment section
+    } else {
+        commentSection.style.display = 'none'; // Hide the comment section
+    }
+}
+
         function scrollToTopAndRefresh() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             setTimeout(() => {
@@ -1430,54 +1980,56 @@
 
 
         async function searchUsers() {
-            const query = document.getElementById('tab').value.trim();
-            const resultsList = document.getElementById('searchResults');
+    const query = document.getElementById('tab').value.trim();
+    const resultsList = document.getElementById('searchResults');
 
-            // Clear results if query is empty
-            if (!query) {
-                resultsList.innerHTML = '<li>No results found</li>';
-                return;
-            }
+    // Clear results if query is empty
+    if (!query) {
+        resultsList.innerHTML = '<li>No results found</li>';
+        return;
+    }
 
-            try {
-                const response = await fetch(`/home/search-users?query=${query}`);
-                const users = await response.json();
+    try {
+        const response = await fetch(`/home/search-users?query=${query}`);
+        const users = await response.json();
 
-                console.log("Users received:", users); // Log received users
+        console.log("Users received:", users); // Log received users
 
-                resultsList.innerHTML = ''; // Clear previous results
+        resultsList.innerHTML = ''; // Clear previous results
 
-                // Check if no users were found
-                if (!users || users.length === 0) {
-                    resultsList.innerHTML = '<li>No results found</li>';
-                    return;
-                }
+        // Check if no users were found
+        if (!users || users.length === 0) {
+            resultsList.innerHTML = '<li>No results found</li>';
+            return;
+        }
 
-                // Populate search results
-                users.forEach(user => {
-                    const li = document.createElement('li');
-                    li.className = 'search-item'; // Add class for styling
+        // Populate search results
+        users.forEach(user => {
+            const li = document.createElement('li');
+            li.className = 'search-item'; // Add class for styling
 
-                    // User card layout
-                    li.innerHTML = `
+            // User card layout
+            li.innerHTML = `
                 <div class="search-card">
                     <img src="${user.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="search-image">
                     <div class="search-info">
                         <a href="/home/profile/user/${user._id}" class="search-username">${user.username || user.firstName}</a>
                     </div>
-                    <button class="add-friend-btn" onclick="${user.isFriend ? `removeFriend('${user._id}')` : `addFriend('${user._id}')`}">
-                        ${user.isFriend ? '-' : '+'}
+                    <button class="${user.isFriend ? 'remove-friend-btn' : 'add-friend-btn'}" onclick="${user.isFriend ? `removeFriend('${user._id}')` : `addFriend('${user._id}')`}">
+                        <i class="${user.isFriend ? 'fas fa-user-minus' : 'fas fa-user-plus'}"></i>
                     </button>
                 </div>
             `;
 
-                    resultsList.appendChild(li);
-                });
-            } catch (error) {
-                console.error("Error searching users:", error);
-                resultsList.innerHTML = '<li>Error loading results</li>';
-            }
-        }
+            resultsList.appendChild(li);
+        });
+    } catch (error) {
+        console.error("Error searching users:", error);
+        resultsList.innerHTML = '<li>Error loading results</li>';
+    }
+}
+
+
 
 
         async function addFriend(userId) {
@@ -1551,120 +2103,139 @@
         }
 
         async function loadNotifications() {
-            try {
-                const response = await fetch('/home/notifications'); // Fetch notifications from backend
-                const notifications = await response.json(); // Parse response data
+    try {
+        const response = await fetch('/home/notifications'); // Fetch notifications from backend
+        const notifications = await response.json(); // Parse response data
 
-                const notificationsList = document.getElementById('notificationsList');
-                if (!notificationsList) {
-                    console.error("Element with id 'notificationsList' not found.");
-                    return;
-                }
-                
-                notificationsList.innerHTML = ''; // Clear previous notifications
-
-                notifications.forEach(notification => {
-                    const li = document.createElement('li');
-                    const senderName = notification.from?.username || notification.from?.firstName || "Unknown User";
-
-        
-                    // Create a link for the sender's name
-                    const senderLink = document.createElement('a');
-                    senderLink.href = `/home/profile/user/${notification.from?._id}`; // Link to user's profile
-                    senderLink.textContent = senderName;
-                    senderLink.style.textDecoration = 'none';
-                    senderLink.style.color = 'blue'; // Optional styling
-                    li.appendChild(senderLink);
-        
-
-                    // Handle different notification types
-                    switch (notification.type) {
-                        case 'friend-request':
-                            li.appendChild(document.createTextNode(` sent you a friend request.`));
-                            const acceptButton = document.createElement('button');
-                            acceptButton.textContent = 'Accept';
-                            acceptButton.className = 'accept-button';
-                            acceptButton.style.marginRight = '5px';
-                            acceptButton.onclick = () => handleAcceptRequest(notification._id);
-
-                            const declineButton = document.createElement('button');
-                            declineButton.textContent = 'Decline';
-                            declineButton.className = 'decline-button';
-                            declineButton.style.marginRight = '5px';
-                            declineButton.onclick = () => handleDeclineRequest(notification._id);
-
-                            li.appendChild(acceptButton);
-                            li.appendChild(declineButton);
-                            break;
-
-                        case 'friend-accepted':
-                            li.appendChild(document.createTextNode(` accepted your friend request.`));
-                            break;
-
-                        case 'friend-declined':
-                            li.appendChild(document.createTextNode(` declined your friend request.`));
-                            break;
-
-                        case 'post-like':
-                            li.appendChild(document.createTextNode(` liked your post.`));
-                            break;
-
-        
-                        case 'post-dislike':
-                            li.appendChild(document.createTextNode(` disliked your post.`));
-                            break;
-        
-
-                        case 'story-like':
-                            li.appendChild(document.createTextNode(` liked your story.`));
-                            break;
-
-                        case 'comment':
-                            li.appendChild(document.createTextNode(` commented on your post.`));
-                            break;
-        
-                        case 'comment-reply':
-
-                            li.appendChild(document.createTextNode(` replied to your comment.`));
-                            break;
-        
-
-                        case 'comment-like':
-                            li.appendChild(document.createTextNode(` liked your comment.`));
-                            break;
-        
-                        case 'comment-dislike':
-
-                           li.appendChild(document.createTextNode(` disliked your comment.`));
-                            break;
-        
-                        case 'reply-like':
-                            li.appendChild(document.createTextNode(` liked your reply.`));
-                            break;
-        
-                        case 'reply-dislike':
-                            li.appendChild(document.createTextNode(` disliked your reply.`));
-                            break;
-        
-                        default:
-                            li.appendChild(document.createTextNode(` sent an unknown notification.`));
-                            break;
-                    }
-
-                    // Add delete button for all notifications
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.className = 'delete-button';
-                    deleteButton.style.marginLeft = '10px';
-                    deleteButton.onclick = () => deleteNotification(notification._id);
-
-                    li.appendChild(deleteButton);
-                    notificationsList.appendChild(li);
-                });
-            } catch (error) {
-                console.error("Error loading notifications:", error);
-            }
+        const notificationsList = document.getElementById('notificationsList');
+        if (!notificationsList) {
+            console.error("Element with id 'notificationsList' not found.");
+            return;
         }
+
+        notificationsList.innerHTML = ''; // Clear previous notifications
+
+        notifications.forEach(notification => {
+            const li = document.createElement('li');
+            const senderName = notification.from?.username || notification.from?.firstName || "Unknown User";
+
+            // Create a link for the sender's name
+            const senderLink = document.createElement('a');
+            senderLink.href = `/home/profile/user/${notification.from?._id}`; // Link to user's profile
+            senderLink.textContent = senderName;
+            senderLink.style.textDecoration = 'none';
+            senderLink.style.color = 'blue'; // Optional styling
+            li.appendChild(senderLink);
+
+            // Handle different notification types
+            switch (notification.type) {
+                case 'friend-request':
+                    li.appendChild(document.createTextNode(` sent you a friend request.`));
+
+                    // Create button-group div
+                    const buttonGroup = document.createElement('div');
+                    buttonGroup.className = 'button-group';
+
+                    const acceptButton = document.createElement('button');
+                    acceptButton.className = 'accept-button';
+                    acceptButton.style.marginRight = '5px';
+                    acceptButton.onclick = () => handleAcceptRequest(notification._id);
+
+                    // Add FontAwesome checkmark icon to the Accept button
+                    const acceptIcon = document.createElement('i');
+                    acceptIcon.className = 'fa fa-check'; // FontAwesome checkmark icon
+                    acceptButton.appendChild(acceptIcon);
+
+                    const declineButton = document.createElement('button');
+                    declineButton.className = 'decline-button';
+                    declineButton.style.marginRight = '5px';
+                    declineButton.onclick = () => handleDeclineRequest(notification._id);
+
+                    // Add FontAwesome close icon to the Decline button
+                    const declineIcon = document.createElement('i');
+                    declineIcon.className = 'fa fa-close'; // FontAwesome close icon
+                    declineButton.appendChild(declineIcon);
+
+                    // Add buttons to button-group div
+                    buttonGroup.appendChild(acceptButton);
+                    buttonGroup.appendChild(declineButton);
+
+                    li.appendChild(buttonGroup); // Add button-group div to li
+                    break;
+
+                case 'friend-accepted':
+                    li.appendChild(document.createTextNode(` accepted your friend request.`));
+                    break;
+
+                case 'friend-declined':
+                    li.appendChild(document.createTextNode(` declined your friend request.`));
+                    break;
+
+                case 'post-like':
+                    li.appendChild(document.createTextNode(` liked your post.`));
+                    break;
+
+                case 'post-dislike':
+                    li.appendChild(document.createTextNode(` disliked your post.`));
+                    break;
+
+                case 'story-like':
+                    li.appendChild(document.createTextNode(` liked your story.`));
+                    break;
+
+                case 'comment':
+                    li.appendChild(document.createTextNode(` commented on your post.`));
+                    break;
+
+                case 'comment-reply':
+                    li.appendChild(document.createTextNode(` replied to your comment.`));
+                    break;
+
+                case 'comment-like':
+                    li.appendChild(document.createTextNode(` liked your comment.`));
+                    break;
+
+                case 'comment-dislike':
+                    li.appendChild(document.createTextNode(` disliked your comment.`));
+                    break;
+
+                case 'reply-like':
+                    li.appendChild(document.createTextNode(` liked your reply.`));
+                    break;
+
+                case 'reply-dislike':
+                    li.appendChild(document.createTextNode(` disliked your reply.`));
+                    break;
+
+                default:
+                    li.appendChild(document.createTextNode(` sent an unknown notification.`));
+                    break;
+            }
+
+            // Add delete button for all notifications
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'delete-button';
+            deleteButton.style.marginLeft = '10px';
+            deleteButton.onclick = () => deleteNotification(notification._id);
+
+            // Add FontAwesome trash icon to the Delete button
+            const deleteIcon = document.createElement('i');
+            deleteIcon.className = 'fa fa-trash'; // FontAwesome trash icon
+            deleteButton.appendChild(deleteIcon);
+
+            // Add delete button to button-group
+            const buttonGroup = li.querySelector('.button-group') || document.createElement('div');
+            buttonGroup.appendChild(deleteButton);
+            li.appendChild(buttonGroup);
+
+            notificationsList.appendChild(li);
+        });
+    } catch (error) {
+        console.error("Error loading notifications:", error);
+    }
+}
+
+
 
         async function deleteNotification(notificationId) {
             try {
@@ -1732,12 +2303,12 @@
                 const data = await response.json();
 
                 // Update the like count
-                document.getElementById(`likes-count-${postId}`).textContent = `${data.likesCount} Likes`;
+                document.getElementById(`likes-count-${postId}`).textContent = `${data.likesCount} `;
 
                 // If the likes modal is open, update it
-                if (document.getElementById('likes-modal').style.display === 'block') {
-                    populateLikesModal(data.likedBy);
-                }
+                // if (document.getElementById('likes-modal').style.display === 'block') {
+                //     populateLikesModal(data.likedBy);
+                // }
             } catch (error) {
                 console.error("Error toggling like:", error);
             }
@@ -1749,7 +2320,7 @@
                 const data = await response.json();
 
                 // Update the like count
-                document.getElementById(`dislikes-count-${postId}`).textContent = `${data.dislikesCount} DisLikes`;
+                document.getElementById(`dislikes-count-${postId}`).textContent = `${data.dislikesCount} `;
             } catch (error) {
                 console.error("Error toggling like:", error);
             }
@@ -1990,11 +2561,13 @@
         loadFriendSuggestions();
 
         function showLikes() {
-            document.getElementById('likes-section').style.display = 'block';
-            document.getElementById('dislikes-section').style.display = 'none';
-            document.getElementById('likes-tab').classList.add('active');
-            document.getElementById('dislikes-tab').classList.remove('active');
-        }
+    console.log('Showing likes');
+    document.getElementById('likes-section').style.display = 'block';
+    document.getElementById('dislikes-section').style.display = 'none';
+    document.getElementById('likes-tab').classList.add('active');
+    document.getElementById('dislikes-tab').classList.remove('active');
+}
+
 
         function showDislikes() {
             document.getElementById('likes-section').style.display = 'none';
@@ -2004,29 +2577,35 @@
         }
 
         async function openReactionModal(type, id, section) {
-            const modal = document.getElementById('reaction-modal');
-            modal.style.display = 'flex';
+    const modal = document.getElementById('reaction-modal');
+    modal.style.display = 'flex';
 
-            try {
-                const response = await fetch(`/posts/${type}/${id}/reactions`);
-                const data = await response.json();
-                if (response.ok) {
-                    populateLikesList(data.likedBy);
-                    populateDislikesList(data.dislikedBy);
+    try {
+        const response = await fetch(`/posts/${type}/${id}/reactions`);
+        const data = await response.json();
 
-                    // Show the appropriate section based on the clicked button
-                    if (section === 'likes') {
-                        showLikes();
-                    } else if (section === 'dislikes') {
-                        showDislikes();
-                    }
-                } else {
-                    console.error('Error fetching reactions:', data.message || 'Unknown error');
-                }
-            } catch (error) {
-                console.error('Error fetching reactions:', error);
+        console.log('Reactions Data:', data); // Log the response
+
+        if (response.ok) {
+            populateLikesList(data.likedBy);
+            populateDislikesList(data.dislikedBy);
+
+            if (section === 'likes') {
+                showLikes();
+            } else if (section === 'dislikes') {
+                showDislikes();
             }
+        } else {
+            console.error('Error fetching reactions:', data.message || 'Unknown error');
+            document.getElementById('likes-list').innerHTML = '<li>Error loading likes</li>';
+            document.getElementById('dislikes-list').innerHTML = '<li>Error loading dislikes</li>';
         }
+    } catch (error) {
+        console.error('Error fetching reactions:', error);
+    }
+}
+
+
 
 
         function closeReactionModal() {

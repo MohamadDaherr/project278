@@ -7,7 +7,8 @@ const Notification = require('../../models/Notification');
 const Comment = require('../../models/comments');
 const ActiveFriend = require('../../models/ActiveFriend');
 const Contributor = require('../../models/Contributor');
-
+const multer = require('multer');
+const path = require('path');
 // Route to toggle like on a post
 router.post('/:postId/like', isAuthenticated, async (req, res) => {
     const { postId } = req.params;
@@ -213,9 +214,10 @@ router.get('/:postId', isAuthenticated, async (req, res) => {
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
         }
-
+        
         res.json({
             _id: post._id,
+            content: post.content,
             mediaUrl: post.mediaUrl,
             isOwner: post.user._id.toString() === userId,
             likesCount: post.likes.length,
@@ -426,6 +428,51 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
     }
 });
 
+// Route to create a new post
+router.post('/create', isAuthenticated, async (req, res) => {
+    const userId = req.user.userId; // Extract userId from authenticated user
+    const { content, mediaUrl } = req.body; // Get content and mediaUrl from the request body
+
+    try {
+        // Create a new post
+        const newPost = new Post({
+            user: userId,
+            content,
+            mediaUrl,
+            likes: [],
+            dislikes: [],
+            comments: [],
+            createdAt: new Date(),
+        });
+
+        // Save the post to the database
+        await newPost.save();
+
+        // Update the Contributor schema (if tracking post counts per user)
+        await Contributor.updateOne(
+            { user: userId, friend: userId },
+            { $inc: { sharedPostCount: 1 } },
+            { upsert: true }
+        );
+
+        // Respond with the created post
+        res.status(201).json({
+            message: 'Post created successfully',
+            post: {
+                _id: newPost._id,
+                content: newPost.content,
+                mediaUrl: newPost.mediaUrl,
+                likesCount: newPost.likes.length,
+                dislikesCount: newPost.dislikes.length,
+                commentsCount: newPost.comments.length,
+                createdAt: newPost.createdAt,
+            },
+        });
+    } catch (error) {
+        console.error('Error creating post:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 
 module.exports = router;
