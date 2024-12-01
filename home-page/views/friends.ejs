@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <title>Friends </title>
 
@@ -573,6 +574,39 @@ button.active::after {
 
 }
 
+.home-btn {
+            position: fixed;
+            /* Fixed at the top-left corner */
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: transform 0.3s;
+            /* Smooth hover effect */
+            height: 50px;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.1);
+            /* Zoom effect on hover */
+        }
+
+        .home-btn i {
+            font-size: 24px;
+            /* Icon size */
+            color: black;
+            /* Grey icon color */
+            transition: color 0.3s;
+            /* Smooth hover color change */
+        }
+
+        .home-btn:hover i {
+            color: black;
+            /* Change to black on hover */
+        }
 
     </style>
 
@@ -580,7 +614,9 @@ button.active::after {
 
 
 <body>
-
+    <a href="/home" class="home-btn">
+        <i class="fa fa-home"></i>
+    </a>
     <h1>Friends </h1>
 
 

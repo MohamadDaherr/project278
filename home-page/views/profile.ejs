@@ -353,7 +353,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
         }
 
         .modal-content .close {
@@ -1429,24 +1428,24 @@
             }
         }
 
-        /* Reaction Modal Styling */
         #reaction-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            width: 40%;
-            max-width: 500px;
-            height: 70%;
-            max-height: 600px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-        }
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Ensure it is above all other elements */
+    width: 40%;
+    max-width: 500px;
+    height: 70%;
+    max-height: 600px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
 
         /* Modal Content */
         #reaction-modal .modal-content {
@@ -1856,6 +1855,48 @@
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
+
+
+        /* Pop-up animation */
+@keyframes like-pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3); /* Enlarge slightly */
+    }
+    100% {
+        transform: scale(1); /* Return to original size */
+    }
+}
+
+.like-active {
+    animation: like-pop 0.3s ease-in-out; /* Apply animation */
+    color: blue; /* Optional: Change color during animation */
+}
+span {
+    cursor: alias; /* Sets the cursor to alias */
+}
+.modal-content {
+    position: relative; /* Ensure the modal content is the relative parent */
+    display: flex;
+    flex-direction: column; /* Stack the content vertically */
+    justify-content: space-between; /* Push actions to the bottom */
+}
+
+.post-actions {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    width: 100%; /* Ensure the actions span the modal width */
+    padding: 10px;
+    background-color: #fff; /* Optional: match modal background */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: shadow effect */
+    display: flex;
+    justify-content: space-around; /* Space items evenly */
+    align-items: center;
+}
+
     </style>
 
 </head>
@@ -2255,7 +2296,7 @@
     <ul class="comments-list" id="comments-list-${postId}">
         ${data.comments.map(comment => `
             <li>
-                <div class="comment-container" onclick="toggleReplies('${comment._id}')">
+                <di v class="comment-container" onclick="toggleReplies('${comment._id}')">
                     <!-- Comment Header -->
                     <div class="comment-header" style="display: flex; align-items: center; justify-content: space-between;">
                         <div class="comment-user" style="display: flex; align-items: center; gap: 10px;">
@@ -2381,16 +2422,8 @@
                     loadComments(postId);
 
                     // Update the comment count in the modal
-                    const commentCountElement = document.querySelector(`#postModal .commentcount`);
-                    if (commentCountElement) {
-                        commentCountElement.textContent = `${data.updatedCommentCount}`;
-                    }
-
-                    // Update the comment count on the main post
-                    const postCommentCountElement = document.querySelector(`#post-${postId} .commentcount`);
-                    if (postCommentCountElement) {
-                        postCommentCountElement.textContent = `${data.updatedCommentCount}`;
-                    }
+                    document.querySelector(".commentcount").innerHTML = `${data.CommentCount} `; // Update comment count
+            document.getElementById(`new-comment-${postId}`).value = ''; // Clear input field after posting
 
                     // Clear the input field
                     commentInput.value = '';
@@ -2684,57 +2717,68 @@
 
 
         async function toggleLike(event, postId) {
-            const likeIcon = event.target;
-            const dislikeIcon = document.querySelector(`#dislikes-count-${postId}`).previousElementSibling;
-            const likesCountElement = document.getElementById(`likes-count-${postId}`);
-            const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
+    const likeIcon = event.target;
+    const likesCountElement = document.getElementById(`likes-count-${postId}`);
 
-            try {
-                const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
-                const data = await response.json();
+    try {
+        const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+        const data = await response.json();
 
-                if (response.ok) {
-                    // Update counts
-                    likesCountElement.textContent = `${data.likesCount}`;
-                    dislikesCountElement.textContent = `${data.dislikesCount}`;
+        console.log('Response data:', data); // Debug the API response
 
-                    // Toggle like/dislike classes
-                    likeIcon.classList.toggle('like-active', data.isLiked);
-                    dislikeIcon.classList.toggle('dislike-active', data.isDisliked);
-                } else {
-                    console.error("Failed to like the post:", data.message);
-                }
-            } catch (error) {
-                console.error("Error toggling like:", error);
+        if (response.ok && data) {
+            // Update the likes count
+            if (data.likesCount !== undefined) {
+                likesCountElement.textContent = `${data.likesCount}`;
+            } else {
+                console.error('likesCount is missing in response.');
             }
+
+            // Toggle the like-active class
+            const isLiked = likeIcon.classList.contains('like-active');
+            likeIcon.classList.toggle('like-active', !isLiked);
+        } else {
+            console.error("Failed to like the post:", data?.message || "Unknown error");
         }
+    } catch (error) {
+        console.error("Error toggling like:", error);
+    }
+}
 
 
-        async function toggleDislike(event, postId) {
-            const dislikeIcon = event.target;
-            const likeIcon = document.querySelector(`#likes-count-${postId}`).previousElementSibling;
-            const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
-            const likesCountElement = document.getElementById(`likes-count-${postId}`);
 
-            try {
-                const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
-                const data = await response.json();
 
-                if (response.ok) {
-                    // Update counts
-                    dislikesCountElement.textContent = `${data.dislikesCount}`;
-                    likesCountElement.textContent = `${data.likesCount}`;
+async function toggleDislike(event, postId) {
+    const dislikeIcon = event.target;
+    const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
 
-                    // Toggle dislike/like classes
-                    dislikeIcon.classList.toggle('dislike-active', data.isDisliked);
-                    likeIcon.classList.toggle('like-active', data.isLiked);
-                } else {
-                    console.error("Failed to dislike the post:", data.message);
-                }
-            } catch (error) {
-                console.error("Error toggling dislike:", error);
+    try {
+        const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
+        const data = await response.json();
+
+        console.log('Response data:', data); // Debug the API response
+
+        if (response.ok && data) {
+            // Update the dislikes count
+            if (data.dislikesCount !== undefined) {
+                dislikesCountElement.textContent = `${data.dislikesCount}`;
+            } else {
+                console.error('dislikesCount is missing in response.');
             }
+
+            // Toggle the dislike-active class
+            const isDisliked = dislikeIcon.classList.contains('dislike-active');
+            dislikeIcon.classList.toggle('dislike-active', !isDisliked);
+        } else {
+            console.error("Failed to dislike the post:", data?.message || "Unknown error");
         }
+    } catch (error) {
+        console.error("Error toggling dislike:", error);
+    }
+}
+
+
+
 
 
 
@@ -2751,7 +2795,7 @@
                     if (deleteType == 'comment' || deleteType == 'reply') {
                         loadComments(postid);
                         if (deleteType == 'comment')
-                            document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} Comments`
+                            document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} `
                     }
                     else
                         location.reload();
