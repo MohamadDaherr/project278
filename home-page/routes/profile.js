@@ -150,7 +150,7 @@ router.get('/user/:userId', isAuthenticated, async (req, res) => {
 
       // Find the viewed user's details
       const viewedUser = await User.findById(viewedUserId)
-      .select('username profileImage bio gender address dateOfBirth friends friendRequests');
+      .select('firstName lastName username profileImage bio gender address dateOfBirth friends friendRequests');
 
       if (!viewedUser) {
           return res.status(404).send('User not found');

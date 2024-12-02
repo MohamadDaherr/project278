@@ -20,7 +20,7 @@
           
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-family: Arial, sans-serif;
-    background-color: #f7f4de;
+    background-color: #e4e4e4;
     margin: 0;
     padding: 0;            overflow-x: hidden;
             /* Prevents horizontal scrolling */
@@ -52,7 +52,8 @@ li {
         .right-sidebar {
             width: 18%;
             /* Sidebar width */
-            height: calc(100vh - 20px);
+            max-height: 82%;
+            height: 100%;
             /* Full viewport height minus padding */
             padding: 20px;
             background-color: #ffffff;
@@ -64,6 +65,8 @@ li {
             position: fixed;
             /* Fix sidebar position */
             transition: transform 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+
         }
 
         /* Left Sidebar Positioned Fixed */
@@ -137,6 +140,8 @@ li {
     border-radius: 12px; /* Optional: Rounded corners for ul */
     list-style: none; /* Remove bullet points */
     box-sizing: border-box; /* Ensure padding doesn't overflow */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+
 }
 
 .sidebar ul li {
@@ -154,7 +159,7 @@ li {
 
 .sidebar ul li a {
     display: block; /* Make the link fill the list item */
-    color: #389c9c; /* Text color */
+    color: black; /* Text color */
     text-decoration: none; /* Remove underline */
     font-size: 18px; /* Slightly larger font for readability */
     border-radius: 8px; /* Optional: rounded corners for a */
@@ -164,6 +169,8 @@ li {
 .sidebar ul li:hover {
     transform: scale(1.05); /* Slightly scale li on hover */
     background-color: #ddd; /* Change li background on hover */
+    box-shadow: 0 4px 5px #ca4274;
+
 }
 
 /* Profile Link Styling */
@@ -181,6 +188,8 @@ li {
     left: 10px;
     padding: 10px; /* Reduce padding for better shrinkability */
     transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+
 }
 
 /* Profile Picture */
@@ -229,12 +238,15 @@ li {
 }
 
         .profile-link:hover {
-            background-color: #f0f2f5;
-        }
+            transform: scale(1.03);
+    background-color: #ddd; 
+    }
+
+
         .create-post-link {
     padding: 20px;
     width: 15%;
-    background-color: #389c9c;
+    background-color: #830131;
     box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
     border-radius: 30px;
     text-decoration: none;
@@ -249,7 +261,7 @@ li {
 }
 
         .create-post-link:hover {
-            background-color: #1f7878;
+            background-color:#6c0329;
             transform: scale(1.03);
             /* Scale the button slightly larger */
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
@@ -430,17 +442,18 @@ li {
         .post-button {
             width: 100%;
             padding: 10px;
-            background-color: #389c9c;
+            background-color:#830131;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
+            align-items: center;
             /* Add transform transition */
         }
 
         .post-button:hover {
-            background-color: #1f7878;
+            background-color: #6c0329;
             transform: translateY(-3px);
             /* Moves the button up slightly to create a "pop" effect */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -467,10 +480,10 @@ li {
         }
 
         #caption:focus {
-            border-color: #1f7878;
+            border-color: #830131;
             outline: none;
             background-color: #fff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 0 5px #ca4274;
         }
 
         /* Hide the original file input */
@@ -492,7 +505,7 @@ li {
         /* Style for the custom upload button */
         .upload-button {
             padding: 8px 15px;
-            background-color: #007bff;
+            background-color: #830131;
             color: #fff;
             border-radius: 5px;
             cursor: pointer;
@@ -503,7 +516,7 @@ li {
         }
 
         .upload-button:hover {
-            background-color: #0056b3;
+            background-color: #6c0329;
         }
 
         /* Style for the file name display */
@@ -565,7 +578,7 @@ li {
         }
 
         .button {
-            color: #007bff;
+            color: #830131;
             outline: none;
             border: none;
             width: 40px;
@@ -577,11 +590,8 @@ li {
             justify-content: center;
             cursor: pointer;
             position: absolute;
-            /* Set the button to absolute positioning */
             bottom: 30px;
-            /* Position at the bottom of the sidebar with some padding */
             left: 5%;
-            /* Center horizontally within the sidebar */
         }
 
 
@@ -623,9 +633,9 @@ li {
         .input:focus,
         input:hover {
             outline: none;
-            border-color: #007bff;
+            border-color: #ca4274;
             background-color: #fff;
-            box-shadow: 0 0 0 4px #8ec5ff;
+            box-shadow: 0 0 0 4px #e6739d;
         }
 
         .icon {
@@ -682,7 +692,7 @@ li {
             /* Match the full height of the li */
             width: 5px;
             /* Width of the blue bar */
-            background-color: #007bff;
+            background-color: #6c0329;
             /* Blue color for the bar */
             border-radius: 4px 0 0 4px;
             /* Optional: rounded edges */
@@ -725,7 +735,7 @@ li {
             background-color: #f0f4ff;
             border: none;
             border-radius: 5px;
-            color: #007bff;
+            color: #830131;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease;
@@ -733,12 +743,12 @@ li {
 
 
         .tabs button.active {
-            background-color: #007bff;
+            background-color: #830131;
             color: white;
         }
 
         .tabs button:hover {
-            background-color: #0056b3;
+            background-color: #830131;
             color: white;
         }
 
@@ -778,7 +788,7 @@ li {
         }
 
         #cancel-delete {
-            background-color: #5bc0de;
+            background-color: #d6d6d6;
             color: #fff;
         }
 
@@ -953,6 +963,7 @@ li {
 /* Notification Modal Scroll Styling */
 #notification-modal .modal-content {
     max-height: 70vh; /* Set a fixed height */
+    max-width: 40%;
     width: 50%; /* Set a width as per your design */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -974,20 +985,20 @@ li {
 }
 
 #notification-modal .modal-content::-webkit-scrollbar-thumb {
-    background-color: #007bff; /* Bright blue scrollbar */
+    background-color: #830131; /* Bright blue scrollbar */
     border-radius: 10px; /* Rounded corners for the scrollbar */
     border: 2px solid #f0f4ff; /* Add a border for a smooth edge */
 }
 
 #notification-modal .modal-content::-webkit-scrollbar-thumb:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #6c0329; /* Darker blue on hover */
     border: 2px solid #e0e7f8; /* Update border on hover */
 }
 
 /* Optional Scrollbar Styling for Cross-Browser Support */
 #notification-modal .modal-content {
     scrollbar-width: thin; /* For Firefox: thin scrollbar */
-    scrollbar-color: #007bff #f0f4ff; /* Blue thumb and light track */
+    scrollbar-color: #830131 #f0f4ff; /* Blue thumb and light track */
 }
 
 /* Default state for the profile link and create post button */
@@ -1207,14 +1218,14 @@ li {
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
     color: white;
     font-size: 14px;
     cursor: pointer;
+    background-color: #830131;
 }
 
 .comment-post-button:hover {
-    background-color: #0056b3;
+    background-color: #6c0329;
 }
 
 /* Modal */
@@ -1262,7 +1273,7 @@ li {
 }
 
 #cancel-delete {
-    background-color: #ddd;
+    background-color: #cbcbcb;
     color: #333;
 }
 
@@ -1336,13 +1347,13 @@ li {
 }
 
 #reaction-modal .tabs button.active {
-    background-color: #007bff;
+    background-color: #830131;
     color: #ffffff;
     border-radius: 10px 10px 0 0; /* Rounded corners for active tab */
 }
 
 #reaction-modal .tabs button:hover {
-    background-color: #0056b3;
+    background-color: #6c0329;
     color: #ffffff;
 }
 
@@ -1401,70 +1412,11 @@ li {
         transform: scale(1);
     }
 }
-        /* Remove bullets from the notification list */
-        #notificationsList {
-            list-style-type: none;
-            padding: 0;
-        }
-
-#notificationsList li {
-    list-style: none;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: flex-start; /* Align text and buttons to the start */
-}
-
-#notificationsList .button-group {
-    display: flex;
-    gap: 10px; /* Add space between buttons */
-    margin-top: 10px; /* Add spacing between text and buttons */
-}
-
-#notificationsList a {
-    text-decoration: none;
-    color: blue;
-    font-weight: bold;
-}
-
-#notificationsList button {
-    padding: 5px 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#notificationsList .accept-button {
-    background-color: #007bff;
-    color: white;
-}
-
-#notificationsList .accept-button:hover {
-    background-color: #0056b3;
-}
-
-#notificationsList .decline-button {
-    background-color: #f44336;
-    color: white;
-}
-
-#notificationsList .decline-button:hover {
-    background-color: #d32f2f;
-}
-
-#notificationsList .delete-button {
-    color: #f9f9f9;
-}
-
+      
 
 /* Add Friend Button (Circular) */
 .add-friend-btn {
-    background-color: #007bff; /* Blue background */
+    background-color: #830131; /* Blue background */
     color: #fff; /* White icon color */
     border: none;
     border-radius: 50%; /* Makes it circular */
@@ -1479,13 +1431,13 @@ li {
 }
 
 .add-friend-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #6c0329; /* Darker blue on hover */
     transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 /* Remove Friend Button (Circular) */
 .remove-friend-btn {
-    background-color: #f44336; /* Red background */
+    background-color: #232323; /* Red background */
     color: #fff; /* White icon color */
     border: none;
     border-radius: 50%; /* Makes it circular */
@@ -1500,7 +1452,7 @@ li {
 }
 
 .remove-friend-btn:hover {
-    background-color: #d32f2f; /* Darker red on hover */
+    background-color: #000000; /* Darker red on hover */
     transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
@@ -1664,12 +1616,12 @@ span {
 }
 
 #reaction-modal .modal-content::-webkit-scrollbar-thumb {
-    background: #007bff; /* Bright blue scrollbar thumb */
+    background: #6c0329; /* Bright blue scrollbar thumb */
     border-radius: 10px; /* Rounded scrollbar corners */
 }
 
 #reaction-modal .modal-content::-webkit-scrollbar-thumb:hover {
-    background: #0056b3; /* Darker blue on hover */
+    background: #830131; /* Darker blue on hover */
 }
 
 /* Close Button */
@@ -1734,7 +1686,7 @@ span {
 
 /* Confirm Button */
 #confirm-delete {
-    background-color: #d9534f; /* Red color for delete */
+    background-color: #830131; /* Red color for delete */
     color: #fff;
     border: none;
     padding: 12px 25px;
@@ -1746,13 +1698,13 @@ span {
 
 /* Confirm Button Hover */
 #confirm-delete:hover {
-    background-color: #c9302c; /* Darker red */
+    background-color: #6c0329; /* Darker red */
     transform: scale(1.05); /* Slightly enlarge */
 }
 
 /* Cancel Button */
 #cancel-delete {
-    background-color: #5bc0de; /* Blue color for cancel */
+    background-color: #c9c9c9; /* Blue color for cancel */
     color: #fff;
     border: none;
     padding: 12px 25px;
@@ -1764,7 +1716,7 @@ span {
 
 /* Cancel Button Hover */
 #cancel-delete:hover {
-    background-color: #31b0d5; /* Darker blue */
+    background-color: #a3a3a3; /* Darker blue */
     transform: scale(1.05); /* Slightly enlarge */
 }
 
@@ -1799,13 +1751,12 @@ span {
 
 .reply-input:focus {
     outline: none; /* Remove default focus outline */
-    border-color: #007bff; /* Blue border on focus */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Subtle glow on focus */
+    box-shadow: 0 0 1px #ca4274; /* Subtle glow on focus */
 }
 
 .reply-button {
     padding: 10px 15px; /* Add padding for the button */
-    background-color: #007bff; /* Blue background */
+    background-color: #830131; /* Blue background */
     color: white; /* White text */
     border: none; /* Remove border */
     border-radius: 5px; /* Rounded corners */
@@ -1815,7 +1766,7 @@ span {
 }
 
 .reply-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #6c0329; /* Darker blue on hover */
     transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
@@ -1823,7 +1774,124 @@ span {
     transform: scale(1); /* Reset scale on click */
 }
 
+#notificationsList li {
+    display: flex; /* Align items in a row */
+    justify-content: space-between; /* Space between the text and buttons */
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
+#notificationsList .button-group {
+    display: flex; /* Arrange buttons in a row */
+    gap: 10px; /* Add space between buttons */
+}
+
+#notificationsList a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #830131; /* Adjust the color to match your theme */
+}
+
+#notificationsList button {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#notificationsList .accept-button {
+    background-color: #007bff;
+    color: white;
+}
+
+#notificationsList .accept-button:hover {
+    background-color: #0056b3;
+}
+
+#notificationsList .decline-button {
+    background-color: #f44336;
+    color: white;
+}
+
+#notificationsList .decline-button:hover {
+    background-color: #d32f2f;
+}
+
+.right-sidebar span{
+    cursor: default; 
+}
+
+/* General List Styling */
+.suggestion-item {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+/* Suggestion Card Design */
+.suggestion-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f6f1f1;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+/* Hover Effect */
+.suggestion-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 7px #a91f51;
+  background-color: rgb(239, 239, 239);
+}
+
+/* Profile Image */
+.suggestion-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+/* Username Styling */
+.suggestion-username {
+  flex-grow: 1;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Add Friend Icon */
+.suggestion-card .fa-user-plus {
+  color: white;
+  font-size: 10px;
+  background-color: #830131;
+  margin-left: 5px;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover Effect for Icon */
+.suggestion-card .fa-user-plus:hover {
+  background-color: #6c0329;
+  transform: scale(1.1);
+}
+
+.comment-li:hover{
+    padding: 5px;
+    background-color: rgb(225, 225, 225);
+    border-radius: 7px;
+}
     </style>
 </head>
 
@@ -1850,20 +1918,20 @@ span {
 
                 <ul>
 
-                    <li><a href="/home" id="home-link"><i class="fa fa-home"></i>Home</a></li>
-
+                    <li><a href="/home" id="home-link" ><i class="fa fa-home" style="color: #830131;"></i>Home</a></li>
+<li href="/friend/list" class="search" id="searchTab">
+                        <a onclick="openSearchModal()" id="search"><i class="fa fa-search" style="color: #830131;"></i>Search</a>
+                    </li>
                     <li id="friends">
-                        <a href="/friend" id="fr"><i class='fas fa-user-friends'></i>Friends</a>
+                        <a href="/friend" id="fr"><i class='fas fa-user-friends' style="color: #830131;"></i>Friends</a>
                     </li>
 
 
-                    <li id="chats"><a href="/chats" id="ch">    <i class="fa fa-comments"></i>Chats</a></li>
+                    <li id="chats"><a href="/chats" id="ch">    <i class="fa fa-comments" style="color: #830131;"></i>Chats</a></li>
                     <li href="/home/notifications" class="notifications-link">
-                        <a onclick="openNotificationModal()" id="notify"><i class="fa fa-bell"></i>Notifications</a>
+                        <a onclick="openNotificationModal()" id="notify"><i class="fa fa-bell" style="color: #830131;"></i>Notifications</a>
                     </li>
-                    <li href="/friend/list" class="search" id="searchTab">
-                        <a onclick="openSearchModal()" id="search"><i class="fa fa-search"></i>Search</a>
-                    </li>
+                    
 
                 </ul>
             </aside>
@@ -2404,33 +2472,33 @@ function toggleCommentSection(postId) {
                 console.error("Error removing friend:", error);
             }
         }
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFriends();
-        });
-        async function loadFriends() {
-            try {
-                const response = await fetch('/friend/list');
-                const friends = await response.json();
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     loadFriends();
+        // });
+        // async function loadFriends() {
+        //     try {
+        //         const response = await fetch('/friend/list');
+        //         const friends = await response.json();
 
-                const friendsList = document.getElementById('friendsList');
-                friendsList.innerHTML = ''; // Clear previous list
+        //         const friendsList = document.getElementById('friendsList');
+        //         friendsList.innerHTML = ''; // Clear previous list
 
-                friends.forEach(friend => {
-                    const li = document.createElement('li');
-                    li.textContent = friend.username || `${friend.firstName} ${friend.lastName}`;
+        //         friends.forEach(friend => {
+        //             const li = document.createElement('li');
+        //             li.textContent = friend.username || `${friend.firstName} ${friend.lastName}`;
 
-                    // Button for removing friend
-                    const removeButton = document.createElement('button');
-                    removeButton.textContent = '-';
-                    removeButton.onclick = () => removeFriend(friend._id);
+        //             // Button for removing friend
+        //             const removeButton = document.createElement('button');
+        //             removeButton.textContent = '-';
+        //             removeButton.onclick = () => removeFriend(friend._id);
 
-                    li.appendChild(removeButton);
-                    friendsList.appendChild(li);
-                });
-            } catch (error) {
-                console.error("Error loading friends:", error);
-            }
-        }
+        //             li.appendChild(removeButton);
+        //             friendsList.appendChild(li);
+        //         });
+        //     } catch (error) {
+        //         console.error("Error loading friends:", error);
+        //     }
+        // }
 
         async function loadNotifications() {
     try {
@@ -2454,7 +2522,7 @@ function toggleCommentSection(postId) {
             senderLink.href = `/home/profile/user/${notification.from?._id}`; // Link to user's profile
             senderLink.textContent = senderName;
             senderLink.style.textDecoration = 'none';
-            senderLink.style.color = 'blue'; // Optional styling
+            senderLink.style.color = '#6c0329'; // Optional styling
             li.appendChild(senderLink);
 
             // Handle different notification types
@@ -2624,7 +2692,7 @@ function toggleCommentSection(postId) {
         loadNotifications();
 
 
-        loadFriends();
+        // loadFriends();
 
         async function toggleLike(event, postId) {
     event.stopPropagation();
@@ -2648,6 +2716,16 @@ function toggleCommentSection(postId) {
         }, 300); // Matches the duration of the animation
     } catch (error) {
         console.error('Error toggling like:', error);
+    }
+}
+function toggleReplies(commentId) {
+    const repliesList = document.getElementById(`replies-list-${commentId}`);
+    
+    // Toggle the visibility of the replies list
+    if (repliesList.style.display === 'none' || repliesList.style.display === '') {
+        repliesList.style.display = 'block'; // Show replies
+    } else {
+        repliesList.style.display = 'none'; // Hide replies
     }
 }
 
@@ -2700,35 +2778,35 @@ async function toggledisLike(event, postId) {
 
         data.comments.forEach((comment) => {
             const commentHTML = `
-                 <li>
+    <li data-comment-id="${comment._id}"  >
+        <div class="comment-li" onclick="toggleReplies('${comment._id}')">
         <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
             alt="${comment.user.username}'s profile image" 
             style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
         <strong>${comment.user.username}:</strong>
         <p style="word-wrap: break-word; white-space: pre-wrap; margin: 5px 0;">${comment.content}</p>
         <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
-            <i onclick="toggleCommentLike('${comment._id}')" class="fa fa-thumbs-up" id="comment-like-icon-${comment._id}"></i>
-            <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment', '${comment._id}', 'likes')">
+            <i onclick="toggleCommentLike('${comment._id}'); event.stopPropagation()" class="fa fa-thumbs-up" id="comment-like-icon-${comment._id}"></i>
+            <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment', '${comment._id}', 'likes'); event.stopPropagation()">
                 ${comment.likesCount}
             </span>
-            <i onclick="toggleCommentdisLike('${comment._id}')" class="fa fa-thumbs-down" id="comment-dislike-icon-${comment._id}"></i>
-            <span id="comment-dislikes-${comment._id}" onclick="openReactionModal('comment', '${comment._id}', 'dislikes')">
+            <i onclick="toggleCommentdisLike('${comment._id}'); event.stopPropagation()" class="fa fa-thumbs-down" id="comment-dislike-icon-${comment._id}"></i>
+            <span id="comment-dislikes-${comment._id}" onclick="openReactionModal('comment', '${comment._id}', 'dislikes'); event.stopPropagation()">
                 ${comment.dislikesCount}
             </span>
-            <i onclick="toggleReplyBox('${comment._id}')" class="fa fa-reply"></i>
+            <i onclick="toggleReplyBox('${comment._id}'); event.stopPropagation()" class="fa fa-reply"></i>
             ${
                 comment.isOwner 
-                    ? `<i onclick="confirmDelete('comment', '${comment._id}')" class="fa fa-trash"></i>` 
+                    ? `<i onclick="confirmDelete('comment', '${comment._id}'); event.stopPropagation()" class="fa fa-trash"></i>` 
                     : ''
             }
         </div>
-     <div id="reply-box-${comment._id}" class="reply-box" style="display: none;">
-    <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply..." class="reply-input">
-    <button class="reply-button" onclick="addReply('${comment._id}')">Post Reply</button>
-</div>
-
-        </div>  
-        <ul id="replies-list-${comment._id}" class="replies-list" style="margin-top: 10px; padding-left: 20px;">
+        <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
+            <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply..." class="reply-input">
+            <button class="reply-button" onclick="addReply('${comment._id}')">Post Reply</button>
+        </div>
+        </div>
+        <ul id="replies-list-${comment._id}" class="replies-list" style="display: none; margin-top: 10px; padding-left: 20px;">
             ${comment.replies
                 .map(
                     (reply) => `
@@ -2760,6 +2838,8 @@ async function toggledisLike(event, postId) {
         </ul>
     </li>
 `;
+
+
             commentsList.insertAdjacentHTML('beforeend', commentHTML);
         });
     } catch (error) {
@@ -2947,13 +3027,16 @@ async function toggleReplydisLike(commentId, replyId) {
 
                 suggestions.forEach(suggestion => {
                     const li = document.createElement('li');
-                    li.className = 'suggestion-item'; // Add a class for styling
-        
-                    li.innerHTML = `
-                    <img src="${suggestion.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="suggestion-image" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
-                    <span class="suggestion-username">${suggestion.friend.username}</span>
-                    <button class="add-friend-btn" onclick="addFriend('${suggestion.friend._id}')">Add Friend</button>
-                `;
+li.className = 'suggestion-item'; // Add a class for styling
+
+li.innerHTML = `
+  <div class="suggestion-card">
+    <img src="${suggestion.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="suggestion-image">
+    <span class="suggestion-username">${suggestion.friend.username}<i class="fas fa-user-plus" onclick="addFriend('${suggestion.friend._id}')"></i></span>
+    
+  </div>
+`;
+
         
                     suggestionsList.appendChild(li);
                 });
