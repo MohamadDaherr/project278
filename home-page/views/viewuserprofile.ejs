@@ -1993,6 +1993,7 @@
                 
             </div>
                 <div class="profile-gallery">
+                <% if (!isDeactivated) { %>
                     <% posts.forEach(post=> { %>
                         <div class="gallery-item" onclick="openPostModal('<%= post._id %>')">
                             <img src="<%= post.mediaUrl %>" alt="User's Post">
@@ -2009,6 +2010,8 @@
                 </div>
     
         </div>
+        <% }%>
+
     
             <div id="postModal" class="modal" style="display: none;">
                 <div class="modal-content">
@@ -2021,6 +2024,7 @@
                     </div>
                 </div>
             </div>
+
     
             <div id="reaction-modal" class="modal" style="display: none;">
                 <div class="modal-content">
@@ -2047,6 +2051,7 @@
 
     
             <script>
+
 
 
 function copyToClipboard(userId) {

@@ -1964,7 +1964,7 @@ span {
 
             <!-- Dropdown menu -->
             <div class="dropdown-menu" id="dropdownMenu">
-                <a href="#" id="deactivateAccount">Deactivate Account</a>
+                <a href="#" id="deactivateAccount" > <%= user.isDeactivated ? 'Activate Account' : 'Deactivate Account'%></a>
                 <a href="#" id="deleteAccount">Delete Account</a>
                 <a href="/home/logout" id="logout">Logout</a>
             </div>
@@ -2576,19 +2576,39 @@ span {
         }
 
 
-        document.getElementById('deactivateAccount').addEventListener('click', async () => {
+        // document.getElementById('deactivateAccount').addEventListener('click', async () => {
+        //     try {
+        //         const response = await fetch('/account/deactivate-account', { method: 'POST' });
+        //         if (response.ok) {
+        //             alert('Account deactivated successfully');
+        //             window.location.href = '/home/logout'; // Redirect the user to logout
+        //         } else {
+        //             alert('Failed to deactivate account');
+        //         }
+        //     } catch (error) {
+        //         console.error("Error deactivating account:", error);
+        //     }
+        // });
+
+        document.getElementById('deactivateAccount').addEventListener('click', async function(event) {
+            event.preventDefault(); // Prevent the default anchor tag behavior
+
             try {
-                const response = await fetch('/account/deactivate-account', { method: 'POST' });
-                if (response.ok) {
-                    alert('Account deactivated successfully');
-                    window.location.href = '/home/logout'; // Redirect the user to logout
-                } else {
-                    alert('Failed to deactivate account');
-                }
+                const response = await fetch('/account/deactivate-account', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await response.json();
+
+                alert(data.message); // Display the success/failure message
+                window.location.href = '/home/logout'; // Redirect the user to logout
             } catch (error) {
-                console.error("Error deactivating account:", error);
+                alert("Error toggling account status.");
+                console.error(error);
             }
         });
+
 
         document.getElementById('deleteAccount').addEventListener('click', async () => {
             if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) return;
