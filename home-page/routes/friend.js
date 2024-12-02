@@ -331,8 +331,17 @@ router.get('/suggestions', isAuthenticated, async (req, res) => {
             .sort({ likeCount: -1, commentCount: -1, dislikeCount: -1 })
             .limit(9)
             .lean();
+            
+            // Filter out invalid suggestions (null friend) and remove duplicates
+        const uniqueSuggestions = suggestions.filter((suggestion, index, self) => {
+            // Skip if 'friend' is null or undefined
+            if (!suggestion.friend) return false;
 
-        res.json(suggestions);
+            // Remove duplicates by ensuring that friend._id is unique
+            return index === self.findIndex((s) => s.friend && s.friend._id.toString() === suggestion.friend._id.toString());
+        });
+
+        res.json(uniqueSuggestions);
     } catch (error) {
         console.error("Error fetching friend suggestions:", error);
         res.status(500).json({ message: "Server error" });

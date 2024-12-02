@@ -7,23 +7,30 @@ const Notification = require('../../models/Notification');
 const Story = require('../../models/Story');
 
 router.post('/deactivate-account', isAuthenticated, async (req, res) => {
-  const userId = req.user.userId;
+    const userId = req.user.userId;
 
-  try {
-      const user = await User.findById(userId);
-      if (!user) {
-          return res.status(404).json({ message: "User not found" });
-      }
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
-      user.isDeactivated = true;
-      await user.save();
+        // Toggle the deactivation status
+        user.isDeactivated = !user.isDeactivated;
+        await user.save();
 
-      res.status(200).json({ message: "Account deactivated successfully" });
-  } catch (error) {
-      console.error("Error deactivating account:", error);
-      res.status(500).json({ message: "Server error" });
-  }
+        // Respond with appropriate message based on new status
+        if (user.isDeactivated) {
+            res.status(200).json({ message: "Account deactivated successfully" });
+        } else {
+            res.status(200).json({ message: "Account reactivated successfully" });
+        }
+    } catch (error) {
+        console.error("Error deactivating/reactivating account:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
+
 
 // Delete account
 router.post('/delete-account', isAuthenticated, async (req, res) => {

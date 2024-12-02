@@ -1500,6 +1500,155 @@ body {
     transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
+/* Modal container */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+    overflow: auto; /* Enable scroll if needed */
+    padding-top: 60px;
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 70%; /* Adjust width as needed */
+    max-height: 80vh; /* Limit height */
+    overflow-y: auto; /* Enable vertical scrolling if the content is too large */
+    position: relative;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+/* Comment Section */
+.comment-section {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+/* Comment Layout */
+.comment {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* User avatar */
+.comment-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Comment text container */
+.comment-text {
+    flex-grow: 1;
+}
+
+/* Username and timestamp */
+.comment-user {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+.comment-time {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Comment content */
+.comment-content {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Like and Dislike buttons */
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-action {
+    font-size: 14px;
+    color: #555;
+    cursor: pointer;
+}
+
+.comment-action:hover {
+    color: #4CAF50;
+}
+
+/* Comment Input Container */
+.comment-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+}
+
+/* Comment Input */
+#commentInput {
+    width: 80%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+
+
+.upload-story-button {
+    font-size: 2rem; /* Make the "+" large */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Circle shape */
+    /* background-color: #007bff; Blue background */
+    color: #1f7878;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.upload-story-button:hover {
+    transform: rotate(90deg);
+    transition: transform 0.5s ease; /* Smooth transition on hover */
+    color: black;
+}
+
     </style>
 </head>
 
@@ -1549,10 +1698,10 @@ body {
             <section class="story-carousel">
                 <!-- User's own story upload option -->
                 <div class="story" onclick="openUploadModal()">
-                    <div class="story-image-wrapper">
-                        <img src="<%= user.profileImage %>" alt="Your Story">
+                    <div >
+                        <button class="upload-story-button">+</button>
                     </div>
-                    <p>Your Story</p>
+                    <!-- <p>Your Story</p> -->
                 </div>
             
                 <!-- Stories grouped by user -->
@@ -1570,27 +1719,38 @@ body {
                         <div class="story-image-wrapper">
                             <img src="<%= firstStory.user.profileImage || '/path/to/default-profile.png' %>" alt="<%= firstStory.user.firstName %>">
                         </div>
-                        <p><%= firstStory.user.firstName %></p>
+                        <p><%=user._id == userId? 'Your Story' : firstStory.user.firstName %></p>
                     </div>
                 <% }); %>
             </section>
+            
+            <!-- Story Modal -->
             <div id="storyModal" class="modal">
                 <div class="modal-content">
                     <span class="close" onclick="closeStoryModal()">&times;</span>
-                    <button id="prevStory" class="nav-arrow left-arrow" onclick="navigateStory(-1)">&#10094;</button>
                     <div class="story-details">
                         <h3 id="storyUserName"></h3> <!-- Display the user's name -->
                     </div>
+                    <div class="story-progress-bar">
+                        <div id="progressBar"></div>
+                    </div>
+                    <button id="prevStory" class="nav-arrow left-arrow" onclick="navigateStory(-1)">&#10094;</button>
                     <img id="storyImage" src="" alt="Story Image">
+                    <video controls id="story-media" style="display: none; width: 70%; height: 70%;">
+                        <source src="" type="video/mp4">
+                    </video>
                     <div class="story-reactions">
                         <button id="likeButton" class="reaction-button" onclick="likeStory()">❤️ <span id="likesCount">0</span></button>
                         <button id="dislikeButton" class="reaction-button" onclick="dislikeStory()">👎 <span id="dislikesCount">0</span></button>
                     </div>
                     <button id="nextStory" class="nav-arrow right-arrow" onclick="navigateStory(1)">&#10095;</button>
+                    
+
                     <!-- Close Button -->
                     <span class="close" onclick="closeStoryModal()">&times;</span>
                 </div>
             </div>
+            
             
             
             
@@ -2703,8 +2863,34 @@ function toggleCommentSection(postId) {
 
 
       let currentStoryGroup = [];
-let currentStoryIndex = 0;
-let autoNavigateTimeout;
+    let currentStoryIndex;
+    let autoNavigateTimeout;
+    let currentStoryId = null;  // To store the current story ID
+    let storyTimerPaused = false;  // Flag to pause the story timer
+
+
+    // Function to start the timer for the story (global timer)
+function startStoryTimer() {
+    if (storyTimerPaused) return;
+    clearTimeout(autoNavigateTimeout);
+    autoNavigateTimeout = setTimeout(() => {
+        if (currentStoryIndex < currentStoryGroup.length - 1) {
+            navigateStory(1);
+        } else {
+            closeStoryModal();
+        }
+    }, 5000); // Auto-navigate every 5 seconds
+}
+
+// Function to pause the story timer
+function pauseStoryTimer() {
+    clearTimeout(autoNavigateTimeout);
+}
+
+// Function to resume the story timer
+function resumeStoryTimer() {
+    startStoryTimer();
+}
 
 async function viewStoryGroup(userId) {
     try {
@@ -2722,57 +2908,52 @@ function displayStory() {
         closeStoryModal();
         return;
     }
-
     const story = currentStoryGroup[currentStoryIndex];
-    document.getElementById("storyImage").src = story.mediaUrl;
-
-    // Set user name (use "Me" for the user's own story)
+    currentStoryId=story._id;
+    if(story.mediaType=='image'){
+        document.getElementById("story-media").style.display = 'none';
+        document.getElementById("storyImage").src = story.mediaUrl;
+    }
+    else if(story.mediaType=='video'){
+        document.getElementById("storyImage").style.display = 'none';
+        document.getElementById("story-media").style.display = 'block';
+        document.getElementById("story-media").src = story.mediaUrl;
+    }
     const viewerName = story.user._id === "<%= user._id %>" ? "Me" : story.user.username;
     document.getElementById("storyUserName").textContent = viewerName;
+    document.getElementById("likesCount").textContent = story.likesCount;
+    document.getElementById("dislikesCount").textContent = story.dislikesCount;
 
-    // Update like and dislike counts for the current story
-    document.getElementById("likesCount").textContent = story.likes.length;
-    document.getElementById("dislikesCount").textContent = story.dislikes.length;
+    // Progress bar animation
+    const progressBar = document.getElementById("progressBar");
+    progressBar.style.width = "0%";
+    progressBar.style.transition = "none";
+    setTimeout(() => {
+        progressBar.style.transition = "width 5s linear";
+        progressBar.style.width = "100%";
+    }, 50);
+
+   
 
     // Enable/disable navigation buttons
     document.getElementById("prevStory").disabled = currentStoryIndex === 0;
     document.getElementById("nextStory").disabled = currentStoryIndex === currentStoryGroup.length - 1;
 
-    // Show modal
     document.getElementById("storyModal").style.display = "flex";
-
-    // Reset progress bar
-    const progressBar = document.getElementById("storyProgressBar");
-    progressBar.style.width = "0%";
-    setTimeout(() => {
-        progressBar.style.transition = `width 5s linear`;
-        progressBar.style.width = "100%";
-    }, 0);
-
-    // Start auto-navigation timer
-    clearTimeout(autoNavigateTimeout);
-    autoNavigateTimeout = setTimeout(() => {
-        if (currentStoryIndex < currentStoryGroup.length - 1) {
-            navigateStory(1);
-        } else {
-            closeStoryModal(); // Close modal if it's the last story
-        }
-    }, 5000); // 5-second timer for auto-navigation
+    startStoryTimer();
 }
 
 async function likeStory() {
     try {
-        const storyId = currentStoryGroup[currentStoryIndex]._id; // Current story ID
+        const storyId = currentStoryGroup[currentStoryIndex]._id;
         const response = await fetch(`/stories/${storyId}/like`, { method: 'POST' });
         const data = await response.json();
-
-        // Update the like and dislike counts for the current story
         document.getElementById("likesCount").textContent = data.likesCount;
         document.getElementById("dislikesCount").textContent = data.dislikesCount;
 
-        // Update the current story's like/dislike data
-        currentStoryGroup[currentStoryIndex].likes = data.likes;
-        currentStoryGroup[currentStoryIndex].dislikes = data.dislikes;
+        // // Update the current story's like/dislike data
+        currentStoryGroup[currentStoryIndex].likesCount = data.likesCount;
+        currentStoryGroup[currentStoryIndex].dislikesCount = data.dislikesCount;
     } catch (error) {
         console.error("Error liking story:", error);
     }
@@ -2780,22 +2961,19 @@ async function likeStory() {
 
 async function dislikeStory() {
     try {
-        const storyId = currentStoryGroup[currentStoryIndex]._id; // Current story ID
+        const storyId = currentStoryGroup[currentStoryIndex]._id;
         const response = await fetch(`/stories/${storyId}/dislike`, { method: 'POST' });
         const data = await response.json();
-
-        // Update the like and dislike counts for the current story
         document.getElementById("likesCount").textContent = data.likesCount;
         document.getElementById("dislikesCount").textContent = data.dislikesCount;
 
         // Update the current story's like/dislike data
-        currentStoryGroup[currentStoryIndex].likes = data.likes;
-        currentStoryGroup[currentStoryIndex].dislikes = data.dislikes;
+        currentStoryGroup[currentStoryIndex].likesCount = data.likesCount;
+        currentStoryGroup[currentStoryIndex].dislikesCount = data.dislikesCount;
     } catch (error) {
         console.error("Error disliking story:", error);
     }
 }
-
 
 function navigateStory(direction) {
     currentStoryIndex += direction;
@@ -2809,9 +2987,9 @@ function navigateStory(direction) {
 
 function closeStoryModal() {
     document.getElementById("storyModal").style.display = "none";
+    clearTimeout(autoNavigateTimeout);
     currentStoryGroup = [];
     currentStoryIndex = 0;
-    clearTimeout(autoNavigateTimeout);
 }
 
 

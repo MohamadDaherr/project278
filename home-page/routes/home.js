@@ -16,7 +16,7 @@ router.get('/logout', (req, res) => {
     res.clearCookie('token'); // Clear the authentication token cookie
     req.session = null; // If you use sessions, clear the session
     res.redirect('/auth/login'); // Redirect to the login page
-});
+}); 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -54,7 +54,7 @@ router.get('/', isAuthenticated, async (req, res) => {
                 { user: userId, privacy: 'private' } // Current user's private posts
             ]
         })
-            .populate('user', 'username profileImage') // Populate the post author details
+            .populate('user', 'username profileImage isDeactivated') // Populate the post author details
             .populate({
                 path: 'comments',
                 populate: {
@@ -67,10 +67,18 @@ router.get('/', isAuthenticated, async (req, res) => {
 
         // Fetch stories from friends and the user within the last 24 hours
         const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-        const stories = await Story.find({
+        let stories = await Story.find({
             user: { $in: friendIds },
             createdAt: { $gte: oneDayAgo }
-        }).populate('user').sort({ createdAt: -1 });
+        }).populate('user','firstName username profileImage isDeactivated')
+        .populate({
+            path: 'comments.user', // Populate the user details for replies (comments)
+            select: 'username profileImage' // Populate commenter details for comments
+        })
+        .sort({ createdAt: -1 });
+
+        posts = posts.filter(post => !post.user.isDeactivated);
+        stories = stories.filter(story => !story.user.isDeactivated);
 
         posts = posts.map(post => ({
             ...post.toObject(),
