@@ -2469,9 +2469,23 @@ span {
                                  style="width: 25px; height: 25px; border-radius: 50%;" />
                             <div>
                                 <strong>${newReply.user.username}</strong>
+                                
                                 <span>${newReply.content}</span>
                             </div>
                         </div>
+                        <div class="reply-actions" style="display: flex; gap: 10px; align-items: center;">
+                                                    <i class="fa fa-thumbs-up" id="reply-thumb-up-${newReply._id}" 
+                                                       onclick="toggleReplyLike('${commentId}', '${newReply._id}', event); event.stopPropagation()"></i>
+                                                    <span id="reply-likes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'likes')">0</span>
+        
+                                                    <i class="fa fa-thumbs-down" id="reply-thumb-down-${newReply._id}" 
+                                                       onclick="toggleReplydisLike('${commentId}', '${newReply._id}', event); event.stopPropagation()"></i>
+                                                    <span id="reply-dislikes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'dislikes')">0</span>
+        
+                                                    ${newReply.isOwner ? `
+                                                    <i class="fa fa-trash" id="reply-trash-${newReply._id}" 
+                                                       onclick="confirmDelete('reply', '${newReply._id}', event); event.stopPropagation()"></i>` : ''}
+                                </div>
                     </li>
                 `;
                         repliesContainer.insertAdjacentHTML('beforeend', replyHTML);

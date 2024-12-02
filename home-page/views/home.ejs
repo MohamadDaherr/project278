@@ -217,7 +217,7 @@ li {
 }
 
 /* Media Query for Shrinking */
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
     .profile-link {
         /* width: 50px; 
         padding: 0;
@@ -308,7 +308,7 @@ li {
     white-space: nowrap;
     background-color: #fff;
     border-radius: 10px;
-    width: 90%;
+    width: 87%;
     border-bottom: 1px solid #dbdbdb;
 }
 /* User name styling */
@@ -1009,7 +1009,7 @@ li {
 
 
 /* Adjust for smaller screens */
-@media (max-width: 900px) {
+@media (max-width: 1100) {
     .sidebar ul li {
         padding: 10px; /* Add padding for smaller screens */
         font-size: 14px; /* Adjust font size */
@@ -1020,7 +1020,7 @@ li {
     }
 }
 /* Media Query to Collapse Sidebars on Smaller Screens */
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
     .sidebar {
         transform: translateX(-100%); /* Hide the sidebar by moving it off-screen */
     }
@@ -1036,7 +1036,7 @@ li {
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
     .create-post-link {
         transform: translateX(-100%); /* Hide the sidebar by moving it off-screen */
         display: none;
@@ -2003,7 +2003,7 @@ span {
     height: 50px;
     border-radius: 50%; /* Circle shape */
     /* background-color: #007bff; Blue background */
-    color: #1f7878;
+    color: #830131;
     border: none;
     display: flex;
     justify-content: center;
@@ -2042,6 +2042,7 @@ span {
     padding: 5px;
     background-color: rgb(225, 225, 225);
     border-radius: 7px;
+    border: solid 0.5px grey;
 }
 
     </style>
@@ -2391,7 +2392,7 @@ span {
 
     <!-- JavaScript to handle modal behavior -->
     <script>
-
+        
 window.addEventListener('resize', () => {
     const container = document.querySelector('.container');
     const feed = document.querySelector('.feed');
@@ -3025,7 +3026,7 @@ async function toggledisLike(event, postId) {
                 if (response.ok) {
                     const data = await response.json(); // Get the newly created reply data
                     loadComments(postId); // Reload comments after posting a new one
-                    document.querySelector(".commentcount").innerHTML = `${data.CommentCount} Comment`
+                    document.querySelector(".comment-count").innerHTML = `${data.CommentCount}`
                     document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
                 }
             } catch (error) {
