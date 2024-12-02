@@ -1,24 +1,35 @@
 <!-- viewuserprofile.ejs -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= viewedUser.username %>'s Profile</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>
+        <%= viewedUser.username %>'s Profile
+    </title>
     <!-- <link rel="stylesheet" href="/css/profile.css"> -->
-
     <style>
-        /* General Container */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
         body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-}
-
-.profile-container {
+            font-family: Arial, sans-serif;
+            background-color: #e4e4e4;
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+            /* background: linear-gradient(120deg, #1fc0ff 0%, #ffb9a6 100%); */
+        }
+    
+        .profile-container {
             width: 100%;
             max-width: 935px;
             background-color: #fff;
@@ -26,7 +37,7 @@
             position: relative;
             /* Set the container as the relative parent */
         }
-
+    
         .profile-header {
             display: flex;
             align-items: flex-start;
@@ -37,282 +48,2060 @@
             gap: 20px;
             /* Space between the profile photo and info */
         }
-
-.profile-header-image img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-/* Profile Header Info Section */
-.profile-header-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-}
-
-.profile-header-info .username {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
-}
-
-.profile-header-info .bio {
-    font-size: 14px;
-    font-style: italic;
-    color: #555;
-    margin: 5px 0;
-}
-
-/* Additional Info Styling */
-.additional-info {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.info-item {
-    font-size: 14px;
-    color: #444;
-    margin: 0;
-}
-
-/* Friend Actions Styling */
-.friend-actions {
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.friend-status {
-    font-weight: bold;
-    color: #0095f6;
-}
-
-.remove-friend-btn {
-    background-color: transparent;
-    border: 1px solid #ff4d4d;
-    color: #ff4d4d;
-    border-radius: 4px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.remove-friend-btn:hover {
-    background-color: #ffe6e6;
-}
-
-.friend-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #0095f6;
-    color: white;
-}
-
-.friend-btn.pending {
-    background-color: #f0f0f0;
-    color: #999;
-    cursor: not-allowed;
-}
-
-.friend-btn:hover:not(.pending) {
-    background-color: #007bb5;
-}
-
-/* Additional Info Styling */
-.additional-info {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: 10px;
-}
-
-/* Flex container for Friends and Posts */
-.friends-posts {
-    display: flex;
-    gap: 20px; /* Space between items */
-    margin-top: 10px; /* Space from other info */
-}
-
-.info-item {
-    font-size: 14px;
-    color: #444;
-    margin: 0;
-    flex: 1; /* Ensure equal spacing for both items */
-}
-.bio {
-    font-size: 14px;
-    font-style: italic;
-    color: #555;
-    margin: 5px 0;
-    word-wrap: break-word; /* Ensures long words break into a new line */
-    white-space: normal; /* Allows text to wrap */
-    overflow-wrap: anywhere; /* Wraps text to avoid overflow */
-}
-
-.profile-posts h2 {
-    margin-bottom: 15px;
-}
-
-.post-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-}
-
-.post-item img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.modal {
+    
+        .profile-photo {
+            flex-shrink: 0;
+        }
+    
+        .profile-photo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            /* Make it a circle */
+            object-fit: cover;
+            /* Ensure the image fits inside the circle without distortion */
+            display: block;
+            /* Ensure no inline spacing affects the layout */
+        }
+    
+        .profile-info {
+            flex-grow: 1;
+            padding-left: 15px;
+            /* Reduce padding between profile photo and info */
+        }
+    
+        .profile-info h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+            margin-bottom: 10px;
+            /* Reduce spacing below the name */
+        }
+    
+        .username {
+            display: flex;
+            align-items: center;
+            /* Align username and stats vertically */
+        }
+    
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+            /* Space between "Posts" and "Friends" */
+            font-size: 14px;
+            color: #262626;
+            margin-left: 40px;
+            /* Add more space to the right of the username */
+        }
+    
+        .profile-stats p {
+            font-size: 1.3em;
+            margin: 0;
+            /* Remove default paragraph margins */
+            line-height: 1.5;
+            /* Improve readability */
+        }
+    
+    
+    
+    
+        .profile-info h4 {
+            margin-top: 0;
+            /* Bring username closer to stats */
+            margin-bottom: 5px;
+            /* Reduce spacing below username */
+            font-size: 16px;
+            font-weight: 400;
+            color: #555;
+        }
+    
+        .profile-bio {
+            width: 100%;
+            /* Ensure it spans the container */
+            max-width: 100%;
+            /* Prevent overflow */
+            word-break: break-word;
+            /* Break long words */
+            overflow-wrap: break-word;
+            /* Allow wrapping at any character */
+            white-space: normal;
+            /* Enable natural wrapping */
+            line-height: 1.5;
+            /* Improve readability */
+            font-size: 14px;
+            /* Ensure consistent font size */
+            color: #333;
+            /* Standard color for readability */
+        }
+    
+        .bio {
+            margin-top: 10px;
+            word-break: break-word;
+            /* Allow wrapping of long words */
+            overflow-wrap: break-word;
+            /* Ensure wrapping for modern browsers */
+            white-space: normal;
+            /* Ensure multi-line support */
+            line-height: 1.5;
+            /* Improve readability */
+            max-width: 100%;
+            /* Restrict to container width */
+        }
+    
+    
+    
+    
+        button {
+            margin-top: 8px;
+            /* Reduce spacing above buttons */
+            padding: 8px 16px;
+            /* Keep button padding consistent */
+            font-size: 14px;
+            border-radius: 4px;
+        }
+    
+        ul {
+            margin-top: 15px;
+            /* Bring account actions closer */
+            padding-left: 0;
+            list-style: none;
+        }
+    
+        ul li {
+            margin-bottom: 8px;
+            /* Reduce spacing between each button */
+        }
+    
+        .profile-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 30%);
+            /* Adjust column size to 30% to keep images closer */
+            justify-content: center;
+            /* Center the grid items */
+            gap: 0px;
+            /* Negative gap to reduce spacing further and bring items closer */
+            padding: 0;
+            margin: 0;
+        }
+    
+        .gallery-item img {
+            width: 95%;
+            /* Maintain specified size */
+            height: 95%;
+            /* Maintain specified size */
+            border-radius: 3px;
+            /* No border radius */
+            object-fit: cover;
+            /* Keep scaling appropriate */
+            margin: 0;
+            /* Remove any additional spacing */
+            aspect-ratio: 1/1;
+            /* Maintain square shape */
+        }
+    
+        .modal {
+            width: 600px;
+            /* Fixed width */
+            height: 500px;
+            /* Fixed height */
+            display: none;
+            /* Initially hidden */
+            position: fixed;
+            top: 50%;
+            /* Center vertically */
+            left: 50%;
+            /* Center horizontally */
+            transform: translate(-50%, -50%);
+            /* Center the modal */
+            z-index: 1000;
+            display: flex;
+            /* Flex container */
+            justify-content: center;
+            align-items: center;
+        }
+    
+    
+        .modal-content,
+        #commentsModal {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 90vw;
+            /* Responsive width */
+            height: 90vh;
+            /* Same height for both modals */
+            max-height: 800px;
+            /* Limit maximum height */
+            background-color: #fff;
+            /* White background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            /* Subtle shadow */
+            overflow: hidden;
+            /* Prevent overflow */
+            font-family: Arial, sans-serif;
+            padding: 0;
+            /* Reset padding */
+            margin: 0;
+            /* Reset margin */
+            box-sizing: border-box;
+            /* Include padding and border in height */
+        }
+    
+    
+        /* Additional specific styles for each modal */
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            max-width: 1000px;
+            /* Specific width for the main modal */
+            padding: 10px;
+            position: relative;
+        }
+    
+        #commentsModal {
+            position: fixed;
+            top: 50%;
+            left: 68.34%;
+            /* Adjust to move modal further right */
+            height: 84.1%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            max-width: 400px;
+            /* Specific width for the comments modal */
+            display: none;
+            flex-direction: column;
+        }
+    
+    
+        .modal-content img {
+            width: 100%;
+            /* Make the image fill the modal's width */
+            height: calc(100% - 50px);
+            /* Allow space for caption and other elements */
+            object-fit: contain;
+            /* Adjust image to fit the modal without cropping */
+            margin-bottom: 10px;
+            /* Space below the image */
+        }
+    
+        .post-caption {
+            font-size: 16px;
+            /* Adjust font size as needed */
+            color: #555;
+            /* Text color */
+            width: 90%;
+            /* Ensure it doesn't exceed the container width */
+            word-wrap: break-word;
+            /* Break long words */
+            word-break: break-word;
+            /* Ensure compatibility across browsers */
+            overflow-wrap: anywhere;
+            /* Allow breaking at any point for long words */
+            white-space: normal;
+            /* Allow text wrapping */
+            line-height: 1.5;
+            /* Improve readability */
+            text-align: left;
+            /* Align text to the left */
+            margin-top: -10%;
+            margin-bottom: 15%;
+        }
+    
+    
+        /* Make post-actions fixed at the bottom of the modal */
+        .post-actions {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            /* Vertical padding */
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            z-index: 10;
+            /* Ensure it stays above other content */
+        }
+    
+    
+        #postDetails {
+            overflow-y: scroll;
+            /* Enable scrolling */
+            flex-grow: 1;
+            /* Allow this section to grow */
+            margin-bottom: 10px;
+            /* Add spacing before post actions */
+            scrollbar-width: none;
+            /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none;
+            /* Hide scrollbar for IE and Edge */
+        }
+    
+        #postDetails::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for Chrome, Safari, and Edge */
+        }
+    
+    
+        .post-actions span {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .modal-content .close {
+            position: absolute;
+            /* Always fixed in the modal */
+            top: 20px;
+            /* Position from the top */
+            right: 15px;
+            /* Position from the right */
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            z-index: 100;
+            /* Ensure it stays on top of other content */
+        }
+    
+        /* Tabs Styling */
+        .tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #dbdbdb;
+            padding-bottom: 5px;
+        }
+    
+        .tab-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 8px;
+            color: #262626;
+        }
+    
+        .tab-button.active {
+            border-bottom: 2px solid #830131;
+            color: #830131;
+        }
+    
+        .tab-content {
+            display: none;
+        }
+    
+        .tab-content.active {
+            display: block;
+        }
+    
+        form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+    
+        form input[type="file"],
+        form textarea,
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    
+    
+        /* Modal Overlay */
+        #delete-modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            /* Set smaller width */
+            height: 200px;
+            /* Set smaller height */
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Semi-transparent black background */
+            z-index: 1100;
+            /* Ensure it is higher than other modals */
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            /* Rounded corners for better design */
+        }
+    
+        /* Modal Content */
+        #delete-modal .modal-content {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            /* Smaller padding for compact size */
+            width: 100%;
+            /* Fit within the modal size */
+            max-width: 100%;
+            /* Ensure the content doesn’t exceed the modal */
+            max-height: 100%;
+            /* Restrict height */
+            text-align: center;
+            /* Center text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            /* Smaller font size */
+        }
+    
+        /* Header */
+        #delete-modal h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            /* Smaller spacing */
+        }
+    
+        /* Buttons Container */
+        #delete-modal .modal-content button {
+            padding: 13px 15px;
+            /* Smaller buttons */
+            margin: 8px;
+            /* Reduced margin for compact layout */
+            border-radius: 4px;
+            /* Rounded corners */
+            font-size: 13px;
+            /* Adjust font size */
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease-in-out;
+        }
+    
+        /* Confirm Delete Button */
+        #confirm-delete {
+            background-color: #830131;
+            color: white;
+        }
+    
+        #confirm-delete:hover {
+            background-color: #6c0329;
+        }
+    
+        /* Cancel Button */
+        #cancel-delete {
+            background-color: #95a5a6;
+            color: white;
+        }
+    
+        #cancel-delete:hover {
+            background-color: #7f8c8d;
+        }
+    
+        .home-btn {
+            position: fixed;
+            /* Fixed at the top-left corner */
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: transform 0.3s;
+            /* Smooth hover effect */
+            height: 50px;
+        }
+    
+        .home-btn:hover {
+            transform: scale(1.1);
+            /* Zoom effect on hover */
+        }
+    
+        .home-btn i {
+            font-size: 24px;
+            /* Icon size */
+            color: black;
+            /* Grey icon color */
+            transition: color 0.3s;
+            /* Smooth hover color change */
+        }
+    
+        .home-btn:hover i {
+            color: black;
+            /* Change to black on hover */
+        }
+    
+    
+    
+        .menu-btn {
+            position: absolute;
+            /* Position relative to the .profile-container */
+            top: 20px;
+            /* Top-right corner of the container */
+            right: 20px;
+            font-size: 24px;
+            /* Icon size */
+            color: black;
+            /* Grey color for the icon */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: color 0.3s, transform 0.3s;
+            /* Smooth hover effect */
+        }
+    
+        .menu-btn:hover {
+            color: black;
+            /* Change icon to black on hover */
+            transform: scale(1.1);
+            /* Slight zoom effect on hover */
+        }
+    
+        .dropdown-menu {
+            display: none;
+            /* Initially hidden */
+            position: relative;
+            /* Positioned relative to the .profile-container */
+            top: 40px;
+            /* Adjust spacing below the menu button */
+            right: 20px;
+            width: 180px;
+            /* Smaller width */
+            background-color: #fff;
+            /* White background */
+            border: 1px solid #ccc;
+            /* Light border for the dropdown */
+            border-radius: 5px;
+            /* Smaller border radius */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for effect */
+            z-index: 1000;
+            /* Make sure it appears above other content */
+            padding: 5px;
+            /* Reduce padding for a compact design */
+        }
+    
+        .dropdown-menu a {
+            display: block;
+            /* Each option is a block for easier clicking */
+            text-decoration: none;
+            /* Remove underline */
+            color: grey;
+            /* Text color */
+            font-size: 14px;
+            /* Smaller font size */
+            padding: 6px;
+            /* Reduce padding */
+            border-radius: 3px;
+            /* Smaller border radius */
+            transition: background-color 0.3s, color 0.3s;
+            /* Smooth hover effects */
+        }
+    
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+            /* Light grey background on hover */
+            color: black;
+            /* Darker text color on hover */
+        }
+    
+    
+        .username-link {
+            cursor: pointer;
+            /* Add pointer cursor */
+            color: #555;
+            /* Default color */
+            transition: color 0.3s ease;
+        }
+    
+        .username-link:hover {
+            color: #0095f6;
+            /* Highlight color on hover */
+        }
+    
+        .modal-content .fa-trash {
+            transition: color 0.3s ease;
+        }
+    
+        .modal-content .fa-trash:hover {
+            color: red;
+            /* Change color on hover */
+        }
+    
+    
+        #postModal {
+            position: fixed;
+            top: 50%;
+            left: 30%;
+            /* Adjust to position on the left */
+            max-height: 500px;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            width: 45%;
+            /* Adjust width */
+        }
+    
+        /* Comments Header */
+        #commentsModal .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        /* Comments List */
+        #commentsModal .comments-list {
+            list-style: none;
+            padding: 15px;
+            margin: 0;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+    
+        #commentsModal .comments-list {
+            overflow-y: scroll;
+            /* Enable scrolling */
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+    
+        #commentsModal .comments-list::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari, and Edge */
+        }
+    
+    
+        /* Add Comment Section */
+        #commentsModal .comment-footer {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background-color: #fff;
+        }
+    
+        #commentsModal .comment-footer input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    
+    
+        #commentsModal .comment-footer button:hover {
+            background-color: #6c0329;
+        }
+    
+        .comment-footer {
+            border-top: 1px solid #ddd;
+            /* Separate the footer with a border */
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+    
+    
+        .comment-footer button {
+            padding: 10px 20px;
+            background-color: #830131;
+            /* Blue for the "Post" button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    
+        .comment-footer button:hover {
+            background-color: #6c0329;
+            /* Slightly darker blue on hover */
+        }
+    
+    
+        .comment-container {
+            cursor: pointer;
+            /* Indicate interactivity */
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    
+        .comment-container:hover {
+            background-color: #f9f9f9;
+            /* Highlight on hover */
+        }
+    
+        #comment-trash {
+            cursor: pointer;
+            color: #000;
+            /* Default color */
+            transition: color 0.3s ease;
+            float: right;
+        }
+    
+    
+    
+        #comment-reply {
+            cursor: pointer;
+            color: #000;
+            /* Default color */
+            transition: color 0.3s ease;
+            margin-left: 50px;
+            /* Adjust this value to control spacing from the trash icon */
+        }
+    
+        /* Generalized selector for comment trash icons */
+        [id^="comment-trash"]:hover {
+            color: red;
+            /* Highlight on hover */
+            transition: color 0.3s ease;
+        }
+    
+        .replies-container .fa-trash {
+            cursor: pointer;
+            color: #000;
+            /* Default black color */
+            transition: color 0.3s ease;
+        }
+    
+        .replies-container .fa-trash:hover {
+            color: red;
+            /* Change to red on hover */
+        }
+    
+    
+        #comment-reply:hover {
+            color: blue;
+            /* Highlight on hover */
+        }
+    
+        [id^="comment-reply-"]:hover {
+            color: blue;
+            /* Highlight on hover */
+        }
+    
+    
+        @keyframes bounce {
+    
+            0%,
+            100% {
+                transform: scale(1);
+            }
+    
+            50% {
+                transform: scale(1.5);
+                /* Scale up the icon briefly */
+            }
+        }
+    
+        .comment-container.highlight {
+            background-color: #f0f8ff;
+            /* Light blue */
+            transition: background-color 0.3s ease;
+        }
+    
+        /* Reply Box Design */
+        .reply-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            /* Light gray background */
+            border-radius: 8px;
+            /* Smooth corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow */
+        }
+    
+        /* Reply Input Field */
+        .reply-box input[type="text"] {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+    
+        /* Focus Effect for Input Field */
+        .reply-box input[type="text"]:focus {
+            border-color: #830131;
+            /* Blue border on focus */
+        }
+    
+        /* Reply Post Button */
+        .reply-box button {
+            background-color: #830131;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    
+        .reply-box button:hover {
+            background-color: #6c0329;
+            /* Slightly darker blue on hover */
+        }
+    
+        /* Replies container styling */
+        /* General Container for Replies */
+        /* Ensure long text wraps properly inside reply containers */
+        .replies-container li .reply-content {
+            flex: 1;
+            /* Allow the content to expand and fill available space */
+            word-break: break-word;
+            /* Ensure long words break onto the next line */
+            overflow-wrap: anywhere;
+            /* Allow text to break at any point if needed */
+            white-space: normal;
+            /* Ensure text wraps naturally */
+            line-height: 1.5;
+            /* Improve readability */
+        }
+    
+        /* Apply the same fix for comment content */
+        .comment-content {
+            word-break: break-word;
+            /* Break long words */
+            overflow-wrap: anywhere;
+            /* Allow breaking at any character */
+            white-space: normal;
+            /* Wrap text naturally */
+            line-height: 1.5;
+            /* Enhance readability */
+        }
+    
+        .replies-container {
+            margin-top: 10px;
+            border-left: 2px solid #ddd;
+            /* Keeps the line visible */
+            padding-left: 15px;
+            /* Slightly increase padding to adjust spacing */
+            margin-left: 40px;
+            /* Increase margin-left to align with the red line */
+        }
+    
+        .replies-container li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            /* Light background for replies */
+            border-radius: 8px;
+            /* Rounded corners */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            /* Ensure text wraps properly */
+            white-space: normal;
+        }
+    
+    
+        /* Reply Items */
+        .replies-container ul {
+            list-style: none;
+            /* Remove bullet points */
+            padding: 0;
+            /* Remove default padding */
+            margin: 0;
+            /* Remove default margin */
+        }
+    
+    
+        /* Reply User Profile Image */
+        .replies-container li img {
+            width: 35px;
+            /* Adjust profile image size */
+            height: 35px;
+            /* Ensure consistent height */
+            border-radius: 50%;
+            /* Circular image */
+            object-fit: cover;
+            /* Ensure the image fits properly */
+            flex-shrink: 0;
+            /* Prevent image from shrinking */
+        }
+    
+        /* Username Styling */
+        .replies-container li .reply-content strong {
+            font-size: 14px;
+            /* Username font size */
+            font-weight: bold;
+            /* Highlight the username */
+            color: #333;
+            /* Dark text for username */
+        }
+    
+        /* Reply Text Styling */
+        .replies-container li .reply-content span {
+            display: block;
+            /* Ensure content starts on a new line */
+            font-size: 14px;
+            /* Reply content font size */
+            color: #555;
+            /* Slightly lighter text color */
+            margin-top: 5px;
+            /* Space between username and reply text */
+        }
+    
+        /* Prevent Icons from Overflowing */
+        .replies-container li .reply-actions i {
+            cursor: pointer;
+            /* Pointer cursor for interactive icons */
+            color: #555;
+            /* Default icon color */
+            transition: color 0.3s ease;
+            /* Smooth color transition on hover */
+        }
+    
+        /* Additional Styling for Like/Dislike Actions */
+        .reply-actions i:hover {
+            color: #0095f6;
+            /* Highlight on hover */
+        }
+    
+    
+        /* Additional Styling for Long Words */
+        .reply-content,
+        .comment-content {
+            word-wrap: break-word;
+            /* Break long words into the next line */
+            overflow-wrap: break-word;
+            /* Ensure compatibility with modern browsers */
+            white-space: normal;
+            /* Allow proper text wrapping */
+        }
+    
+    
+        /* Reply actions count styling */
+        .action {
+            display: inline-flex;
+            /* Align icon and text horizontally */
+            align-items: center;
+            /* Center them vertically */
+            margin-right: 10px;
+            /* Add spacing between actions */
+        }
+    
+        .action span {
+            font-size: 14px;
+            /* Match font size with icon */
+            color: #555;
+            /* Default color for numbers */
+        }
+    
+        .post-actions .fa {
+            font-size: 24px;
+            /* Increase the size to make icons larger */
+            color: #333;
+            /* Default color */
+            transition: color 0.3s ease;
+            /* Smooth transition for hover */
+        }
+    
+    
+    
+    
+        /* Ensure like-active and dislike-active colors are applied correctly */
+        .like-active {
+            animation: bounce 0.3s ease-in-out;
+            color: blue !important;
+            /* Use !important to override any conflicting styles */
+        }
+    
+        .dislike-active {
+            animation: bounce 0.3s ease-in-out;
+            color: red !important;
+            /* Use !important to override any conflicting styles */
+        }
+    
+        /* Default state for icons to ensure there's no color conflict */
+        .fa-thumbs-up,
+        .fa-thumbs-down {
+            color: #333;
+            /* Default color */
+            transition: color 0.3s ease;
+            /* Smooth transition for color change */
+        }
+    
+        /* Wrapper for each action (like, dislike, delete) */
+        .action {
+            display: inline-flex;
+            /* Aligns icon and text horizontally */
+            align-items: center;
+            /* Centers them vertically */
+            margin-right: 10px;
+            /* Add spacing between actions */
+        }
+    
+        /* Adjust icon spacing */
+        .action i {
+            margin-right: 2px;
+            /* Space between the icon and the number */
+            font-size: 18px;
+            /* Adjust size of the icons */
+            transition: color 0.3s ease;
+            /* Smooth color change on hover */
+        }
+    
+    
+    
+        /* Adjust count styling */
+        .action span {
+            font-size: 14px;
+            /* Match font size with icon */
+            color: #555;
+            /* Default color for numbers */
+        }
+    
+        .comment-content {
+            flex: 1;
+            /* Allow the content to take up the remaining space */
+            word-wrap: break-word;
+            /* Break overly long words */
+            overflow-wrap: break-word;
+            /* Ensure modern browser compatibility */
+            white-space: normal;
+            /* Ensure text wraps within the container */
+            line-height: 1.5;
+            /* Improve readability */
+        }
+    
+        .comments-header {
+            width: 100%;
+            /* Prevent horizontal overflow */
+            overflow: hidden;
+            /* Ensure no unwanted scrollbars appear */
+        }
+    
+        .comment-footer input[type="text"] {
+            width: 100%;
+            /* Ensure the input spans the full width */
+            box-sizing: border-box;
+            /* Include padding in width calculation */
+            word-wrap: break-word;
+            /* Handle long words */
+            overflow-wrap: break-word;
+            /* Modern compatibility */
+        }
+    
+        /* Change Photo Tab */
+        #change-photo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 20px;
+            /* Space between elements */
+            background-color: #f9f9f9;
+            /* Light gray background */
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+        }
+    
+        /* Form Label */
+        #change-photo form label {
+            font-size: 16px;
+            /* Slightly larger font for readability */
+            font-weight: bold;
+            /* Make the label stand out */
+            color: #555;
+            /* Subtle text color */
+            margin-bottom: 10px;
+            /* Space below the label */
+            display: block;
+            /* Ensure the label is on a separate line */
+            text-align: center;
+            /* Center the label */
+        }
+    
+        /* File Input Styling */
+        #change-photo form input[type="file"] {
+            padding: 10px;
+            /* Add padding for comfort */
+            font-size: 14px;
+            /* Ensure readability */
+            border: 1px solid #ccc;
+            /* Light border for definition */
+            border-radius: 5px;
+            /* Smooth corners */
+            background-color: #fff;
+            /* Neutral background */
+            color: #555;
+            /* Subtle text color */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth hover effect */
+            width: 100%;
+            /* Make it responsive */
+            max-width: 300px;
+            /* Limit width */
+            text-align: center;
+            /* Align text for consistency */
+        }
+    
+        #change-photo form input[type="file"]:hover {
+            border-color: #830131;
+            /* Blue border on hover */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow on hover */
+        }
+    
+        #change-photo form input[type="file"]:focus {
+            border-color: #6c0329;
+            /* Darker blue border on focus */
+            outline: none;
+            /* Remove default outline */
+        }
+    
+        /* Upload Button */
+        #change-photo form button {
+            background-color: #830131;
+            /* Primary blue */
+            color: #fff;
+            /* White text for contrast */
+            padding: 10px 20px;
+            /* Comfortable padding */
+            border: none;
+            /* Remove border */
+            border-radius: 5px;
+            /* Smooth corners */
+            font-size: 16px;
+            /* Standard button font size */
+            font-weight: bold;
+            /* Make the text stand out */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            /* Smooth transitions */
+            width: 100%;
+            /* Make it responsive */
+            max-width: 200px;
+            /* Limit button width */
+        }
+    
+        #change-photo form button:hover {
+            background-color: #6c0329;
+            /* Darker blue on hover */
+            transform: scale(1.05);
+            /* Slight zoom effect */
+        }
+    
+        #change-photo form button:active {
+            background-color: #830131;
+            /* Even darker blue on active */
+            transform: scale(1);
+            /* Remove zoom on click */
+        }
+    
+        /* Center alignment for small screens */
+        @media (max-width: 768px) {
+            #change-photo {
+                padding: 15px;
+                gap: 15px;
+            }
+    
+            #change-photo form input[type="file"],
+            #change-photo form button {
+                width: 100%;
+                /* Full-width for smaller screens */
+                max-width: none;
+            }
+        }
+    
+        /* Edit Info Tab */
+        #edit-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            /* Space between elements */
+            background-color: #f9f9f9;
+            /* Light gray background */
+            border-radius: 10px;
+            /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+            max-width: 600px;
+            /* Limit form width */
+            margin: 0 auto;
+            /* Center horizontally */
+        }
+    
+        /* Form Label Styling */
+        #edit-info form label {
+            font-size: 16px;
+            /* Standard font size */
+            font-weight: bold;
+            /* Make the label stand out */
+            color: #333;
+            /* Dark text color for contrast */
+            margin-bottom: 8px;
+            /* Spacing below the label */
+            display: block;
+            /* Ensure labels are on separate lines */
+            text-align: left;
+            /* Align labels to the left */
+            width: 100%;
+            /* Full width for consistency */
+        }
+    
+        /* Form Input and Select Styling */
+        #edit-info form input[type="date"],
+        #edit-info form select,
+        #edit-info form input[type="text"] {
+            width: 100%;
+            /* Full width for all input fields */
+            max-width: 500px;
+            /* Limit input width */
+            padding: 10px;
+            /* Comfortable padding */
+            margin-bottom: 15px;
+            /* Spacing below each input */
+            border: 1px solid #ccc;
+            /* Light border */
+            border-radius: 5px;
+            /* Smooth corners */
+            font-size: 14px;
+            /* Standard font size */
+            color: #555;
+            /* Subtle text color */
+            background-color: #fff;
+            /* Neutral background */
+            box-sizing: border-box;
+            /* Include padding in width calculation */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth hover/focus effect */
+        }
+    
+        /* Focus Effect */
+        #edit-info form input:focus,
+        #edit-info form select:focus {
+            border-color: #830131;
+            /* Blue border on focus */
+            outline: none;
+            /* Remove default outline */
+            box-shadow: 0 0 5px #a91f51;
+            /* Subtle glow effect */
+        }
+    
+        /* Fixed Size Textarea Styling */
+        #edit-info form textarea {
+            width: 100%;
+            /* Keep it responsive */
+            max-width: 500px;
+            /* Limit the maximum width */
+            height: 120px;
+            /* Fixed height */
+            resize: none;
+            /* Disable resizing */
+            padding: 10px;
+            /* Add comfortable padding */
+            border: 1px solid #ccc;
+            /* Light border */
+            border-radius: 5px;
+            /* Smooth corners */
+            font-size: 14px;
+            /* Standard font size */
+            color: #555;
+            /* Subtle text color */
+            background-color: #fff;
+            /* Neutral background */
+            box-sizing: border-box;
+            /* Include padding in width/height calculations */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth hover/focus effect */
+        }
+    
+        /* Focus Effect for Fixed Size Textarea */
+        #edit-info form textarea:focus {
+            border-color: #830131;
+            /* Blue border on focus */
+            outline: none;
+            /* Remove default outline */
+            box-shadow: 0 0 5px #6c0329;
+            /* Subtle glow effect */
+        }
+    
+    
+        /* Submit Button Styling */
+        #edit-info form button[type="submit"] {
+            background-color: #830131;
+            /* Vibrant blue for call-to-action */
+            color: white;
+            /* White text for contrast */
+            padding: 10px 20px;
+            /* Comfortable padding */
+            border: none;
+            /* Remove border */
+            border-radius: 5px;
+            /* Smooth corners */
+            font-size: 16px;
+            /* Standard button font size */
+            font-weight: bold;
+            /* Make the text stand out */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            /* Smooth hover/click effect */
+            width: 100%;
+            /* Full width for consistency */
+            max-width: 200px;
+            /* Limit button width */
+        }
+    
+        #edit-info form button[type="submit"]:hover {
+            background-color: #6c0329;
+            /* Slightly darker blue on hover */
+            transform: scale(1.05);
+            /* Slight zoom effect */
+        }
+    
+        #edit-info form button[type="submit"]:active {
+            background-color: #6c0329;
+            /* Even darker blue on click */
+            transform: scale(1);
+            /* Remove zoom effect on click */
+        }
+    
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #edit-info {
+                padding: 15px;
+                gap: 15px;
+            }
+    
+            #edit-info form input[type="date"],
+            #edit-info form select,
+            #edit-info form textarea,
+            #edit-info form input[type="text"],
+            #edit-info form button {
+                max-width: 100%;
+                /* Full width for smaller screens */
+            }
+        }
+    
+        #reaction-modal {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1000;
-    width: 80%;
-    max-width: 600px;
+    z-index: 9999; /* Ensure it is above all other elements */
+    width: 40%;
+    max-width: 500px;
+    height: 70%;
+    max-height: 600px;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.modal-content {
-    position: relative;
-}
-
-.modal-content .close {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    }
+    
+    
+        /* Modal Content */
+        #reaction-modal .modal-content {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            height: 100%;
+            /* Ensure the content spans the modal */
+            display: flex;
+            flex-direction: column;
+        }
+    
+        /* Close Button */
+        #reaction-modal .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            color: #555;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+    
+        #reaction-modal .close:hover {
+            color: #000;
+        }
+    
+        /* Tabs Styling */
+        #reaction-modal .tabs {
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+    
+        #reaction-modal .tabs button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            color: #555;
+            transition: color 0.3s, border-bottom 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+    
+        #reaction-modal .tabs button:hover {
+            color: #830131;
+        }
+    
+        #reaction-modal .tabs button.active {
+            color: #830131;
+            border-bottom: 2px solid #830131;
+        }
+    
+        /* Tab Content */
+        #reaction-modal .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            /* Makes the content scrollable */
+            padding: 10px 0;
+        }
+    
+        /* Likes/Dislikes Section */
+        #reaction-modal h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+    
+        /* User List */
+        #reaction-modal ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+    
+        #reaction-modal ul li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 30px 50px;
+            /* Increased padding for taller and wider boxes */
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            height: 80px;
+            /* Increased height for a taller box */
+        }
+    
+        #reaction-modal ul li:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+    
+        /* User Profile Image */
+        #reaction-modal ul li img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    
+        /* Username */
+        #reaction-modal ul li span {
+            font-size: 16px;
+            color: #555;
+            font-weight: bold;
+        }
+    
+        /* Scrollbar Styling */
+        #reaction-modal .tab-content::-webkit-scrollbar {
+            width: 8px;
+        }
+    
+        #reaction-modal .tab-content::-webkit-scrollbar-thumb {
+            background-color: #bbb;
+            border-radius: 4px;
+        }
+    
+        #reaction-modal .tab-content::-webkit-scrollbar-thumb:hover {
+            background-color: #888;
+        }
+    
+        #reaction-modal .tab-content::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+        }
+    
+        .comment-actions i {
+            position: relative;
+            /* Ensures the icon moves with the flow of the document */
+            display: inline-block;
+            /* Default behavior for icons */
+            margin-left: 10px;
+        }
+    
+        .fa-thumbs-up,
+        .fa-thumbs-down,
+        .fa-comments {
+            cursor: pointer;
+        }
+    
+        .overlay {
+            display: none;
+            /* Initially hidden */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent black */
+            z-index: 999;
+            /* Ensure it is behind the modal but above other elements */
+        }
+    
+        .post-media {
+            width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            margin: 0 auto;
+            /* Center horizontally */
+            margin-top: 0px;
+            /* Set top margin to 0 */
+            margin-bottom: 0px;
+        }
+    
+        .fa-thumbs-up.like-active {
+            color: blue;
+        }
+    
+        .fa-thumbs-down.dislike-active {
+            color: red;
+        }
+    
+        .header-actions {
+            display: flex;
+            /* Align elements horizontally */
+            align-items: center;
+            /* Vertically center the icons */
+            justify-content: flex-end;
+            /* Align the icons to the right */
+            gap: 10px;
+            /* Space between the pen and the menu bar */
+            padding-inline: 30px;
+        }
+    
+        .header-actions i {
+            font-size: 20px;
+            /* Adjust icon size */
+            color: #333;
+            /* Default icon color */
+            cursor: pointer;
+            /* Show pointer on hover */
+            transition: color 0.3s ease, transform 0.3s ease;
+            /* Smooth hover effect */
+        }
+    
+        #menu-edit {
+            position: absolute;
+            /* Position relative to the .profile-container */
+            top: 23px;
+            /* Top-right corner of the container */
+            right: 60px;
+            font-size: 15px;
+            /* Reduced icon size */
+            color: black;
+            /* Icon color */
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: color 0.3s, transform 0.3s;
+            /* Smooth hover effect */
+    
+    
+        }
+    
+    
+        #menu-edit:hover {
+            color: black;
+            /* Keep icon black on hover */
+            transform: scale(1.1);
+            /* Slight zoom effect on hover */
+        }
+    
+        .modal-content-edit .close {
+            right: 20px;
+            /* Move it 10px more to the left */
+            top: 10px;
+            /* Maintain the current top position */
+            position: absolute;
+            /* Ensure it stays positioned correctly */
+            font-size: 20px;
+            /* Optional: Adjust size */
+            cursor: pointer;
+            /* Make it clickable */
+        }
+    
+        .comments-list li {
+            border: 1px solid #ddd;
+            /* Add a light border for separation */
+            border-radius: 8px;
+            /* Rounded corners */
+            padding: 10px;
+            /* Spacing within the comment */
+            margin-bottom: 10px;
+            /* Space between comments */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+            background-color: #fff;
+        }
+    
+        /* Large tablets and small desktops (between 768px and 1200px) */
+        @media (max-width: 1200px) {
+    
+            .modal-content,
+            #commentsModal {
+                max-width: 40vw;
+                /* Reduce width */
+                padding: 15px;
+                /* Decrease padding */
+            }
+    
+            .profile-container {
+                max-width: 80%;
+                /* Shrink profile container width */
+            }
+    
+            .profile-photo img {
+                width: 120px;
+                /* Resize profile image */
+                height: 120px;
+            }
+        }
+    
+        /* Tablets and large phones (between 480px and 768px) */
+        @media (max-width: 768px) {
+    
+            .modal-content,
+            #commentsModal {
+                width: 95%;
+                /* Take almost full width */
+                max-width: 40vw;
+                max-height: 70vh;
+                padding: 10px;
+                font-size: 14px;
+                /* Adjust font size for smaller screens */
+            }
+    
+            .profile-header {
+                flex-direction: column;
+                /* Stack items vertically */
+                align-items: center;
+                /* Center align content */
+                text-align: center;
+                /* Align text to center */
+            }
+    
+            .profile-photo img {
+                width: 100px;
+                /* Adjust image size */
+                height: 100px;
+            }
+    
+            .profile-info {
+                margin-top: 10px;
+                /* Add spacing */
+                padding: 0;
+                /* Remove unnecessary padding */
+            }
+    
+            .profile-stats {
+                gap: 10px;
+                /* Reduce spacing between stats */
+            }
+    
+    
+            /* Tabs on tablets */
+            .tabs {
+                flex-direction: column;
+                /* Stack tabs vertically */
+                gap: 10px;
+            }
+        }
+    
+        /* Small phones (below 480px) */
+        @media (max-width: 480px) {
+    
+            .modal-content,
+            #commentsModal {
+                width: 100%;
+                /* Take full width */
+                height: auto;
+                max-height: 60vh;
+                /* Reduce height further */
+                padding: 10px;
+                border-radius: 5px;
+                /* Reduce border radius */
+                font-size: 12px;
+                /* Smaller font size for content */
+            }
+    
+            /* Profile Header for phones */
+            .profile-header {
+                gap: 10px;
+                /* Reduce spacing */
+            }
+    
+            .profile-photo img {
+                width: 80px;
+                /* Resize image for small screens */
+                height: 80px;
+            }
+    
+            .profile-info h2 {
+                font-size: 20px;
+                /* Reduce font size */
+            }
+    
+    
+            /* Comment footer input field */
+            #commentsModal .comment-footer input[type="text"] {
+                font-size: 12px;
+                /* Adjust font size for readability */
+                padding: 5px;
+            }
+    
+            /* Post Reaction Modal */
+            #reaction-modal {
+                width: 95%;
+                /* Shrink width */
+                max-height: 60%;
+                /* Adjust height */
+                padding: 10px;
+            }
+    
+            #reaction-modal ul li {
+                padding: 15px 10px;
+                /* Reduce padding for smaller items */
+                height: auto;
+                /* Let the list items adjust height */
+            }
+    
+            /* Buttons for small phones */
+            button {
+                font-size: 12px;
+                /* Reduce button font size */
+                padding: 8px 10px;
+            }
+        }
+    
+        .profile-stats a {
+            text-decoration: none;
+            /* Remove underline */
+            color: inherit;
+            /* Use the same color as the parent */
+        }
+    
+        .profile-gallery .gallery-item img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .profile-gallery .gallery-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+    
+    
+        /* Pop-up animation */
+    @keyframes like-pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3); /* Enlarge slightly */
+    }
+    100% {
+        transform: scale(1); /* Return to original size */
+    }
+    }
+    
+    .like-active {
+    animation: like-pop 0.3s ease-in-out; /* Apply animation */
+    color: blue; /* Optional: Change color during animation */
+    }
+    span {
+    cursor: alias; /* Sets the cursor to alias */
+    }
+    .modal-content {
+    position: relative; /* Ensure the modal content is the relative parent */
+    display: flex;
+    flex-direction: column; /* Stack the content vertically */
+    justify-content: space-between; /* Push actions to the bottom */
+    }
+    
+    .post-actions {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 18px;
+    bottom: 15px;
+    left: 0;
+    width: 100%; /* Ensure the actions span the modal width */
+    padding: 10px;
+    background-color: #fff; /* Optional: match modal background */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: shadow effect */
+    display: flex;
+    justify-content: space-around; /* Space items evenly */
+    align-items: center;
+    }
+    
+    .friend-actions {
+
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 15px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.friend-status {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4caf50; /* Green for "Friends" status */
+}
+
+.friend-actions button {
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Add Friend Button */
+.friend-btn.add-friend {
+    background-color: #830131;
+    color: white;
+}
+
+.friend-btn.add-friend:hover {
+    background-color: #6c0329;
+}
+
+/* Pending Button */
+.friend-btn.pending {
+    background-color: #ffc107;
+    color: white;
+    cursor: not-allowed;
+    border: 1px solid #e0a800;
+}
+.friend-btn.pending:hover{
+    background-color: #e0a800;
+}
+/* Remove Friend Button */
+.remove-friend-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.remove-friend-btn:hover {
+    background-color: #d32f2f;
 }
 
     </style>
-</head>
-<body>
-    <div class="profile-container">
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <div class="profile-header-image">
-                <img src="<%= viewedUser.profileImage || '/images/default-profile.png' %>" alt="<%= viewedUser.username %>'s Profile Image">
-            </div>
-            <div class="profile-header-info">
-                <h1 class="username"><%= viewedUser.username %></h1>
-                <p class="bio"><%= viewedUser.bio || 'No bio available' %></p>
-            
-                <!-- Additional Info -->
-                <div class="additional-info">
-                    <p class="info-item"><%= viewedUser.fullName || 'Not specified' %></p>
-                    <p class="info-item"><%= viewedUser.formattedDateOfBirth || 'Not specified' %></p>
-                    <p class="info-item"><%= viewedUser.address || 'Not specified' %></p>
-                    <p class="info-item"><%= viewedUser.gender || 'Not specified' %></p>
-            
-                    <!-- Friends and Posts Info -->
-                    <div class="friends-posts">
-                        <p class="info-item"><strong>Friends:</strong> <%= viewedUser.friends.length || 0 %></p>
-                        <p class="info-item"><strong>Posts:</strong> <%= posts.length || 0 %></p>
-                    </div>
+    <body>
+        <a href="/home" class="home-btn">
+            <i class="fa fa-home"></i>
+        </a>
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-photo">
+                    <img src="<%= viewedUser.profileImage || '/images/default-profile.png' %>" alt="Profile Photo">
                 </div>
-            
-                <!-- Friend Status or Actions -->
-                <div class="friend-actions">
+                <div class="profile-info">
+                    <h2>
+                        <%= viewedUser.firstName %>
+                            <%= viewedUser.lastName %>
+                    </h2>
+                    <br>
+                    <h4 class="viewedUsername" style="display: flex; align-items: center; gap: 10px;">
+                        <span class="viewedUsername-link" onclick="copyToClipboard('<%= viewedUser._id %>')">
+                            <%= viewedUser.username %>
+                        </span>
+                        <span class="profile-stats">
+                            <p style="cursor: default;"><strong>Posts</strong>: <%= posts.length || 0 %>
+                            </p>
+                            <a href="/friend">
+                                <p><strong>Friends</strong>: <%= viewedUser.friends.length || 0 %>
+                                </p>
+                            </a>
+                        </span>
+    
+                    </h4>
+                    <br>
+                    <div class="profile-bio">
+    
+                        <p class="dateOfBirth">
+                            <i class="far fa-calendar-alt" style="color: #830131;"></i>
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" style="width: 17px; ">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0L3 16.5m15-3.379a48.474 48.474 0 0 0-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 0 1 3 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 0 1 6 13.12M12.265 3.11a.375.375 0 1 1-.53 0L12 2.845l.265.265Zm-3 0a.375.375 0 1 1-.53 0L9 2.845l.265.265Zm6 0a.375.375 0 1 1-.53 0L15 2.845l.265.265Z" />
+                              </svg>
+                               -->
+                            <%= viewedUser.formattedDateOfBirth || "Date of birth not provided" %>
+                        </p>
+                        <p class="gender">
+                            <i class="glyphicon glyphicon-user" style="color: #830131;"></i>
+                            <%= viewedUser.gender || "Gender not specified" %>
+                        </p>
+                        <p class="address">
+                            <i class="fa fa-map-marker" style="color: #830131;"></i>
+                            <%= viewedUser.address || "Address not provided" %>
+                        </p>
+                        <p class="bio">
+                            <i class="	far fa-newspaper" style="color: #830131;"></i>
+                            <%= viewedUser.bio || "Bio not provided" %>
+                        </p>
+                    </div>
+                    <div class="friend-actions">
                     <% if (isFriend) { %>
-                        <span class="friend-status">Friends</span>
                         <button class="remove-friend-btn" onclick="removeFriend('<%= viewedUser._id %>')">Remove Friend</button>
                     <% } else if (isPending) { %>
                         <button class="friend-btn pending" disabled>Pending</button>
                     <% } else if (!isOwner) { %>
-                        <button class="friend-btn" onclick="sendFriendRequest('<%= viewedUser._id %>')">Add Friend</button>
+                        <button class="friend-btn add-friend" onclick="sendFriendRequest('<%= viewedUser._id %>')">Add Friend</button>
                     <% } %>
                 </div>
-            </div>
-            
-            
-            
-        </div>
-
-        <!-- Posts Section -->
-        <div class="profile-posts">
-            <h2>Posts</h2>
-            <% if (posts.length === 0) { %>
-            <p>No posts to display.</p>
-            <% } else { %>
-            <div class="post-grid">
-                <% posts.forEach(post => { %>
-                <div class="post-item" onclick="openPostModal('<%= post._id %>')">
-                    <img src="<%= post.mediaUrl %>" alt="Post Media" class="post-media">
                 </div>
-                <% }); %>
+                
+                
             </div>
-            <% } %>
+                <div class="profile-gallery">
+                    <% posts.forEach(post=> { %>
+                        <div class="gallery-item" onclick="openPostModal('<%= post._id %>')">
+                            <img src="<%= post.mediaUrl %>" alt="User's Post">
+                        </div>
+    
+                        <div id="delete-modal" class="modal" style="display: none;">
+                            <div class="modal-content">
+                                <h3>Are you sure you want to delete this?</h3>
+                                <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
+                                <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+    
         </div>
-    </div>
+    
+            <div id="postModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <!-- Close and Delete Icons -->
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="close" onclick="closePostModal()">&times;</span>
+                    </div>
+                    <div id="postDetails">
+                        <!-- Post details will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+    
+            <div id="reaction-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close" onclick="closeReactionModal()">&times;</span>
+                    <div class="tabs">
+                        <button id="likes-tab" onclick="showLikes()">Likes</button>
+                        <button id="dislikes-tab" onclick="showDislikes()">Dislikes</button>
+                    </div>
+                    <div id="likes-section" class="tab-content">
+                        <h3>Liked by</h3>
+                        <ul id="likes-list">
+                            <!-- Likes will be dynamically inserted here -->
+                        </ul>
+                    </div>
+                    <div id="dislikes-section" class="tab-content" style="display: none;">
+                        <h3>Disliked by</h3>
+                        <ul id="dislikes-list">
+                            <!-- Dislikes will be dynamically inserted here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="overlay" class="overlay"></div>
 
-    <!-- Post Modal -->
-    <div id="postModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closePostModal()">&times;</span>
-            <div id="postDetails"></div>
-        </div>
-    </div>
+    
+            <script>
 
-    <!-- Reaction Modal -->
-    <div id="reaction-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeReactionModal()">&times;</span>
-            <div class="tabs">
-                <button id="likes-tab" onclick="showLikes()">Likes</button>
-                <button id="dislikes-tab" onclick="showDislikes()">Dislikes</button>
-            </div>
-            <div id="likes-section" class="tab-content">
-                <h3>Liked by</h3>
-                <ul id="likes-list"></ul>
-            </div>
-            <div id="dislikes-section" class="tab-content" style="display: none;">
-                <h3>Disliked by</h3>
-                <ul id="dislikes-list"></ul>
-            </div>
-        </div>
-    </div>
-    <script>
-        async function sendFriendRequest(userId) {
-    try {
-        const response = await fetch('/friend/send-request', { // Updated endpoint
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ targetUserId: userId })
-                });
-        if (response.ok) {
-            alert("Friend request sent.");
-      const button = document.querySelector('.friend-btn');
-      button.textContent = "Pending";
-      button.classList.add('pending');
-      button.disabled = true; // Disable the button while pending
-        } else {
-            console.error('Error sending friend request:', await response.text());
+
+function copyToClipboard(userId) {
+            // Define the base URL
+            const baseUrl = window.location.origin; // e.g., http://localhost:5000
+            const profileUrl = `${baseUrl}/home/profile/user/${userId}`;
+
+            // Create a temporary input element
+            const tempInput = document.createElement('input');
+            tempInput.value = profileUrl;
+            document.body.appendChild(tempInput);
+
+            // Select the text in the input and copy it
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+
+            // Remove the temporary input
+            document.body.removeChild(tempInput);
+
+            // Optionally, display a success message
+            alert(`Profile URL "${profileUrl}" copied to clipboard!`);
         }
-    } catch (error) {
-        console.error('Error sending friend request:', error);
-    }
-}
 
-// Function to remove a friend
-async function removeFriend(userId) {
+
+                async function sendFriendRequest(userId) {
+                    try {
+                        const response = await fetch('/friend/send-request', { // Updated endpoint
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ targetUserId: userId })
+                        });
+                        if (response.ok) {
+                            alert("Friend request sent.");
+                            const button = document.querySelector('.friend-btn');
+                            button.textContent = "Pending";
+                            button.classList.add('pending');
+                            button.disabled = true; // Disable the button while pending
+                        } else {
+                            console.error('Error sending friend request:', await response.text());
+                        }
+                    } catch (error) {
+                        console.error('Error sending friend request:', error);
+                    }
+                }
+        
+        ///////////////////////////////////////
+                function openTab(event, tabName) {
+                    document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+                    document.getElementById(tabName).style.display = 'block';
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    if (event) event.currentTarget.classList.add('active');
+                }
+        ////////////////////////////////////
+        async function removeFriend(userId) {
         if (!confirm('Are you sure you want to remove this user from your friends?')) return;
 
         try {
@@ -334,425 +2123,579 @@ async function removeFriend(userId) {
             alert('An error occurred while removing the friend.');
         }
     }
+        
+                async function openPostModal(postId) {
+                    const postModal = document.getElementById('postModal');
+                    const overlay = document.getElementById('overlay');
+                    const postDetails = document.getElementById('postDetails');
+        
+                    postModal.style.display = 'flex';
+                    overlay.style.display = 'block'; // Show overlay
+        
+                    try {
+                        // Fetch post details dynamically
+                        const response = await fetch(`/posts/${postId}`);
+                        const data = await response.json();
+        
+                        postDetails.innerHTML = `
 
-    async function openPostModal(postId) {
-    document.getElementById('postModal').style.display = 'flex';
-
-    try {
-        const response = await fetch(`/posts/${postId}`);
-        const data = await response.json();
-
-        const postDetails = document.getElementById('postDetails');
-        postDetails.innerHTML = `
-            <img src="${data.mediaUrl}" alt="Post Media" style="width: 100%; border-radius: 8px;">
-            <div class="post-actions">
-                    <span class="like-icon" onclick="toggleLike(event, '${data._id}')">❤️</span>
-                    <span id="likes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'likes')">
-                        ${data.likesCount}Likes
-                      </span>
-
-                    <span class="like-icon" onclick="toggledisLike(event, '${data._id}')">❤️</span>
-                    <span id="dislikes-count-${data._id}" onclick="openReactionModal('post','${data._id}>', 'dislikes')">
-                        ${data.dislikesCount} Dislikes
-                      </span>
-                      
-    
-                    <span class="comment-icon" onclick="openCommentSection('${data._id}')">💬</span>
-                    <span class="commentcount">${data.comments.length} Comments</span>
-                    ${
-                        data.isOwner
-                          ? `<button onclick="confirmDelete('post', '${data._id}')">Delete Post</button>`
-                          : ''
-                      }
-                </div>
-    
-                <!-- Comment Section -->
-                        <div id="commentSection-${data._id}" class="commentSection" style="display: none;">
-                            <h4>Comments</h4>
-                            <ul id="comments-list-${data._id}">
-                                <!-- Comments will be dynamically loaded -->
-                            </ul>
-                            <input type="text" id="new-comment-${data._id}" placeholder="Add a comment..." />
-                            <button onclick="addComment('${data._id}')">Post</button>
-                        </div>
-        `;
-    } catch (error) {
-        console.error("Error loading post details:", error);
-    }
-}
-
-
-function closePostModal() {
-    document.getElementById('postModal').style.display = 'none';
-}
-
-async function toggleLike(event, postId) {
-    event.stopPropagation();
-    try {
-        const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
-        const data = await response.json();
-
-        // Update the like count
-        document.getElementById(`likes-count-${postId}`).textContent = `${data.likesCount} Likes`;
-
-        // If the likes modal is open, update it
-         if (document.getElementById('likes-modal').style.display === 'block') {
-            populateLikesModal(data.likedBy);
-        }
-    } catch (error) {
-        console.error("Error toggling like:", error);
-    }
-}
-async function toggledisLike(event, postId) {
-    event.stopPropagation();
-    try {
-        const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
-        const data = await response.json();
-
-        // Update the like count
-        document.getElementById(`dislikes-count-${postId}`).textContent = `${data.dislikesCount} DisLikes`;
-    } catch (error) {
-        console.error("Error toggling like:", error);
-    }
-}
-
-function openCommentSection(postId) {
-    const commentSection = document.getElementById(`commentSection-${postId}`);
-    
-    if (commentSection.style.display === 'none' || commentSection.style.display === '') {
-        // Load comments only if the section is being opened
-        loadComments(postId);
-        commentSection.style.display = 'block';
-    } else {
-        // Toggle visibility to close the comment section
-        commentSection.style.display = 'none';
-    }
-}
-
-async function loadComments(postId) {
-try {
-        const response = await fetch(`/posts/${postId}`);
-        const data = await response.json();
-
-        const commentsList = document.getElementById(`comments-list-${postId}`);
-        console.log(`comments-list-${postId}`, commentsList);
-
-        commentsList.innerHTML = data.comments.map((comment) => `
-        <li>
-        <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
-            alt="${comment.user.username}'s profile image" 
-            style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
-        <strong>${comment.user.username}:</strong> ${comment.content}
-        <span>
-        <button onclick="toggleCommentLike('${comment._id}')">❤️</button>
-        <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'likes')">${comment.likesCount} Likes</span>
-        <button onclick="toggleCommentdisLike('${comment._id}')">❤️</button>
-        <span id="comment-dislikes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'dislikes')">${comment.dislikesCount} Dislikes</span>
-        </span>
-        ${comment.isOwner ? `<button onclick="confirmDelete('comment', '${comment._id}')">Delete Comment</button>` : ''}
-        <button onclick="toggleReplyBox('${comment._id}')">Reply</button>
-
-        <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
-        <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply...">
-        <button onclick="addReply('${comment._id}')">Post Reply</button>
-        </div>
-
-        <ul id="replies-list-${comment._id}" class="replies-list" style="margin-top: 10px; padding-left: 20px;">
-        ${comment.replies.map((reply) => `
-            <li>
-            <img src="${reply.user.profileImage || '/images/default-profile.png'}" 
-                alt="${reply.user.username}'s profile image" 
-                style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
-            <strong>${reply.user.username}:</strong> ${reply.content}
-            <span>
-                <button onclick="toggleReplyLike('${comment._id}', '${reply._id}')">❤️</button>
-                <span id="reply-likes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'likes')">${reply.likesCount} Likes</span>
-                <button onclick="toggleReplydisLike('${comment._id}', '${reply._id}')">❤️</button>
-                <span id="reply-dislikes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'dislikes')">${reply.dislikesCount} Dislikes</span>
-                ${reply.isOwner ? `<button onclick="confirmDelete('reply', '${reply._id}')">Delete Reply</button>` : ''}
-            </span>
-            </li>
-        `).join('')}
-        </ul>
-        </li>
-        `).join('');
-        } catch (error) {
-        console.error('Error loading comments:', error);
-        }
-}
-
-
-
-async function addComment(postId) {
-    const commentText = document.getElementById(`new-comment-${postId}`).value.trim();
-    if (!commentText) return;
-
-    try {
-        const response = await fetch(`/posts/${postId}/comment`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: commentText }),
-        });
-
-        if (response.ok) {
-                    const data = await response.json(); // Get the newly created reply data
-                    loadComments(postId); // Reload comments after posting a new one
-                    document.querySelector(".commentcount").innerHTML = `${data.CommentCount} Comment`;
-                    document.getElementById(`new-comment-${postId}`).value = ''; // Clear input
+                    <img src="${data.mediaUrl}" alt="Post Media" class="post-media">
+                    <div id="postCaption-${data._id}" class="post-caption">
+                        ${data.content || 'No caption provided'}
+                    </div>
+                    <div class="post-actions">
+                        <i 
+                            class="fa fa-thumbs-up ${data.isLiked ? 'like-active' : ''}" 
+                            onclick="toggleLike(event, '${data._id}')">
+                        </i>
+                        <span id="likes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'likes')">
+                            ${data.likesCount}
+                        </span>
+                        <i 
+                            class="fa fa-thumbs-down ${data.isDisliked ? 'dislike-active' : ''}" 
+                            onclick="toggleDislike(event, '${data._id}')">
+                        </i>
+                        <span id="dislikes-count-${data._id}" onclick="openReactionModal('post','${data._id}', 'dislikes')">
+                            ${data.dislikesCount}
+                        </span>
+                        <i class="fa fa-comments" onclick="loadComments('${data._id}')"></i>
+                        <span class="commentcount">${data.comments.length}</span>
+                    </div>
+                `;
+                    } catch (error) {
+                        console.error("Error loading post details:", error);
+                    }
                 }
-    } catch (error) {
-        console.error("Error adding comment:", error);
-    }
-}
-
-
-function toggleReplyBox(commentId) {
-    const replyBox = document.getElementById(`reply-box-${commentId}`);
-    replyBox.style.display = replyBox.style.display === 'none' || replyBox.style.display === '' ? 'block' : 'none';
-}
-
-async function addReply(commentId) {
-const replyInput = document.getElementById(`new-reply-${commentId}`);
-const replyText = replyInput.value.trim();
-
-if (!replyText) return;
-
-try {
-const response = await fetch(`/comments/${commentId}/reply`, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ content: replyText }),
-});
-
-if (response.ok) {
-const newReply = await response.json(); // Get the newly created reply data
-replyInput.value = ''; // Clear the input field
-
-// Dynamically add the new reply to the DOM
-const repliesList = document.getElementById(`replies-list-${commentId}`);
-if (repliesList) {
-const replyHTML = `
-  <li id="reply-${newReply._id}">
-    <img src="${newReply.user.profileImage || '/images/default-profile.png'}" 
-         alt="${newReply.user.username}'s profile image" 
-         style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
-    <strong>${newReply.user.username}:</strong> ${newReply.content}
-    <span>
-      <button onclick="toggleReplyLike('${commentId}', '${newReply._id}')">❤️</button>
-      <span id="reply-likes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'likes')">0 Likes</span>
-      <button onclick="toggleReplydisLike('${commentId}', '${newReply._id}')">❤️</button>
-      <span id="reply-dislikes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'dislikes')">0 Dislikes</span>
-        ${newReply.isOwner ? `<button onclick="confirmDelete('reply', '${newReply._id}')">Delete Reply</button>` : ''}
-    </span>
-  </li>
-`;
-repliesList.insertAdjacentHTML('beforeend', replyHTML); // Add the new reply to the list
-
-}
-} else {
-console.error('Error adding reply:', await response.text());
-}
-} catch (error) {
-console.error('Error adding reply:', error);
-}
-}
-
-
-
-async function toggleCommentLike(commentId) {
-    try {
-        const response = await fetch(`/comments/${commentId}/like`, { method: 'POST' });
-        const data = await response.json();
-
-        // Update the like count dynamically
-        const likeCountElement = document.getElementById(`comment-likes-${commentId}`);
-        if (likeCountElement) {
-            likeCountElement.textContent = `${data.likesCount} Likes`;
+        
+                function closePostModal() {
+                    const postModal = document.getElementById('postModal');
+                    const overlay = document.getElementById('overlay');
+                    const postDetails = document.getElementById('postDetails');
+        
+                    postModal.style.display = 'none';
+                    overlay.style.display = 'none';
+        
+                    // Clear modal content to avoid carrying over outdated states
+                    postDetails.innerHTML = '';
+                }
+        
+                function closePostModal() {
+                    document.getElementById('postModal').style.display = 'none';
+                    document.getElementById('overlay').style.display = 'none'; // remove overlay
+        
+                    closeDeleteModal();
+                    closeReactionModal();
+                    closeCommentModal();
+                }
+                function closeCommentModal() {
+                    const commentsModal = document.getElementById('commentsModal');
+                    if (commentsModal) {
+                        commentsModal.style.display = 'none';
+                    }
+                }
+        
+                async function loadComments(postId) {
+                    try {
+                        const response = await fetch(`/posts/${postId}`);
+                        if (!response.ok) {
+                            throw new Error(`Failed to fetch comments: ${response.statusText}`);
+                        }
+        
+                        const data = await response.json();
+        
+                        let commentsModal = document.getElementById('commentsModal');
+                        if (!commentsModal) {
+                            commentsModal = document.createElement('div');
+                            commentsModal.id = 'commentsModal';
+                            document.body.appendChild(commentsModal);
+                        }
+        
+                        commentsModal.innerHTML = `
+            <div class="comments-header">
+                <h3>Comments</h3>
+                <span class="close" onclick="closeCommentModal()">&times;</span>
+            </div>
+            <ul class="comments-list" id="comments-list-${postId}">
+                ${data.comments.map(comment => `
+                    <li>
+                        <di v class="comment-container" onclick="toggleReplies('${comment._id}')">
+                            <!-- Comment Header -->
+                            <div class="comment-header" style="display: flex; align-items: center; justify-content: space-between;">
+                                <div class="comment-user" style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
+                                         alt="${comment.user.username}'s profile image" 
+                                         style="width: 40px; height: 40px; border-radius: 50%;" />
+                                    <strong>${comment.user.username}</strong>
+                                </div>
+                                <div class="comment-actions" style="display: flex; gap: 10px; align-items: center;">
+                                    <i class="fa fa-thumbs-up" id="comment-thumb-up-${comment._id}" 
+                                       onclick="toggleCommentLike('${comment._id}', event); event.stopPropagation()"></i>
+                                    <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'likes')">${comment.likesCount}</span>
+        
+                                    <i class="fa fa-thumbs-down" id="comment-thumb-down-${comment._id}" 
+                                       onclick="toggleCommentdisLike('${comment._id}', event); event.stopPropagation()"></i>
+                                    <span id="comment-dislikes-${comment._id}"  onclick="openReactionModal('comment','${comment._id}', 'dislikes')">${comment.dislikesCount}</span>
+        
+                                    <i class="fa-solid fa-reply" id="comment-reply-${comment._id}" 
+                                       onclick="toggleReplyBox('${comment._id}'); event.stopPropagation()"></i>
+        
+                                    ${comment.isOwner ? `
+                                    <i class="fa fa-trash" id="comment-trash-${comment._id}" 
+                                       onclick="confirmDelete('comment', '${comment._id}', event); event.stopPropagation()"></i>` : ''}
+                                </div>
+                            </div>
+                            <!-- Comment Content -->
+                            <div class="comment-content" style="margin-left: 50px; color: #555; margin-top: 5px;">
+                                ${comment.content}
+                            </div>
+                            <!-- Reply Box -->
+                            <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
+                                <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply..." />
+                                <button onclick="addReply('${comment._id}', event)">Post Reply</button>
+                            </div>
+                            <!-- Replies Section -->
+                            <div id="replies-${comment._id}" class="replies-container" style="display: none; margin-left: 20px;">
+                                <ul>
+                                    ${comment.replies.map(reply => `
+                                        <li>
+                                            <div class="reply" style="display: flex; align-items: flex-start; gap: 10px;">
+                                                <img src="${reply.user.profileImage || '/images/default-profile.png'}" 
+                                                     alt="${reply.user.username}'s profile picture" 
+                                                     class="reply-user-img" 
+                                                     style="width: 35px; height: 35px; border-radius: 50%;" />
+                                                <div class="reply-content">
+                                                    <strong>${reply.user.username}</strong>
+                                                    <span>${reply.content}</span>
+                                                </div>
+                                                <div class="reply-actions" style="display: flex; gap: 10px; align-items: center;">
+                                                    <i class="fa fa-thumbs-up" id="reply-thumb-up-${reply._id}" 
+                                                       onclick="toggleReplyLike('${comment._id}', '${reply._id}', event); event.stopPropagation()"></i>
+                                                    <span id="reply-likes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'likes')">${reply.likesCount}</span>
+        
+                                                    <i class="fa fa-thumbs-down" id="reply-thumb-down-${reply._id}" 
+                                                       onclick="toggleReplydisLike('${comment._id}', '${reply._id}', event); event.stopPropagation()"></i>
+                                                    <span id="reply-dislikes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'dislikes')">${reply.dislikesCount}</span>
+        
+                                                    ${reply.isOwner ? `
+                                                    <i class="fa fa-trash" id="reply-trash-${reply._id}" 
+                                                       onclick="confirmDelete('reply', '${reply._id}', event); event.stopPropagation()"></i>` : ''}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                `).join('')}
+            </ul>
+            <!-- Add New Comment Section -->
+            <div class="comment-footer">
+                <input type="text" id="new-comment-${postId}" placeholder="Add a comment..." 
+                       onkeydown="if (event.key === 'Enter') { event.preventDefault(); addComment('${postId}', event); }" />
+                <button class="post-btn" onclick="addComment('${postId}', event)">Post</button>
+            </div>
+        `;
+        
+        
+                        commentsModal.style.display = 'flex';
+                    } catch (error) {
+                        console.error('Error loading comments:', error);
+                    }
+                }
+        
+        
+                function toggleReplies(commentId) {
+                    const repliesContainer = document.getElementById(`replies-${commentId}`);
+                    if (repliesContainer) {
+                        repliesContainer.style.display =
+                            repliesContainer.style.display === 'none' || repliesContainer.style.display === ''
+                                ? 'block'
+                                : 'none';
+                    }
+                }
+        
+                function toggleReplyBox(commentId) {
+                    const replyBox = document.getElementById(`reply-box-${commentId}`);
+                    replyBox.style.display =
+                        replyBox.style.display === 'none' || replyBox.style.display === ''
+                            ? 'block'
+                            : 'none';
+                }
+        
+        
+                async function addComment(postId) {
+                    const commentInput = document.getElementById(`new-comment-${postId}`);
+                    const commentText = commentInput.value.trim();
+        
+                    if (!commentText) return; // Don't proceed if the input is empty
+        
+                    try {
+                        const response = await fetch(`/posts/${postId}/comment`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ content: commentText }),
+                        });
+        
+                        if (response.ok) {
+                            const data = await response.json(); // Server response with updated comment count
+        
+                            // Reload comments dynamically
+                            loadComments(postId);
+        
+                            // Update the comment count in the modal
+                            document.querySelector(".commentcount").innerHTML = `${data.CommentCount} `; // Update comment count
+                    document.getElementById(`new-comment-${postId}`).value = ''; // Clear input field after posting
+        
+                            // Clear the input field
+                            commentInput.value = '';
+                        } else {
+                            console.error('Error adding comment:', await response.text());
+                        }
+                    } catch (error) {
+                        console.error('Error adding comment:', error);
+                    }
+                }
+        
+        
+        
+        
+        
+                async function addReply(commentId) {
+                    const replyInput = document.getElementById(`new-reply-${commentId}`);
+                    const replyText = replyInput.value.trim();
+        
+                    if (!replyText) return; // Don't proceed if the input is empty
+        
+                    try {
+                        const response = await fetch(`/comments/${commentId}/reply`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ content: replyText })
+                        });
+        
+                        if (response.ok) {
+                            const newReply = await response.json(); // Get the newly added reply from the server
+        
+                            // Clear the input field
+                            replyInput.value = '';
+        
+                            // Dynamically add the new reply to the replies list
+                            const repliesContainer = document.getElementById(`replies-${commentId}`);
+                            if (repliesContainer) {
+                                const replyHTML = `
+                            <li>
+                                <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                    <img src="${newReply.user.profileImage || '/images/default-profile.png'}" 
+                                         alt="${newReply.user.username}'s profile image" 
+                                         style="width: 25px; height: 25px; border-radius: 50%;" />
+                                    <div>
+                                        <strong>${newReply.user.username}</strong>
+                                        <span>${newReply.content}</span>
+                                    </div>
+                                </div>
+                            </li>
+                        `;
+                                repliesContainer.insertAdjacentHTML('beforeend', replyHTML);
+                                repliesContainer.style.display = 'block'; // Ensure the replies container is visible
+                            }
+                        } else {
+                            console.error('Failed to add reply:', await response.text());
+                        }
+                    } catch (error) {
+                        console.error('Error adding reply:', error);
+                    }
+                }
+        
+        
+        
+                async function toggleCommentLike(commentId, event) {
+                    try {
+                        const response = await fetch(`/comments/${commentId}/like`, { method: 'POST' });
+                        const data = await response.json();
+        
+                        const likeCountElement = document.getElementById(`comment-likes-${commentId}`);
+                        const likeIcon = document.getElementById(`comment-thumb-up-${commentId}`);
+        
+                        if (likeCountElement) {
+                            likeCountElement.textContent = `${data.likesCount}`;
+                        }
+        
+                        likeIcon.classList.add('like-active');
+                        setTimeout(() => likeIcon.classList.remove('like-active'), 300);
+                    } catch (error) {
+                        console.error("Error toggling comment like:", error);
+                    }
+                }
+        
+        
+                async function toggleCommentdisLike(commentId) {
+                    try {
+                        const response = await fetch(`/comments/${commentId}/dislike`, { method: 'POST' });
+                        const data = await response.json();
+        
+                        // Update the dislike count dynamically
+                        const dislikeCountElement = document.getElementById(`comment-dislikes-${commentId}`);
+                        const dislikeIcon = document.getElementById(`comment-thumb-down-${commentId}`);
+        
+                        if (dislikeCountElement) {
+                            dislikeCountElement.textContent = `${data.dislikesCount}`;
+                        }
+        
+                        // Add the animation class
+                        dislikeIcon.classList.add('dislike-active');
+        
+                        // Remove the class after animation ends
+                        setTimeout(() => dislikeIcon.classList.remove('dislike-active'), 300);
+                    } catch (error) {
+                        console.error("Error toggling comment dislike:", error);
+                    }
+                }
+        
+                async function toggleReplyLike(commentId, replyId) {
+                    try {
+                        const response = await fetch(`/comments/${commentId}/replies/${replyId}/like`, { method: 'POST' });
+                        const data = await response.json();
+        
+                        const likeCountElement = document.getElementById(`reply-likes-${replyId}`);
+                        const likeIcon = document.querySelector(`#reply-likes-${replyId}`).previousElementSibling;
+        
+                        if (likeCountElement) {
+                            likeCountElement.textContent = `${data.likesCount}`;
+                        }
+        
+                        // Add the animation class
+                        likeIcon.classList.add('like-active');
+        
+                        // Remove the class after animation ends
+                        setTimeout(() => likeIcon.classList.remove('like-active'), 300);
+                    } catch (error) {
+                        console.error('Error toggling reply like:', error);
+                    }
+                }
+        
+        
+                async function toggleReplydisLike(commentId, replyId) {
+                    try {
+                        const response = await fetch(`/comments/${commentId}/replies/${replyId}/dislike`, { method: 'POST' });
+                        const data = await response.json();
+        
+                        const dislikeCountElement = document.getElementById(`reply-dislikes-${replyId}`);
+                        const dislikeIcon = document.querySelector(`#reply-dislikes-${replyId}`).previousElementSibling;
+        
+                        if (dislikeCountElement) {
+                            dislikeCountElement.textContent = `${data.dislikesCount}`;
+                        }
+        
+                        // Add the animation class
+                        dislikeIcon.classList.add('dislike-active');
+        
+                        // Remove the class after animation ends
+                        setTimeout(() => dislikeIcon.classList.remove('dislike-active'), 300);
+                    } catch (error) {
+                        console.error('Error toggling reply dislike:', error);
+                    }
+                }
+        
+                function showLikes() {
+                    document.getElementById('likes-section').style.display = 'block';
+                    document.getElementById('dislikes-section').style.display = 'none';
+                    document.getElementById('likes-tab').classList.add('active');
+                    document.getElementById('dislikes-tab').classList.remove('active');
+                }
+        
+                function showDislikes() {
+                    document.getElementById('likes-section').style.display = 'none';
+                    document.getElementById('dislikes-section').style.display = 'block';
+                    document.getElementById('dislikes-tab').classList.add('active');
+                    document.getElementById('likes-tab').classList.remove('active');
+                }
+        
+                async function openReactionModal(type, id, section) {
+                    const modal = document.getElementById('reaction-modal');
+                    modal.style.display = 'flex';
+        
+                    try {
+                        const response = await fetch(`/posts/${type}/${id}/reactions`);
+                        const data = await response.json();
+                        if (response.ok) {
+                            populateLikesList(data.likedBy);
+                            populateDislikesList(data.dislikedBy);
+        
+                            // Show the appropriate section based on the clicked button
+                            if (section === 'likes') {
+                                showLikes();
+                            } else if (section === 'dislikes') {
+                                showDislikes();
+                            }
+                        } else {
+                            console.error('Error fetching reactions:', data.message || 'Unknown error');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching reactions:', error);
+                    }
+                }
+        
+        
+                function closeReactionModal() {
+                    document.getElementById('reaction-modal').style.display = 'none';
+                }
+        
+                function populateLikesList(likedBy) {
+                    const likesList = document.getElementById('likes-list');
+                    likesList.innerHTML = ''; // Clear previous list
+        
+                    likedBy.forEach(user => {
+                        const listItem = document.createElement('li');
+                        listItem.style.display = 'flex';
+                        listItem.style.alignItems = 'center';
+                        listItem.style.marginBottom = '10px';
+        
+                        const img = document.createElement('img');
+                        img.src = user.profileImage;
+                        img.alt = `${user.username}'s profile image`;
+                        img.style.width = '40px';
+                        img.style.height = '40px';
+                        img.style.borderRadius = '50%';
+                        img.style.marginRight = '10px';
+        
+                        const username = document.createElement('span');
+                        username.textContent = user.username;
+        
+                        listItem.appendChild(img);
+                        listItem.appendChild(username);
+                        likesList.appendChild(listItem);
+                    });
+                }
+        
+                function populateDislikesList(dislikedBy) {
+                    const dislikesList = document.getElementById('dislikes-list');
+                    dislikesList.innerHTML = ''; // Clear previous list
+        
+                    dislikedBy.forEach(user => {
+                        const listItem = document.createElement('li');
+                        listItem.style.display = 'flex';
+                        listItem.style.alignItems = 'center';
+                        listItem.style.marginBottom = '10px';
+        
+                        const img = document.createElement('img');
+                        img.src = user.profileImage;
+                        img.alt = `${user.username}'s profile image`;
+                        img.style.width = '40px';
+                        img.style.height = '40px';
+                        img.style.borderRadius = '50%';
+                        img.style.marginRight = '10px';
+        
+                        const username = document.createElement('span');
+                        username.textContent = user.username;
+        
+                        listItem.appendChild(img);
+                        listItem.appendChild(username);
+                        dislikesList.appendChild(listItem);
+                    });
+                }
+        
+                let deleteType = '';
+                let deleteId = '';
+        
+                function confirmDelete(type, id) {
+                    deleteType = type;
+                    deleteId = id;
+                    document.getElementById('delete-modal').style.display = 'block';
+                }
+        
+        
+        
+                async function toggleLike(event, postId) {
+            const likeIcon = event.target;
+            const likesCountElement = document.getElementById(`likes-count-${postId}`);
+        
+            try {
+                const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+                const data = await response.json();
+        
+                console.log('Response data:', data); // Debug the API response
+        
+                if (response.ok && data) {
+                    // Update the likes count
+                    if (data.likesCount !== undefined) {
+                        likesCountElement.textContent = `${data.likesCount}`;
+                    } else {
+                        console.error('likesCount is missing in response.');
+                    }
+        
+                    // Toggle the like-active class
+                    const isLiked = likeIcon.classList.contains('like-active');
+                    likeIcon.classList.toggle('like-active', !isLiked);
+                } else {
+                    console.error("Failed to like the post:", data?.message || "Unknown error");
+                }
+            } catch (error) {
+                console.error("Error toggling like:", error);
+            }
         }
-    } catch (error) {
-        console.error("Error toggling comment like:", error);
-    }
-}
-async function toggleCommentdisLike(commentId) {
-    try {
-        const response = await fetch(`/comments/${commentId}/dislike`, { method: 'POST' });
-        const data = await response.json();
-
-        // Update the like count dynamically
-        const dislikeCountElement = document.getElementById(`comment-dislikes-${commentId}`);
-        if (dislikeCountElement) {
-            dislikeCountElement.textContent = `${data.dislikesCount} DisLikes`;
+        
+        
+        
+        
+        async function toggleDislike(event, postId) {
+            const dislikeIcon = event.target;
+            const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
+        
+            try {
+                const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
+                const data = await response.json();
+        
+                console.log('Response data:', data); // Debug the API response
+        
+                if (response.ok && data) {
+                    // Update the dislikes count
+                    if (data.dislikesCount !== undefined) {
+                        dislikesCountElement.textContent = `${data.dislikesCount}`;
+                    } else {
+                        console.error('dislikesCount is missing in response.');
+                    }
+        
+                    // Toggle the dislike-active class
+                    const isDisliked = dislikeIcon.classList.contains('dislike-active');
+                    dislikeIcon.classList.toggle('dislike-active', !isDisliked);
+                } else {
+                    console.error("Failed to dislike the post:", data?.message || "Unknown error");
+                }
+            } catch (error) {
+                console.error("Error toggling dislike:", error);
+            }
         }
-    } catch (error) {
-        console.error("Error toggling comment dislike:", error);
-    }
-}
-
-async function toggleReplyLike(commentId, replyIndex) {
-    try {
-console.log("mohammad",replyIndex);
-
-        const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/like`, { method: 'POST' });
-        const data = await response.json();
-
-        // Update the like count dynamically
-        const likeCountElement = document.getElementById(`reply-likes-${replyIndex}`);
-        if (likeCountElement) {
-            likeCountElement.textContent = `${data.likesCount} Likes`;
-        }
-    } catch (error) {
-        console.error("Error toggling reply like:", error);
-    }
-}
-async function toggleReplydisLike(commentId, replyIndex) {
-    try {
-console.log("mohammad",replyIndex);
-
-        const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/dislike`, { method: 'POST' });
-        const data = await response.json();
-
-        // Update the like count dynamically
-        const dislikeCountElement = document.getElementById(`reply-dislikes-${replyIndex}`);
-        if (dislikeCountElement) {
-            dislikeCountElement.textContent = `${data.dislikesCount} Likes`;
-        }
-    } catch (error) {
-        console.error("Error toggling reply Dislike:", error);
-    }
-}
-
-function showLikes() {
-    document.getElementById('likes-section').style.display = 'block';
-    document.getElementById('dislikes-section').style.display = 'none';
-    document.getElementById('likes-tab').classList.add('active');
-    document.getElementById('dislikes-tab').classList.remove('active');
-  }
-  
-  function showDislikes() {
-    document.getElementById('likes-section').style.display = 'none';
-    document.getElementById('dislikes-section').style.display = 'block';
-    document.getElementById('dislikes-tab').classList.add('active');
-    document.getElementById('likes-tab').classList.remove('active');
-  }
-  
-  async function openReactionModal(type, id, section) {
-    const modal = document.getElementById('reaction-modal');
-    modal.style.display = 'flex';
-  
-    try {
-      const response = await fetch(`/posts/${type}/${id}/reactions`);
-      const data = await response.json();
-      if (response.ok) {
-        populateLikesList(data.likedBy);
-        populateDislikesList(data.dislikedBy);
-  
-        // Show the appropriate section based on the clicked button
-        if (section === 'likes') {
-          showLikes();
-        } else if (section === 'dislikes') {
-          showDislikes();
-        }
-      } else {
-        console.error('Error fetching reactions:', data.message || 'Unknown error');
-      }
-    } catch (error) {
-      console.error('Error fetching reactions:', error);
-    }
-  }
-  
-  
-  function closeReactionModal() {
-    document.getElementById('reaction-modal').style.display = 'none';
-  }
-  
-  function populateLikesList(likedBy) {
-    const likesList = document.getElementById('likes-list');
-    likesList.innerHTML = ''; // Clear previous list
-  
-    likedBy.forEach(user => {
-      const listItem = document.createElement('li');
-      listItem.style.display = 'flex';
-      listItem.style.alignItems = 'center';
-      listItem.style.marginBottom = '10px';
-  
-      const img = document.createElement('img');
-      img.src = user.profileImage;
-      img.alt = `${user.username}'s profile image`;
-      img.style.width = '40px';
-      img.style.height = '40px';
-      img.style.borderRadius = '50%';
-      img.style.marginRight = '10px';
-  
-      const username = document.createElement('span');
-      username.textContent = user.username;
-  
-      listItem.appendChild(img);
-      listItem.appendChild(username);
-      likesList.appendChild(listItem);
-    });
-  }
-  
-  function populateDislikesList(dislikedBy) {
-    const dislikesList = document.getElementById('dislikes-list');
-    dislikesList.innerHTML = ''; // Clear previous list
-  
-    dislikedBy.forEach(user => {
-      const listItem = document.createElement('li');
-      listItem.style.display = 'flex';
-      listItem.style.alignItems = 'center';
-      listItem.style.marginBottom = '10px';
-  
-      const img = document.createElement('img');
-      img.src = user.profileImage;
-      img.alt = `${user.username}'s profile image`;
-      img.style.width = '40px';
-      img.style.height = '40px';
-      img.style.borderRadius = '50%';
-      img.style.marginRight = '10px';
-  
-      const username = document.createElement('span');
-      username.textContent = user.username;
-  
-      listItem.appendChild(img);
-      listItem.appendChild(username);
-      dislikesList.appendChild(listItem);
-    });
-  }
-  
-      let deleteType = '';
-      let deleteId = '';
-  
-      function confirmDelete(type, id) {
-          deleteType = type;
-          deleteId = id;
-          document.getElementById('delete-modal').style.display = 'block';
-      }
-  
-      function closeDeleteModal() {
-          document.getElementById('delete-modal').style.display = 'none';
-      }
-  
-      async function performDelete(postid) {
-          try {
-              const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
-              const data = await response.json();
-              if (response.ok) {
-                  alert("Deleted successfully");
-                  if(deleteType=='comment' || deleteType=='reply'){
-                    loadComments(postid);
-                    if(deleteType=='comment')
-                        {document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} Comments`;} 
-                  }
-                  else
-                      location.reload();
-              } else {
-                  console.error("Error deleting:", await response.json());
-              }
-          } catch (error) {
-              console.error("Error performing delete:", error);
-          }
-          closeDeleteModal();
-      }
-      </script>
+        
+        
+                function closeDeleteModal() {
+                    document.getElementById('delete-modal').style.display = 'none';
+                }
+        
+                async function performDelete(postid) {
+                    try {
+                        const response = await fetch(`/posts/delete/${deleteType}/${deleteId}`, { method: 'DELETE' });
+                        const data = await response.json();
+                        if (response.ok) {
+                            alert("Deleted successfully");
+                            if (deleteType == 'comment' || deleteType == 'reply') {
+                                loadComments(postid);
+                                if (deleteType == 'comment')
+                                    document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} `
+                            }
+                            else
+                                location.reload();
+                        } else {
+                            console.error("Error deleting:", await response.json());
+                        }
+                    } catch (error) {
+                        console.error("Error performing delete:", error);
+                    }
+                    closeDeleteModal();
+                }
+               
+        
+                </script>
 </body>
+
 </html>
