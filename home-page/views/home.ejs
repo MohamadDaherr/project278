@@ -17,13 +17,24 @@
 
         body,
         html {
-            margin: 0;
-            padding: 0;
+          
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e0e7f8;
-            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+    background-color: #e4e4e4;
+    margin: 0;
+    padding: 0;            overflow-x: hidden;
             /* Prevents horizontal scrolling */
         }
+/* Remove bullets from the replies and comments lists */
+ul {
+    list-style: none; /* Removes the bullets */
+    padding: 0; /* Removes extra padding */
+    margin: 0; /* Removes extra margin */
+}
+
+li {
+    list-style: none; /* Ensures no bullets appear for any list items */
+}
 
         .search {
             display: block;
@@ -41,7 +52,8 @@
         .right-sidebar {
             width: 18%;
             /* Sidebar width */
-            height: calc(100vh - 20px);
+            max-height: 82%;
+            height: 100%;
             /* Full viewport height minus padding */
             padding: 20px;
             background-color: #ffffff;
@@ -53,6 +65,8 @@
             position: fixed;
             /* Fix sidebar position */
             transition: transform 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+
         }
 
         /* Left Sidebar Positioned Fixed */
@@ -119,12 +133,15 @@
     padding-right: 8px;
 }
 .sidebar ul {
+    
     width: 100%; /* Set the ul to occupy full sidebar width */
     padding: 10px; /* Add padding around ul */
     background-color: #ffffff; /* Optional: Different background for ul */
     border-radius: 12px; /* Optional: Rounded corners for ul */
     list-style: none; /* Remove bullet points */
     box-sizing: border-box; /* Ensure padding doesn't overflow */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+
 }
 
 .sidebar ul li {
@@ -142,7 +159,7 @@
 
 .sidebar ul li a {
     display: block; /* Make the link fill the list item */
-    color: #389c9c; /* Text color */
+    color: black; /* Text color */
     text-decoration: none; /* Remove underline */
     font-size: 18px; /* Slightly larger font for readability */
     border-radius: 8px; /* Optional: rounded corners for a */
@@ -152,6 +169,8 @@
 .sidebar ul li:hover {
     transform: scale(1.05); /* Slightly scale li on hover */
     background-color: #ddd; /* Change li background on hover */
+    box-shadow: 0 4px 5px #ca4274;
+
 }
 
 /* Profile Link Styling */
@@ -169,6 +188,8 @@
     left: 10px;
     padding: 10px; /* Reduce padding for better shrinkability */
     transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+
 }
 
 /* Profile Picture */
@@ -198,11 +219,12 @@
 /* Media Query for Shrinking */
 @media (max-width: 900px) {
     .profile-link {
-        width: 50px; /* Match the profile picture size */
-        padding: 0; /* Remove extra padding */
-        top: 10px; /* Adjust top position */
-        left: 10px; /* Adjust left position */
-        justify-content: center; /* Center align the picture */
+        /* width: 50px; 
+        padding: 0;
+        top: 10px;
+        left: 10px;
+        justify-content: center; */
+        display: none;
     }
 
     .profile-name {
@@ -216,12 +238,15 @@
 }
 
         .profile-link:hover {
-            background-color: #f0f2f5;
-        }
+            transform: scale(1.03);
+    background-color: #ddd; 
+    }
+
+
         .create-post-link {
     padding: 20px;
     width: 15%;
-    background-color: #389c9c;
+    background-color: #830131;
     box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.5);
     border-radius: 30px;
     text-decoration: none;
@@ -236,7 +261,7 @@
 }
 
         .create-post-link:hover {
-            background-color: #1f7878;
+            background-color:#6c0329;
             transform: scale(1.03);
             /* Scale the button slightly larger */
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
@@ -417,17 +442,18 @@
         .post-button {
             width: 100%;
             padding: 10px;
-            background-color: #389c9c;
+            background-color:#830131;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
+            align-items: center;
             /* Add transform transition */
         }
 
         .post-button:hover {
-            background-color: #1f7878;
+            background-color: #6c0329;
             transform: translateY(-3px);
             /* Moves the button up slightly to create a "pop" effect */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -454,10 +480,10 @@
         }
 
         #caption:focus {
-            border-color: #1f7878;
+            border-color: #830131;
             outline: none;
             background-color: #fff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 0 5px #ca4274;
         }
 
         /* Hide the original file input */
@@ -479,7 +505,7 @@
         /* Style for the custom upload button */
         .upload-button {
             padding: 8px 15px;
-            background-color: #007bff;
+            background-color: #830131;
             color: #fff;
             border-radius: 5px;
             cursor: pointer;
@@ -490,7 +516,7 @@
         }
 
         .upload-button:hover {
-            background-color: #0056b3;
+            background-color: #6c0329;
         }
 
         /* Style for the file name display */
@@ -552,7 +578,7 @@
         }
 
         .button {
-            color: #007bff;
+            color: #830131;
             outline: none;
             border: none;
             width: 40px;
@@ -564,11 +590,8 @@
             justify-content: center;
             cursor: pointer;
             position: absolute;
-            /* Set the button to absolute positioning */
             bottom: 30px;
-            /* Position at the bottom of the sidebar with some padding */
             left: 5%;
-            /* Center horizontally within the sidebar */
         }
 
 
@@ -610,9 +633,9 @@
         .input:focus,
         input:hover {
             outline: none;
-            border-color: #007bff;
+            border-color: #ca4274;
             background-color: #fff;
-            box-shadow: 0 0 0 4px #8ec5ff;
+            box-shadow: 0 0 0 4px #e6739d;
         }
 
         .icon {
@@ -669,7 +692,7 @@
             /* Match the full height of the li */
             width: 5px;
             /* Width of the blue bar */
-            background-color: #007bff;
+            background-color: #6c0329;
             /* Blue color for the bar */
             border-radius: 4px 0 0 4px;
             /* Optional: rounded edges */
@@ -712,7 +735,7 @@
             background-color: #f0f4ff;
             border: none;
             border-radius: 5px;
-            color: #007bff;
+            color: #830131;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s ease;
@@ -720,12 +743,12 @@
 
 
         .tabs button.active {
-            background-color: #007bff;
+            background-color: #830131;
             color: white;
         }
 
         .tabs button:hover {
-            background-color: #0056b3;
+            background-color: #830131;
             color: white;
         }
 
@@ -765,7 +788,7 @@
         }
 
         #cancel-delete {
-            background-color: #5bc0de;
+            background-color: #d6d6d6;
             color: #fff;
         }
 
@@ -940,6 +963,7 @@
 /* Notification Modal Scroll Styling */
 #notification-modal .modal-content {
     max-height: 70vh; /* Set a fixed height */
+    max-width: 40%;
     width: 50%; /* Set a width as per your design */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: hidden; /* Prevent horizontal scrolling */
@@ -961,20 +985,20 @@
 }
 
 #notification-modal .modal-content::-webkit-scrollbar-thumb {
-    background-color: #007bff; /* Bright blue scrollbar */
+    background-color: #830131; /* Bright blue scrollbar */
     border-radius: 10px; /* Rounded corners for the scrollbar */
     border: 2px solid #f0f4ff; /* Add a border for a smooth edge */
 }
 
 #notification-modal .modal-content::-webkit-scrollbar-thumb:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #6c0329; /* Darker blue on hover */
     border: 2px solid #e0e7f8; /* Update border on hover */
 }
 
 /* Optional Scrollbar Styling for Cross-Browser Support */
 #notification-modal .modal-content {
     scrollbar-width: thin; /* For Firefox: thin scrollbar */
-    scrollbar-color: #007bff #f0f4ff; /* Blue thumb and light track */
+    scrollbar-color: #830131 #f0f4ff; /* Blue thumb and light track */
 }
 
 /* Default state for the profile link and create post button */
@@ -1015,15 +1039,10 @@
 @media (max-width: 900px) {
     .create-post-link {
         transform: translateX(-100%); /* Hide the sidebar by moving it off-screen */
+        display: none;
     }
 }
-/* General Styling */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-}
+
 
 .posts {
     width: 90%;
@@ -1147,7 +1166,7 @@ body {
     margin-top: 10px;
     color: black;
 }
-.post-actions span{
+.commentcount{
     cursor: default;
 }
 
@@ -1199,14 +1218,14 @@ body {
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
     color: white;
     font-size: 14px;
     cursor: pointer;
+    background-color: #830131;
 }
 
 .comment-post-button:hover {
-    background-color: #0056b3;
+    background-color: #6c0329;
 }
 
 /* Modal */
@@ -1254,7 +1273,7 @@ body {
 }
 
 #cancel-delete {
-    background-color: #ddd;
+    background-color: #cbcbcb;
     color: #333;
 }
 
@@ -1328,13 +1347,13 @@ body {
 }
 
 #reaction-modal .tabs button.active {
-    background-color: #007bff;
+    background-color: #830131;
     color: #ffffff;
     border-radius: 10px 10px 0 0; /* Rounded corners for active tab */
 }
 
 #reaction-modal .tabs button:hover {
-    background-color: #0056b3;
+    background-color: #6c0329;
     color: #ffffff;
 }
 
@@ -1393,34 +1412,387 @@ body {
         transform: scale(1);
     }
 }
-        /* Remove bullets from the notification list */
-        #notificationsList {
-            list-style-type: none;
-            padding: 0;
-        }
+      
+
+/* Add Friend Button (Circular) */
+.add-friend-btn {
+    background-color: #830131; /* Blue background */
+    color: #fff; /* White icon color */
+    border: none;
+    border-radius: 50%; /* Makes it circular */
+    width: 40px; /* Fixed width for circle */
+    height: 40px; /* Fixed height for circle */
+    display: flex; /* Flexbox for centering content */
+    align-items: center; /* Vertically center icon */
+    justify-content: center; /* Horizontally center icon */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
+    font-size: 18px; /* FontAwesome icon size */
+}
+
+.add-friend-btn:hover {
+    background-color: #6c0329; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Remove Friend Button (Circular) */
+.remove-friend-btn {
+    background-color: #232323; /* Red background */
+    color: #fff; /* White icon color */
+    border: none;
+    border-radius: 50%; /* Makes it circular */
+    width: 40px; /* Fixed width for circle */
+    height: 40px; /* Fixed height for circle */
+    display: flex; /* Flexbox for centering content */
+    align-items: center; /* Vertically center icon */
+    justify-content: center; /* Horizontally center icon */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
+    font-size: 18px; /* FontAwesome icon size */
+}
+
+.remove-friend-btn:hover {
+    background-color: #000000; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.comment-item, .reply-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    word-wrap: break-word; /* Ensures long words break */
+    overflow-wrap: break-word; /* Ensures long content wraps */
+}
+
+.comment-image, .reply-image {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-content, .reply-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.comment-header, .reply-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.comment-header strong, .reply-header strong {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 10px;
+    word-break: break-word; /* Allows breaking at any point if necessary */
+}
+
+.comment-body, .reply-body {
+    word-wrap: break-word; /* Ensures long words break */
+    overflow-wrap: break-word; /* Ensures long content wraps */
+    white-space: pre-wrap; /* Preserves line breaks */
+    font-size: 14px;
+    margin-top: 5px;
+    line-height: 1.4; /* Improves readability */
+}
+
+
+.comment-actions, .reply-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-actions i, .reply-actions i {
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 5px;
+}
+.commentSection, .replies-list {
+    white-space: normal; /* Ensure wrapping is allowed */
+}
+
+.reply-box {
+    display: none;
+    margin-top: 10px;
+}
+
+.replies-list {
+    margin-top: 10px;
+    padding-left: 20px;
+    word-wrap: break-word; /* Ensures proper wrapping */
+    overflow-wrap: break-word; /* Prevents content overflow */
+}
+
+.fa-trash {
+    color: black; /* Default color for the trash icon */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.post-actions span {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Gap between groups (like/dislike) */
+}
+
+.post-actions i {
+    margin-right: 5px; /* Gap between icon and count */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.post-actions i:hover {
+    color: #007bff; /* Optional hover color for like/dislike buttons */
+}
+.post-actions .fa-thumbs-down:hover{
+    color: red;
+}
+.fa-trash:hover {
+    color: red;
+    cursor: pointer;
+}
+/* Hover effect for replies */
+.fa-thumbs-up:hover {
+    color: #007bff; /* Hover color for like button in replies */
+}
+span {
+    cursor: alias; /* Sets the cursor to alias */
+}
+
+.fa-thumbs-down:hover {
+    color: red; /* Hover color for dislike button in replies */
+}
+
+.replies-list .fa-trash:hover {
+    color: red; /* Hover color for trash button in replies */
+    cursor: pointer;
+}
+.fa-reply:hover {
+    cursor: pointer;
+    color: #007bff;
+}
+
+/* Reaction Modal Container */
+#reaction-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1000; /* Ensure it's above other elements */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Reaction Modal Content */
+#reaction-modal .modal-content {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px; /* Set a fixed maximum width */
+    height: 70vh; /* Set a fixed height for the modal */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in dimensions */
+    position: relative;
+}
+
+/* Custom Scrollbar Styling for Reaction Modal */
+#reaction-modal .modal-content::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+#reaction-modal .modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Light gray track */
+    border-radius: 10px; /* Rounded track corners */
+}
+
+#reaction-modal .modal-content::-webkit-scrollbar-thumb {
+    background: #6c0329; /* Bright blue scrollbar thumb */
+    border-radius: 10px; /* Rounded scrollbar corners */
+}
+
+#reaction-modal .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #830131; /* Darker blue on hover */
+}
+
+/* Close Button */
+#reaction-modal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#reaction-modal .close:hover {
+    color: red; /* Highlight close button on hover */
+}
+/* Scaling effect */
+/* Pop-up animation */
+@keyframes like-pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3); /* Enlarge slightly */
+    }
+    100% {
+        transform: scale(1); /* Return to original size */
+    }
+}
+/* Class for triggering the like animation */
+.like-pop-animation {
+    animation: like-pop 0.3s ease-in-out;
+    color: blue; /* Optional: Change color during animation */
+
+}
+/* Class for triggering the dislike animation */
+.dislike-pop-animation {
+    animation: like-pop 0.3s ease-in-out;
+    color: red;
+}
+.delete-modal{
+    position: relative;
+    top: 50%;
+    left: 50%;
+}
+
+/* Modal Title */
+.modal-content h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px; /* Space below the title */
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    justify-content: space-around; /* Spaces buttons evenly */
+    gap: 15px; /* Adds spacing between buttons */
+}
+
+/* Confirm Button */
+#confirm-delete {
+    background-color: #830131; /* Red color for delete */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Confirm Button Hover */
+#confirm-delete:hover {
+    background-color: #6c0329; /* Darker red */
+    transform: scale(1.05); /* Slightly enlarge */
+}
+
+/* Cancel Button */
+#cancel-delete {
+    background-color: #c9c9c9; /* Blue color for cancel */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Cancel Button Hover */
+#cancel-delete:hover {
+    background-color: #a3a3a3; /* Darker blue */
+    transform: scale(1.05); /* Slightly enlarge */
+}
+
+/* Animation for Fade-in Effect */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.reply-box {
+    display: flex; /* Align input and button side by side */
+    align-items: center; /* Center items vertically */
+    gap: 10px; /* Add spacing between input and button */
+    margin-top: 10px; /* Add spacing from the element above */
+    width: 100%; /* Ensure the reply box spans the full width */
+}
+
+.reply-input {
+    flex-grow: 1; /* Make the input take all available space */
+    padding: 10px; /* Add padding for better usability */
+    border: 1px solid #ddd; /* Light border for the input */
+    border-radius: 5px; /* Slightly rounded corners */
+    font-size: 14px; /* Adjust font size */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth focus effect */
+}
+
+.reply-input:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 1px #ca4274; /* Subtle glow on focus */
+}
+
+.reply-button {
+    padding: 10px 15px; /* Add padding for the button */
+    background-color: #830131; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 14px; /* Adjust font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+}
+
+.reply-button:hover {
+    background-color: #6c0329; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.reply-button:active {
+    transform: scale(1); /* Reset scale on click */
+}
 
 #notificationsList li {
-    list-style: none;
-    margin-bottom: 10px;
+    display: flex; /* Align items in a row */
+    justify-content: space-between; /* Space between the text and buttons */
     padding: 10px;
+    margin-bottom: 10px;
     background-color: #f9f9f9;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: flex-start; /* Align text and buttons to the start */
 }
 
 #notificationsList .button-group {
-    display: flex;
+    display: flex; /* Arrange buttons in a row */
     gap: 10px; /* Add space between buttons */
-    margin-top: 10px; /* Add spacing between text and buttons */
 }
 
 #notificationsList a {
     text-decoration: none;
-    color: blue;
     font-weight: bold;
+    color: #830131; /* Adjust the color to match your theme */
 }
 
 #notificationsList button {
@@ -1449,56 +1821,54 @@ body {
     background-color: #d32f2f;
 }
 
-#notificationsList .delete-button {
-    background-color: gray;
-    color: white;
+.right-sidebar span{
+    cursor: default; 
 }
 
-#notificationsList .delete-button:hover {
-    background-color: #333;
+/* General List Styling */
+.suggestion-item {
+  list-style: none;
+  margin-bottom: 10px;
 }
 
-/* Add Friend Button (Circular) */
-.add-friend-btn {
-    background-color: #007bff; /* Blue background */
-    color: #fff; /* White icon color */
-    border: none;
-    border-radius: 50%; /* Makes it circular */
-    width: 40px; /* Fixed width for circle */
-    height: 40px; /* Fixed height for circle */
-    display: flex; /* Flexbox for centering content */
-    align-items: center; /* Vertically center icon */
-    justify-content: center; /* Horizontally center icon */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
-    font-size: 18px; /* FontAwesome icon size */
+/* Suggestion Card Design */
+.suggestion-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f6f1f1;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
 }
 
-.add-friend-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+/* Hover Effect */
+.suggestion-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 7px #a91f51;
+  background-color: rgb(239, 239, 239);
 }
 
-/* Remove Friend Button (Circular) */
-.remove-friend-btn {
-    background-color: #f44336; /* Red background */
-    color: #fff; /* White icon color */
-    border: none;
-    border-radius: 50%; /* Makes it circular */
-    width: 40px; /* Fixed width for circle */
-    height: 40px; /* Fixed height for circle */
-    display: flex; /* Flexbox for centering content */
-    align-items: center; /* Vertically center icon */
-    justify-content: center; /* Horizontally center icon */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
-    font-size: 18px; /* FontAwesome icon size */
+/* Profile Image */
+.suggestion-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
 }
 
-.remove-friend-btn:hover {
-    background-color: #d32f2f; /* Darker red on hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+/* Username Styling */
+.suggestion-username {
+  flex-grow: 1;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }
+
 
 /* Modal container */
 .modal {
@@ -1649,6 +2019,31 @@ body {
     color: black;
 }
 
+
+/* Add Friend Icon */
+.suggestion-card .fa-user-plus {
+  color: white;
+  font-size: 10px;
+  background-color: #830131;
+  margin-left: 5px;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover Effect for Icon */
+.suggestion-card .fa-user-plus:hover {
+  background-color: #6c0329;
+  transform: scale(1.1);
+}
+
+.comment-li:hover{
+    padding: 5px;
+    background-color: rgb(225, 225, 225);
+    border-radius: 7px;
+}
+
     </style>
 </head>
 
@@ -1675,20 +2070,20 @@ body {
 
                 <ul>
 
-                    <li><a href="/home" id="home-link"><i class="fa fa-home"></i>Home</a></li>
-
+                    <li><a href="/home" id="home-link" ><i class="fa fa-home" style="color: #830131;"></i>Home</a></li>
+<li href="/friend/list" class="search" id="searchTab">
+                        <a onclick="openSearchModal()" id="search"><i class="fa fa-search" style="color: #830131;"></i>Search</a>
+                    </li>
                     <li id="friends">
-                        <a href="/friend" id="fr"><i class='fas fa-user-friends'></i>Friends</a>
+                        <a href="/friend" id="fr"><i class='fas fa-user-friends' style="color: #830131;"></i>Friends</a>
                     </li>
 
 
-                    <li id="chats"><a href="/chats" id="ch">    <i class="fa fa-comments"></i>Chats</a></li>
+                    <li id="chats"><a href="/chats" id="ch">    <i class="fa fa-comments" style="color: #830131;"></i>Chats</a></li>
                     <li href="/home/notifications" class="notifications-link">
-                        <a onclick="openNotificationModal()" id="notify"><i class="fa fa-bell"></i>Notifications</a>
+                        <a onclick="openNotificationModal()" id="notify"><i class="fa fa-bell" style="color: #830131;"></i>Notifications</a>
                     </li>
-                    <li href="/friend/list" class="search" id="searchTab">
-                        <a onclick="openSearchModal()" id="search"><i class="fa fa-search"></i>Search</a>
-                    </li>
+                    
 
                 </ul>
             </aside>
@@ -1840,15 +2235,14 @@ body {
             
                         <!-- Post Actions -->
                         <div class="post-actions">
-                                <i class="fa fa-thumbs-up" onclick="toggleLike(event, '<%= post._id %>')"></i> 
-                                <span id="likes-count-<%= post._id %>" onclick="openReactionModal('post', '<%= post._id %>', 'likes')">
-                                <%= post.likes.length %>
-                                </span>
+                            <i class="fa fa-thumbs-up" id="like-icon-<%= post._id %>" onclick="toggleLike(event, '<%= post._id %>')"></i>
+                            <span id="likes-count-<%= post._id %>" onclick="openReactionModal('post', '<%= post._id %>', 'likes')"><%= post.likes.length %></span>
+                            
+                            
             
-                                <i class="fa fa-thumbs-down" onclick="toggledisLike(event, '<%= post._id %>')"></i> 
-                                <span id="dislikes-count-<%= post._id %>" onclick="openReactionModal('post', '<%= post._id %>', 'dislikes')">
-                                 <%= post.dislikes.length %>
-                                </span>
+                            <i class="fa fa-thumbs-down" id="dislike-icon-<%= post._id %>" onclick="toggledisLike(event, '<%= post._id %>')"></i>
+                            <span id="dislikes-count-<%= post._id %>" onclick="openReactionModal('post', '<%= post._id %>', 'dislikes')"><%= post.dislikes.length %></span>
+                            
             
                             <!-- <button class="reaction-button" onclick="openCommentSection('<%= post._id %>')"> -->
                                 <i class="fa fa-comment" onclick="openCommentSection('<%= post._id %>')"></i> <span class="comment-count"><%= post.comments.length %></span>
@@ -1866,12 +2260,15 @@ body {
             
                     <!-- Delete Modal -->
                     <div id="delete-modal" class="modal">
-                        <div class="modal-content">
-                            <h3>Are you sure you want to delete this?</h3>
-                            <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
-                            <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
-                        </div>
-                    </div>
+    <div class="modal-content">
+        <h3>Are you sure you want to delete this?</h3>
+        <div class="button-group">
+            <button id="confirm-delete" onclick="performDelete('<%= post._id %>')">Yes, Delete</button>
+            <button id="cancel-delete" onclick="closeDeleteModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
                 <% }) %>
             </section>
             
@@ -2076,7 +2473,8 @@ function toggleCommentSection(postId) {
             const uploadStoryModal = document.getElementById("uploadStoryModal");
             const notification = document.getElementById("notification-modal");
             const search = document.getElementById("search-modal");
-            const friends = document.getElementById("friends-modal")
+            const friends = document.getElementById("friends-modal");
+            const reactionModal = document.getElementById("reaction-modal");
 
             if (event.target === postModal) {
                 closeModal();
@@ -2090,6 +2488,9 @@ function toggleCommentSection(postId) {
             }
             else if (event.target === search) {
                 closeSearchModal();
+            }
+            else if (event.target === reactionModal) {
+                closeReactionModal();
             }
 
         }
@@ -2234,33 +2635,33 @@ function toggleCommentSection(postId) {
                 console.error("Error removing friend:", error);
             }
         }
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFriends();
-        });
-        async function loadFriends() {
-            try {
-                const response = await fetch('/friend/list');
-                const friends = await response.json();
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     loadFriends();
+        // });
+        // async function loadFriends() {
+        //     try {
+        //         const response = await fetch('/friend/list');
+        //         const friends = await response.json();
 
-                const friendsList = document.getElementById('friendsList');
-                friendsList.innerHTML = ''; // Clear previous list
+        //         const friendsList = document.getElementById('friendsList');
+        //         friendsList.innerHTML = ''; // Clear previous list
 
-                friends.forEach(friend => {
-                    const li = document.createElement('li');
-                    li.textContent = friend.username || `${friend.firstName} ${friend.lastName}`;
+        //         friends.forEach(friend => {
+        //             const li = document.createElement('li');
+        //             li.textContent = friend.username || `${friend.firstName} ${friend.lastName}`;
 
-                    // Button for removing friend
-                    const removeButton = document.createElement('button');
-                    removeButton.textContent = '-';
-                    removeButton.onclick = () => removeFriend(friend._id);
+        //             // Button for removing friend
+        //             const removeButton = document.createElement('button');
+        //             removeButton.textContent = '-';
+        //             removeButton.onclick = () => removeFriend(friend._id);
 
-                    li.appendChild(removeButton);
-                    friendsList.appendChild(li);
-                });
-            } catch (error) {
-                console.error("Error loading friends:", error);
-            }
-        }
+        //             li.appendChild(removeButton);
+        //             friendsList.appendChild(li);
+        //         });
+        //     } catch (error) {
+        //         console.error("Error loading friends:", error);
+        //     }
+        // }
 
         async function loadNotifications() {
     try {
@@ -2284,7 +2685,7 @@ function toggleCommentSection(postId) {
             senderLink.href = `/home/profile/user/${notification.from?._id}`; // Link to user's profile
             senderLink.textContent = senderName;
             senderLink.style.textDecoration = 'none';
-            senderLink.style.color = 'blue'; // Optional styling
+            senderLink.style.color = '#6c0329'; // Optional styling
             li.appendChild(senderLink);
 
             // Handle different notification types
@@ -2454,37 +2855,68 @@ function toggleCommentSection(postId) {
         loadNotifications();
 
 
-        loadFriends();
+        // loadFriends();
 
         async function toggleLike(event, postId) {
-            event.stopPropagation();
-            try {
-                const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
-                const data = await response.json();
+    event.stopPropagation();
 
-                // Update the like count
-                document.getElementById(`likes-count-${postId}`).textContent = `${data.likesCount} `;
+    const likeIcon = document.getElementById(`like-icon-${postId}`);
+    const likesCount = document.getElementById(`likes-count-${postId}`);
 
-                // If the likes modal is open, update it
-                // if (document.getElementById('likes-modal').style.display === 'block') {
-                //     populateLikesModal(data.likedBy);
-                // }
-            } catch (error) {
-                console.error("Error toggling like:", error);
-            }
-        }
-        async function toggledisLike(event, postId) {
-            event.stopPropagation();
-            try {
-                const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
-                const data = await response.json();
+    try {
+        const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+        const data = await response.json();
 
-                // Update the like count
-                document.getElementById(`dislikes-count-${postId}`).textContent = `${data.dislikesCount} `;
-            } catch (error) {
-                console.error("Error toggling like:", error);
-            }
-        }
+        // Update the like count
+        likesCount.textContent = `${data.likesCount} `;
+
+        // Add the animation class to trigger the pop-up effect
+        likeIcon.classList.add('like-pop-animation');
+
+        // Remove the animation class after the animation ends
+        setTimeout(() => {
+            likeIcon.classList.remove('like-pop-animation');
+        }, 300); // Matches the duration of the animation
+    } catch (error) {
+        console.error('Error toggling like:', error);
+    }
+}
+function toggleReplies(commentId) {
+    const repliesList = document.getElementById(`replies-list-${commentId}`);
+    
+    // Toggle the visibility of the replies list
+    if (repliesList.style.display === 'none' || repliesList.style.display === '') {
+        repliesList.style.display = 'block'; // Show replies
+    } else {
+        repliesList.style.display = 'none'; // Hide replies
+    }
+}
+
+async function toggledisLike(event, postId) {
+    event.stopPropagation();
+
+    const dislikeIcon = document.getElementById(`dislike-icon-${postId}`);
+    const dislikesCount = document.getElementById(`dislikes-count-${postId}`);
+
+    try {
+        const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
+        const data = await response.json();
+
+        // Update the dislike count
+        dislikesCount.textContent = `${data.dislikesCount} `;
+
+        // Add the animation class to trigger the pop-up effect
+        dislikeIcon.classList.add('dislike-pop-animation');
+
+        // Remove the animation class after the animation ends
+        setTimeout(() => {
+            dislikeIcon.classList.remove('dislike-pop-animation');
+        }, 300); // Matches the duration of the animation
+    } catch (error) {
+        console.error('Error toggling dislike:', error);
+    }
+}
+
 
         function openCommentSection(postId) {
             const commentSection = document.getElementById(`commentSection-${postId}`);
@@ -2500,55 +2932,83 @@ function toggleCommentSection(postId) {
         }
 
         async function loadComments(postId) {
-            try {
-                const response = await fetch(`/posts/${postId}`);
-                const data = await response.json();
+    try {
+        const response = await fetch(`/posts/${postId}`);
+        const data = await response.json();
 
-                const commentsList = document.getElementById(`comments-list-${postId}`);
-                commentsList.innerHTML = data.comments.map((comment) => `
-      <li>
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+        commentsList.innerHTML = ''; // Clear the existing comments
+
+        data.comments.forEach((comment) => {
+            const commentHTML = `
+    <li data-comment-id="${comment._id}"  >
+        <div class="comment-li" onclick="toggleReplies('${comment._id}')">
         <img src="${comment.user.profileImage || '/images/default-profile.png'}" 
-             alt="${comment.user.username}'s profile image" 
-             style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
-        <strong>${comment.user.username}:</strong> ${comment.content}
-        <span>
-          <button onclick="toggleCommentLike('${comment._id}')">❤️</button>
-          <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'likes')">${comment.likesCount} Likes</span>
-          <button onclick="toggleCommentdisLike('${comment._id}')">❤️</button>
-          <span id="comment-dislikes-${comment._id}" onclick="openReactionModal('comment','${comment._id}', 'dislikes')">${comment.dislikesCount} Dislikes</span>
-        </span>
-        ${comment.isOwner ? `<button onclick="confirmDelete('comment', '${comment._id}')">Delete Comment</button>` : ''}
-        <button onclick="toggleReplyBox('${comment._id}')">Reply</button>
-
-        <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
-          <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply...">
-          <button onclick="addReply('${comment._id}')">Post Reply</button>
-        </div>
-
-        <ul id="replies-list-${comment._id}" class="replies-list" style="margin-top: 10px; padding-left: 20px;">
-          ${comment.replies.map((reply) => `
-            <li>
-              <img src="${reply.user.profileImage || '/images/default-profile.png'}" 
-                   alt="${reply.user.username}'s profile image" 
-                   style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
-              <strong>${reply.user.username}:</strong> ${reply.content}
-              <span>
-                <button onclick="toggleReplyLike('${comment._id}', '${reply._id}')">❤️</button>
-                <span id="reply-likes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'likes')">${reply.likesCount} Likes</span>
-                <button onclick="toggleReplydisLike('${comment._id}', '${reply._id}')">❤️</button>
-                <span id="reply-dislikes-${reply._id}" onclick="openReactionModal('reply','${reply._id}', 'dislikes')">${reply.dislikesCount} Dislikes</span>
-                ${reply.isOwner ? `<button onclick="confirmDelete('reply', '${reply._id}')">Delete Reply</button>` : ''}
-              </span>
-            </li>
-          `).join('')}
-        </ul>
-      </li>
-    `).join('');
-            } catch (error) {
-                console.error('Error loading comments:', error);
+            alt="${comment.user.username}'s profile image" 
+            style="width: 30px; height: 30px; border-radius: 50%; margin-right: 5px;">
+        <strong>${comment.user.username}:</strong>
+        <p style="word-wrap: break-word; white-space: pre-wrap; margin: 5px 0;">${comment.content}</p>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+            <i onclick="toggleCommentLike('${comment._id}'); event.stopPropagation()" class="fa fa-thumbs-up" id="comment-like-icon-${comment._id}"></i>
+            <span id="comment-likes-${comment._id}" onclick="openReactionModal('comment', '${comment._id}', 'likes'); event.stopPropagation()">
+                ${comment.likesCount}
+            </span>
+            <i onclick="toggleCommentdisLike('${comment._id}'); event.stopPropagation()" class="fa fa-thumbs-down" id="comment-dislike-icon-${comment._id}"></i>
+            <span id="comment-dislikes-${comment._id}" onclick="openReactionModal('comment', '${comment._id}', 'dislikes'); event.stopPropagation()">
+                ${comment.dislikesCount}
+            </span>
+            <i onclick="toggleReplyBox('${comment._id}'); event.stopPropagation()" class="fa fa-reply"></i>
+            ${
+                comment.isOwner 
+                    ? `<i onclick="confirmDelete('comment', '${comment._id}'); event.stopPropagation()" class="fa fa-trash"></i>` 
+                    : ''
             }
-        }
+        </div>
+        <div id="reply-box-${comment._id}" class="reply-box" style="display: none; margin-top: 10px;">
+            <input type="text" id="new-reply-${comment._id}" placeholder="Write a reply..." class="reply-input">
+            <button class="reply-button" onclick="addReply('${comment._id}')">Post Reply</button>
+        </div>
+        </div>
+        <ul id="replies-list-${comment._id}" class="replies-list" style="display: none; margin-top: 10px; padding-left: 20px;">
+            ${comment.replies
+                .map(
+                    (reply) => `
+                        <li>
+                            <img src="${reply.user.profileImage || '/images/default-profile.png'}" 
+                                alt="${reply.user.username}'s profile image" 
+                                style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
+                            <strong>${reply.user.username}:</strong>
+                            <p style="word-wrap: break-word; white-space: pre-wrap; margin: 5px 0;">${reply.content}</p>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                                <i onclick="toggleReplyLike('${comment._id}', '${reply._id}')" class="fa fa-thumbs-up" id="reply-like-icon-${reply._id}"></i>
+                                <span id="reply-likes-${reply._id}" onclick="openReactionModal('reply', '${reply._id}', 'likes')">
+                                    ${reply.likesCount}
+                                </span>
+                                <i onclick="toggleReplydisLike('${comment._id}', '${reply._id}')" class="fa fa-thumbs-down" id="reply-dislike-icon-${reply._id}"></i>
+                                <span id="reply-dislikes-${reply._id}" onclick="openReactionModal('reply', '${reply._id}', 'dislikes')">
+                                    ${reply.dislikesCount}
+                                </span>
+                                ${
+                                    reply.isOwner 
+                                        ? `<i onclick="confirmDelete('reply', '${reply._id}')" class="fa fa-trash"></i>` 
+                                        : ''
+                                }
+                            </div>
+                        </li>
+                    `
+                )
+                .join('')}
+        </ul>
+    </li>
+`;
 
+
+            commentsList.insertAdjacentHTML('beforeend', commentHTML);
+        });
+    } catch (error) {
+        console.error('Error loading comments:', error);
+    }
+}
 
 
         async function addComment(postId) {
@@ -2606,11 +3066,11 @@ function toggleCommentSection(postId) {
                  style="width: 25px; height: 25px; border-radius: 50%; margin-right: 5px;">
             <strong>${newReply.user.username}:</strong> ${newReply.content}
             <span>
-              <button onclick="toggleReplyLike('${commentId}', '${newReply._id}')">❤️</button>
-              <span id="reply-likes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'likes')">0 Likes</span>
-              <button onclick="toggleReplydisLike('${commentId}', '${newReply._id}')">❤️</button>
-              <span id="reply-dislikes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'dislikes')">0 Dislikes</span>
-                ${newReply.isOwner ? `<button onclick="confirmDelete('reply', '${newReply._id}')">Delete Reply</button>` : ''}
+              <i onclick="toggleReplyLike('${commentId}', '${newReply._id}')" class="fa fa-thumbs-up"></i>
+              <span id="reply-likes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'likes')">0 </span>
+              <i onclick="toggleReplydisLike('${commentId}', '${newReply._id}')" class="fa fa-thumbs-down"></i>
+              <span id="reply-dislikes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'dislikes')">0 </span>
+                ${newReply.isOwner ? `<i onclick="confirmDelete('reply', '${newReply._id}')" class="fa fa-trash"></i>` : ''}
             </span>
           </li>
         `;
@@ -2628,67 +3088,93 @@ function toggleCommentSection(postId) {
 
 
         async function toggleCommentLike(commentId) {
-            try {
-                const response = await fetch(`/comments/${commentId}/like`, { method: 'POST' });
-                const data = await response.json();
+    try {
+        const response = await fetch(`/comments/${commentId}/like`, { method: 'POST' });
+        const data = await response.json();
 
-                // Update the like count dynamically
-                const likeCountElement = document.getElementById(`comment-likes-${commentId}`);
-                if (likeCountElement) {
-                    likeCountElement.textContent = `${data.likesCount} Likes`;
-                }
-            } catch (error) {
-                console.error("Error toggling comment like:", error);
-            }
+        // Update the like count dynamically
+        const likeCountElement = document.getElementById(`comment-likes-${commentId}`);
+        if (likeCountElement) {
+            likeCountElement.textContent = `${data.likesCount} `;
+
+            // Add animation class for the like icon
+            const likeIcon = likeCountElement.previousElementSibling; // Assuming the like icon is the previous sibling
+            likeIcon.classList.add('like-pop-animation');
+
+            // Remove the animation class after the animation ends
+            setTimeout(() => {
+                likeIcon.classList.remove('like-pop-animation');
+            }, 300); // Matches the animation duration
         }
-        async function toggleCommentdisLike(commentId) {
-            try {
-                const response = await fetch(`/comments/${commentId}/dislike`, { method: 'POST' });
-                const data = await response.json();
+    } catch (error) {
+        console.error("Error toggling comment like:", error);
+    }
+}
 
-                // Update the like count dynamically
-                const dislikeCountElement = document.getElementById(`comment-dislikes-${commentId}`);
-                if (dislikeCountElement) {
-                    dislikeCountElement.textContent = `${data.dislikesCount} DisLikes`;
-                }
-            } catch (error) {
-                console.error("Error toggling comment dislike:", error);
-            }
+async function toggleCommentdisLike(commentId) {
+    try {
+        const response = await fetch(`/comments/${commentId}/dislike`, { method: 'POST' });
+        const data = await response.json();
+
+        // Update the dislike count dynamically
+        const dislikeCountElement = document.getElementById(`comment-dislikes-${commentId}`);
+        if (dislikeCountElement) {
+            dislikeCountElement.textContent = `${data.dislikesCount} `;
+
+            // Add animation class for the dislike icon
+            const dislikeIcon = dislikeCountElement.previousElementSibling; // Assuming the dislike icon is the previous sibling
+            dislikeIcon.classList.add('dislike-pop-animation');
+
+            // Remove the animation class after the animation ends
+            setTimeout(() => {
+                dislikeIcon.classList.remove('dislike-pop-animation');
+            }, 300); // Matches the animation duration
         }
+    } catch (error) {
+        console.error("Error toggling comment dislike:", error);
+    }
+}
 
-        async function toggleReplyLike(commentId, replyIndex) {
-            try {
-                console.log("mohammad", replyIndex);
 
-                const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/like`, { method: 'POST' });
-                const data = await response.json();
+async function toggleReplyLike(commentId, replyId) {
+    const likeIcon = document.getElementById(`reply-like-icon-${replyId}`);
+    const likesCount = document.getElementById(`reply-likes-${replyId}`);
 
-                // Update the like count dynamically
-                const likeCountElement = document.getElementById(`reply-likes-${replyIndex}`);
-                if (likeCountElement) {
-                    likeCountElement.textContent = `${data.likesCount} Likes`;
-                }
-            } catch (error) {
-                console.error("Error toggling reply like:", error);
-            }
-        }
-        async function toggleReplydisLike(commentId, replyIndex) {
-            try {
-                console.log("mohammad", replyIndex);
+    try {
+        const response = await fetch(`/comments/${commentId}/replies/${replyId}/like`, { method: 'POST' });
+        const data = await response.json();
 
-                const response = await fetch(`/comments/${commentId}/replies/${replyIndex}/dislike`, { method: 'POST' });
-                const data = await response.json();
+        likesCount.textContent = `${data.likesCount}`;
 
-                // Update the like count dynamically
-                const dislikeCountElement = document.getElementById(`reply-dislikes-${replyIndex}`);
-                if (dislikeCountElement) {
-                    dislikeCountElement.textContent = `${data.dislikesCount} Likes`;
-                }
-            } catch (error) {
-                console.error("Error toggling reply Dislike:", error);
-            }
-        }
+        // Add the animation class
+        likeIcon.classList.add('like-pop-animation');
 
+        // Remove the animation class after animation ends
+        setTimeout(() => likeIcon.classList.remove('like-pop-animation'), 300);
+    } catch (error) {
+        console.error("Error toggling reply like:", error);
+    }
+}
+
+async function toggleReplydisLike(commentId, replyId) {
+    const dislikeIcon = document.getElementById(`reply-dislike-icon-${replyId}`);
+    const dislikesCount = document.getElementById(`reply-dislikes-${replyId}`);
+
+    try {
+        const response = await fetch(`/comments/${commentId}/replies/${replyId}/dislike`, { method: 'POST' });
+        const data = await response.json();
+
+        dislikesCount.textContent = `${data.dislikesCount}`;
+
+        // Add the animation class
+        dislikeIcon.classList.add('dislike-pop-animation');
+
+        // Remove the animation class after animation ends
+        setTimeout(() => dislikeIcon.classList.remove('dislike-pop-animation'), 300);
+    } catch (error) {
+        console.error("Error toggling reply dislike:", error);
+    }
+}
         async function loadFriendSuggestions() {
             try {
                 const response = await fetch('/friend/suggestions');
@@ -2704,13 +3190,16 @@ function toggleCommentSection(postId) {
 
                 suggestions.forEach(suggestion => {
                     const li = document.createElement('li');
-                    li.className = 'suggestion-item'; // Add a class for styling
-        
-                    li.innerHTML = `
-                    <img src="${suggestion.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="suggestion-image" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
-                    <span class="suggestion-username">${suggestion.friend.username}</span>
-                    <button class="add-friend-btn" onclick="addFriend('${suggestion.friend._id}')">Add Friend</button>
-                `;
+li.className = 'suggestion-item'; // Add a class for styling
+
+li.innerHTML = `
+  <div class="suggestion-card">
+    <img src="${suggestion.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" class="suggestion-image">
+    <span class="suggestion-username">${suggestion.friend.username}<i class="fas fa-user-plus" onclick="addFriend('${suggestion.friend._id}')"></i></span>
+    
+  </div>
+`;
+
         
                     suggestionsList.appendChild(li);
                 });

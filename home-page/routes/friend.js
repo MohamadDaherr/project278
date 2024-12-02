@@ -222,7 +222,7 @@ router.get('/active-friends', isAuthenticated, async (req, res) => {
         const activeFriends = await ActiveFriend.find({ user: userId, friend: { $ne: userId } }) // Exclude self
             .populate('friend', 'username profileImage') // Fetch friend details
             .lean();
-
+            console.log(activeFriends);
         if (!activeFriends.length) {
             return res.json({ message: "No active friends found", activeFriends: [] });
         }

@@ -9,6 +9,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <title>Friends </title>
 
@@ -24,7 +25,7 @@
 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-            background-color: #e0ecff; /* Light blue background */
+            background-color: white; /* Light blue background */
 
             color: #fff; /* White text */
 
@@ -54,7 +55,7 @@
 
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
 
-    background: linear-gradient(to right, #007bff, #4e8cff);
+    background: linear-gradient(to right, #830131, #a91f51);
 
     -webkit-background-clip: text;
 
@@ -81,7 +82,7 @@ h1::after {
 
     height: 4px;
 
-    background: linear-gradient(to right, #007bff, #4e8cff); /* Gradient matches text */
+    background: linear-gradient(to right, #830131, #a91f51); /* Gradient matches text */
 
     margin: 10px auto 0; /* Center the line below the text */
 
@@ -166,11 +167,11 @@ h1::after {
 
     outline: none;
 
-    border-color: #007bff; /* Blue border on hover/focus */
+    border-color: #830131; /*  border on hover/focus */
 
     background-color: #fff;
 
-    box-shadow: 0 0 0 5px #8ec5ff; /* Blue glow effect */
+    box-shadow: 0 0 1px 3px #a91f51; /*  glow effect */
 
 }
 
@@ -214,7 +215,7 @@ h1::after {
 
     font-weight: bold;
 
-    color: #007bff; /* Default blue text */
+    color: #830131; /* Default blue text */
 
     background-color: #ffffff; /* Default white background */
 
@@ -235,7 +236,7 @@ h1::after {
 
 button.active {
 
-    background-color: #007bff; /* Blue background for active button */
+    background-color: #6c0329; /* Blue background for active button */
 
     color: #ffffff; /* White text for active button */
 
@@ -258,7 +259,7 @@ button::after {
 
     height: 100%;
 
-    background: radial-gradient(circle, rgba(0, 123, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+    background: radial-gradient(circle, #d4a9b9(0, 123, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
 
     opacity: 0; /* Start hidden */
 
@@ -288,41 +289,26 @@ button.active::after {
 
 
 #friendsList {
-
     width: 100%;
-
-    max-width: 800px; /* Adjust this value as needed */
-
-    height: 250px; /* Set a fixed height for the list */
-
+    max-width: 800px; /* Adjust as needed */
+    height: 250px; /* Fixed height for the list */
     margin-top: 20px;
-
     padding: 10px;
-
     list-style-type: none;
-
     display: flex;
-
     flex-direction: column;
-
-    align-items: center; /* Centers the child list items horizontally */
-
+    align-items: center; /* Centers child list items horizontally */
     justify-content: flex-start; /* Ensures proper alignment at the top */
-
     overflow-y: auto; /* Enable vertical scrolling */
-
-    border-radius: 10px; /* Rounded corners */
-
+    border-radius: 15px; /* Softer rounded corners */
     position: relative;
 
-    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent); /* Fading effect */
-
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent); /* Fading effect for WebKit browsers */
-
-    background-color: #e0ecff; /* Match the background color of the page */
-
-
+    /* Softer symmetrical transparent gradient at top and bottom */
+    background: linear-gradient(to bottom, rgba(131, 1, 49, 0.1) 0%, rgba(131, 1, 49, 0.8) 5%, rgba(131, 1, 49, 0.8) 95%, rgba(131, 1, 49, 0.1) 100%);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Lighter shadow for a softer effect */
 }
+
+
 
 
 /* Customize the scrollbar */
@@ -335,20 +321,7 @@ button.active::after {
 }
 
 
-#friendsList::-webkit-scrollbar-thumb {
 
-    background: #007bff;
-
-    border-radius: 4px;
-
-}
-
-
-#friendsList::-webkit-scrollbar-thumb:hover {
-
-    background: #007bff;
-
-}
 
 
 .friend-list li {
@@ -425,32 +398,6 @@ button.active::after {
 }
 
 
-        .friend-list button {
-
-            padding: 5px 10px;
-
-            font-size: 0.9rem;
-
-            color: #fff;
-
-            background-color: #ff4d4f;
-
-            border: none;
-
-            border-radius: 10px;
-
-            cursor: pointer;
-
-            transition: background-color 0.3s ease;
-
-        }
-
-
-        .friend-list button:hover {
-
-            background-color: #ff0000;
-
-        }
 
 
         /* Style for the name */
@@ -544,7 +491,7 @@ button.active::after {
 
 .modal-buttons .confirm {
 
-    background-color: #ff4d4f !important; /* Default red */
+    background-color: #830131 !important; /* Default red */
 
     color: #fff;
 
@@ -553,14 +500,14 @@ button.active::after {
 
 .modal-buttons .confirm:hover {
 
-    background-color: #d10000 !important; /* A darker shade of red */
+    background-color: #6c0329 !important; /* A darker shade of red */
 
 }
 
 
 .modal-buttons .cancel {
 
-    background-color: #007bff !important; /* Default blue */
+    background-color: #bcbcbc !important; /* Default blue */
 
     color: #fff;
 
@@ -569,10 +516,43 @@ button.active::after {
 
 .modal-buttons .cancel:hover {
 
-    background-color: #005abb !important; /* A darker shade of blue */
+    background-color: #898989 !important; /* A darker shade of blue */
 
 }
 
+.home-btn {
+            position: fixed;
+            /* Fixed at the top-left corner */
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            /* Pointer cursor for interactivity */
+            transition: transform 0.3s;
+            /* Smooth hover effect */
+            height: 50px;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.1);
+            /* Zoom effect on hover */
+        }
+
+        .home-btn i {
+            font-size: 24px;
+            /* Icon size */
+            color: black;
+            /* Grey icon color */
+            transition: color 0.3s;
+            /* Smooth hover color change */
+        }
+
+        .home-btn:hover i {
+            color: black;
+            /* Change to black on hover */
+        }
 
     </style>
 
@@ -580,7 +560,9 @@ button.active::after {
 
 
 <body>
-
+    <a href="/home" class="home-btn">
+        <i class="fa fa-home"></i>
+    </a>
     <h1>Friends </h1>
 
 
@@ -634,17 +616,8 @@ button.active::after {
 
         </div>
 
-
     </div>
-    
-
-
-    
-
-
     <ul id="friendsList" class="friend-list"></ul>
-
-
     <script>
 
         let currentList = 'friends'; // Default to friends list
@@ -660,447 +633,225 @@ document.getElementById('confirmationModal').addEventListener('click', (e) => {
             // Remove 'active' class from all buttons
             const buttons = document.querySelectorAll('#buttons-container button');
             buttons.forEach(button => button.classList.remove('active'));
-
             // Add 'active' class to the clicked button
-            document.getElementById(activeButtonId).classList.add('active');
+           document.getElementById(activeButtonId).classList.add('active');
         }
-
 // Close modal when clicking outside of the modal content
-
 document.getElementById('confirmationModal').addEventListener('click', (e) => {
-
     const modalContent = document.querySelector('.modal-content');
-
     if (!modalContent.contains(e.target)) {
-
         closeModal(); // Call the function to close the modal
-
     }
-
 });
-
 
         function setActive(activeButtonId) {
-
             // Remove 'active' class from all buttons
-
             const buttons = document.querySelectorAll('#buttons-container button');
-
             buttons.forEach(button => button.classList.remove('active'));
-
-
             // Add 'active' class to the clicked button
-
             document.getElementById(activeButtonId).classList.add('active');
-
         }
-
 
         async function loadFriends() {
-
             currentList = 'friends';
-
             fetchFriends('/friend/list');
-
         }
-
-
         async function loadTopContributors() {
 
-
     try {
-
         const response = await fetch('/friend/top-contributors');
-
         if (!response.ok) {
-
             throw new Error(`HTTP error! Status: ${response.status}`);
-
         }
-
-
 
         const contributors = await response.json();
-
         const friendsList = document.getElementById('friendsList');
-
         friendsList.innerHTML = ''; // Clear previous entries
-
-
         contributors.forEach(contributor => {
-
             const li = document.createElement('li');
-
             li.innerHTML = `
-
                 <div class="info">
-
                     <img src="${contributor.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" width="40" height="40">
-
                     <span class="name">${contributor.friend.username}</span>
-
                 </div>
-
             `;
-
             li.style.cursor = 'pointer'; // Add pointer cursor for clickable effect
-
-
             // Add click event listener to redirect to user's profile
-
             li.addEventListener('click', () => {
-
                 window.location.href = `http://localhost:5000/home/profile/user/${contributor.friend._id}`; // Corrected profile URL
-
             });
-
 
             friendsList.appendChild(li);
-
         });
-
     } catch (error) {
-
         console.error("Error loading top contributors:", error);
-
     }
-
 }
-
-
-
 
         async function loadActiveFriend() {
-
             try {
-
                 const response = await fetch('/friend/active-friends'); // API to fetch the most active friend
-
                 const activeFriend = await response.json();
-
         
-
                 const friendsList = document.getElementById('friendsList');
-
                 friendsList.innerHTML = ''; // Clear previous list
 
-        
-
-                if (activeFriend && activeFriend.friend) {
-
+                if (activeFriend && activeFriend.length > 0) {
+              
                     const li = document.createElement('li');
-
                     li.innerHTML = `
-
                         <img src="${activeFriend.friend.profileImage || '/path/to/default-profile.png'}" alt="Profile Image" width="30" height="30">
-
                         ${activeFriend.friend.username} - 
-
                         Likes: ${activeFriend.likeCount}, Comments: ${activeFriend.commentCount}, Dislikes: ${activeFriend.dislikeCount}
-
                     `;
-
                     friendsList.appendChild(li);
-
                 } else {
-
                     friendsList.innerHTML = `<li>No active friends found</li>`;
-
                 }
-
             } catch (error) {
-
                 console.error("Error loading active friend:", error);
-
             }
-
         }
-
-
         async function fetchFriends(endpoint) {
-
             try {
-
                 const response = await fetch(endpoint);
-
                 const friends = await response.json();
-
                 displayFriends(friends);
-
             } catch (error) {
-
                 console.error("Error loading friends:", error);
-
             }
-
         }
         function displayFriends(friends) {
-
-
     const friendsList = document.getElementById('friendsList');
-
     friendsList.innerHTML = ''; // Clear the list
-
     friends.forEach(friend => {
-
         const li = document.createElement('li');
-
         li.innerHTML = `
-
             <div class="info" style="cursor: pointer;">
-
                 <img src="${friend.friend.profileImage}" alt="Profile" width="40" height="40"
  
-
                      onclick="redirectToProfile('${friend.friend._id}')">
-
-                <span class="name" onclick="redirectToProfile('${friend.friend._id}')">
-
+                <span  class="name" onclick="redirectToProfile('${friend.friend._id}')">
                     ${friend.friend.username}
-
                 </span>
-
             </div>
-
-            <button onclick="openModal('${friend.friend._id}')">Remove</button>
-
+            <i style="cursor:pointer;"onclick="openModal('${friend.friend._id}')" class="fas fa-user-minus"></i>
         `;
-
         friendsList.appendChild(li);
-
     });
-
 }
-
-
 function redirectToProfile(friendId) {
-
     // Redirect to the user's profile page
-
     window.location.href = `http://localhost:5000/home/profile/user/${friendId}`;
-
-
 }
-
-
-
-
         async function searchFriends() {
-
-
     const query = document.getElementById('tab').value.toLowerCase(); // Correct input ID
-
     if (!query) {
-
         loadFriends(); // If query is empty, reload the full friends list
-
         return;
-
     }
-
 
     try {
-
         const response = await fetch(`/friend/search-friends?type=${currentList}&query=${encodeURIComponent(query)}`);
-
         if (!response.ok) throw new Error('Failed to fetch filtered friends');
-
         const filteredFriends = await response.json();
-
         displayFriends(filteredFriends); // Use the same display function
-
     } catch (error) {
-
         console.error("Error searching friends:", error);
-
     }
 
-
 }
-
-
         async function removeFriend(friendId) {
-
             try {
-
                 const response = await fetch('/friend/remove', {
-
                     method: 'POST',
-
                     headers: { 'Content-Type': 'application/json' },
-
                     body: JSON.stringify({ friendId }),
-
                 });
-
                 if (response.ok) {
-
                     if (currentList === 'friends') loadFriends();
-
                     else if (currentList === 'top-contributors') loadTopContributors();
-
                     else if (currentList === 'active-friends') loadActiveFriends();
-
                 }
-
             } catch (error) {
-
                 console.error("Error removing friend:", error);
-
             }
-
         }
-
-
         window.onload = loadFriends; // Load friends list by default
-
-
         document.querySelectorAll('button').forEach(button => {
-
     button.addEventListener('mousemove', (e) => {
-
         if (button.classList.contains('active')) return; // Skip glow effect if button is active
 
-
         const rect = button.getBoundingClientRect();
-
         const x = e.clientX - rect.left; // Cursor X relative to button
-
         const y = e.clientY - rect.top;  // Cursor Y relative to button
 
-
         // Dynamically update the gradient's position
-
         button.style.setProperty('--x', `${x}px`);
-
         button.style.setProperty('--y', `${y}px`);
-
         button.style.background = `
-
-            radial-gradient(circle at ${x}px ${y}px, rgba(0, 123, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%)
-
+            radial-gradient(circle at ${x}px ${y}px, #a91f51 0%, #d4a9b9 70%)
         `;
-
     });
-
 
     button.addEventListener('mouseleave', () => {
-
         if (button.classList.contains('active')) return; // Skip reset if button is active
-
         button.style.background = ''; // Reset background on mouse leave
-
     });
-
 
     // Handle button click to toggle active class
-
     button.addEventListener('click', () => {
-
         document.querySelectorAll('button').forEach(btn => {
-
             btn.classList.remove('active'); // Remove active from all
-
             btn.style.background = ''; // Reset background color for all
-
         });
-
         button.classList.add('active'); // Set the clicked button as active
-
     });
-
-
 });
-
-
 let friendToRemove = null; // Store the friend to remove temporarily
 
-
 function openModal(friendId) {
-
     friendToRemove = friendId; // Store the ID of the friend to remove
-
     document.getElementById('confirmationModal').style.display = 'flex';
-
 }
-
 
 function closeModal() {
-
     document.getElementById('confirmationModal').style.display = 'none';
-
     friendToRemove = null; // Reset the stored ID
-
 }
-
-
 // Close modal when clicking outside of the modal content
-
 document.getElementById('confirmationModal').addEventListener('click', (e) => {
-
     if (e.target.id === 'confirmationModal') {
-
         closeModal(); // Call the function to close the modal
-
     }
-
 });
 
-
 // Attach event listeners to modal buttons
-
 document.getElementById('confirmRemove').addEventListener('click', async () => {
-
     if (friendToRemove) {
-
         try {
-
             const response = await fetch('/friend/remove', {
-
                 method: 'POST',
-
                 headers: { 'Content-Type': 'application/json' },
-
                 body: JSON.stringify({ friendId: friendToRemove }),
-
             });
-
             if (response.ok) {
-
                 alert('Friend removed successfully');
-
                 closeModal();
-
                 loadFriends(); // Refresh the friends list
-
             } else {
-
                 alert('Failed to remove friend');
-
             }
-
         } catch (error) {
-
             console.error('Error removing friend:', error);
-
         }
 
     }
-
 });
-
 
 document.getElementById('cancelRemove').addEventListener('click', () => {
-
     closeModal(); // Close modal without removing
-
-
 });
-
-
     </script>
-
 </body>
-
-
 </html>
