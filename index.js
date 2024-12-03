@@ -82,7 +82,7 @@ app.get('/chat', isAuthenticated, (req, res) => {
         res.status(500).send('Error fetching users');
       });
   });
-app.get('/messages/:userId', isAuthenticated, (req, res) => {
+  app.get('/messages/:userId', isAuthenticated, (req, res) => {
     const currentUserId = req.user.userId;  // User info from decoded JWT
     const { userId } = req.params;  // The target user ID from the URL
 
@@ -98,13 +98,23 @@ app.get('/messages/:userId', isAuthenticated, (req, res) => {
     })
     .sort({ timestamp: 1 })  // Sort messages by timestamp
     .populate('senderId receiverId', 'firstName lastName username profileImage')  // Populate user details
-    .then(messages => res.json(messages))  // Return messages as JSON
+    .then(messages => {
+        // Format the timestamp to a readable format (HH:MM)
+        const formattedMessages = messages.map(msg => {
+            const messageTime = new Date(msg.timestamp);
+            const hours = messageTime.getHours().toString().padStart(2, '0');
+            const minutes = messageTime.getMinutes().toString().padStart(2, '0');
+            msg.timestampFormatted = `${hours}:${minutes}`; // Add the formatted time to the message object
+            return msg;
+        });
+
+        res.json(formattedMessages);  // Return messages with formatted timestamps
+    })
     .catch(err => {
         console.error('Error fetching messages:', err);
         res.status(500).send('Error fetching messages');
     });
 });
-
 // POST Route to send a new message
 app.post('/send_message', isAuthenticated, (req, res) => {
   const { senderId, receiverId, message } = req.body;
@@ -118,10 +128,14 @@ app.post('/send_message', isAuthenticated, (req, res) => {
 
   newMessage.save()
     .then(savedMessage => {
-      // Emit the new message to both the sender and the receiver
-      io.to(receiverId).emit('receive_message', savedMessage);  // Send to receiver
-      io.to(senderId).emit('receive_message', savedMessage);    // Optionally send back to sender
-      res.status(200).json({ message: 'Message sent', data: savedMessage });  // Respond back to client
+      // Populate the sender's firstName before sending the message
+      return Message.populate(savedMessage, { path: 'senderId', select: 'firstName' })
+        .then(populatedMessage => {
+          // Emit the new message to both the sender and the receiver
+          io.to(receiverId).emit('receive_message', populatedMessage);  // Send to receiver
+          io.to(senderId).emit('receive_message', populatedMessage);    // Optionally send back to sender
+          res.status(200).json({ message: 'Message sent', data: populatedMessage });  // Respond back to client
+        });
     })
     .catch(err => {
       console.error('Error saving message:', err);
@@ -143,36 +157,43 @@ app.post('/send_message', isAuthenticated, (req, res) => {
   
       // When a message is sent, emit to the receiver
       socket.on('send_message', (data) => {
-          const { senderId, receiverId, message } = data;
-          console.log('Sending message:', data);
-  
-          // Save the message to the database (message saving logic)
-          const newMessage = new Message({
-              senderId,
-              receiverId,
-              message,
-              timestamp: new Date(),
-          });
-  
-          newMessage.save()
-              .then(savedMessage => {
-                  // Emit to specific receiver using the mapped socket ID
-                  const receiverSocketId = userSockets[receiverId];
-  
-                  if (receiverSocketId) {
-                      console.log(`Emitting message to ${receiverId} (Socket: ${receiverSocketId})`);
-                      io.to(receiverSocketId).emit('receive_message', savedMessage); // Emit to receiver
-                  } else {
-                      console.log(`Receiver ${receiverId} not connected`);
-                  }
-  
-                  // Optionally, emit to sender as well
-                  io.to(senderId).emit('receive_message', savedMessage);
-              })
-              .catch(err => {
-                  console.error('Error saving message:', err);
-              });
-      });
+        const { senderId, receiverId, message } = data;
+        console.log('Sending message:', data);
+    
+        // Save the message to the database (message saving logic)
+        const newMessage = new Message({
+            senderId,
+            receiverId,
+            message,
+            timestamp: new Date(),
+        });
+    
+        newMessage.save()
+            .then(savedMessage => {
+                // Populate the senderId and receiverId with their first names
+                return Message.populate(savedMessage, [
+                    { path: 'senderId', select: 'firstName' },
+                    { path: 'receiverId', select: 'firstName' }
+                ])
+                .then(populatedMessage => {
+                    // Emit to specific receiver using the mapped socket ID
+                    const receiverSocketId = userSockets[receiverId];
+    
+                    if (receiverSocketId) {
+                        console.log(`Emitting message to ${receiverId} (Socket: ${receiverSocketId})`);
+                        io.to(receiverSocketId).emit('receive_message', populatedMessage); // Emit to receiver
+                    } else {
+                        console.log(`Receiver ${receiverId} not connected`);
+                    }
+    
+                    // Optionally, emit to sender as well
+                    io.to(senderId).emit('receive_message', populatedMessage);
+                });
+            })
+            .catch(err => {
+                console.error('Error saving message:', err);
+            });
+    });
   
       // Handle disconnects
       socket.on('disconnect', () => {
