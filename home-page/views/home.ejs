@@ -66,7 +66,6 @@ li {
             /* Fix sidebar position */
             transition: transform 0.3s ease;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-
         }
 
         /* Left Sidebar Positioned Fixed */
@@ -2214,6 +2213,8 @@ span {
                                 <p class="post-date"><%= new Date(post.createdAt).toLocaleDateString('en-US', {
                                     year: 'numeric', month: 'short', day: 'numeric'
                                 }) %></p>
+                                <p class="post-date"><%= post.location%></p>
+
                             </div>
                             <% if (post.isOwner) { %>
                                 <button class="post-delete-button" onclick="confirmDelete('post', '<%= post._id %>')">
@@ -2305,6 +2306,12 @@ span {
                     <div class="form-group">
                         <textarea name="content" placeholder="Write a Caption" id="caption"></textarea>
                     </div>
+
+                    <!-- Location Input and Button -->
+                    <div class="form-group">
+                        <input type="text" id="locationInput" name="location" placeholder="Location will appear here" >
+                    </div>
+
                     <div class="form-group">
                         <div for="privacy" class="radio-inputs">
                             <label class="privacy">
@@ -2327,7 +2334,6 @@ span {
                 </form>
             </div>
         </div>
-    </div>
 
 
     <!-- Notification Modal -->
@@ -2346,7 +2352,7 @@ span {
 
     <div id="search-modal" class="modal">
         <div class="modal-content">
-            <h3>Search Friends:</h3>
+            <h3>Search Users:</h3>
             <div class="group">
                 <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
                     <g>

@@ -100,7 +100,7 @@ router.get('/', isAuthenticated, async (req, res) => {
 router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (req, res) => {
     try {
         const userId = req.user.userId;
-        const { content, privacy } = req.body;
+        const { content, privacy , location } = req.body;
         let mediaUrl = '';
         let mediaType = '';
 
@@ -124,6 +124,7 @@ router.post('/create-post', isAuthenticated, upload.single('mediaFile'), async (
             content,
             mediaUrl,
             mediaType,
+            location, 
             privacy,
             user: userId,
             likes: [],

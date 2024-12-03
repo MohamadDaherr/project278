@@ -19,6 +19,7 @@ const postSchema = new Schema({
         }
     ],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], // Array of comments
+    location: { type: String }, // Add location field
     privacy: { type: String, enum: ['public', 'friends', 'private'], default: 'public' },
     createdAt: { type: Date, default: Date.now }
 });
