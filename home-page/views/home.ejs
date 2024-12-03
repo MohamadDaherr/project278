@@ -2061,7 +2061,34 @@ span {
     margin-top: -10px;
     margin-right: -10px;
 }
-    </style>
+   
+#locationInput {
+    width: 90%;
+    padding: 12px 15px;
+    font-size: 16px;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+/* Focus effect for input */
+#locationInput:focus {
+    outline: none;
+    border-color: #830131; /* Red border on focus */
+    box-shadow: 0 0 8px rgba(131, 1, 49, 0.3); /* Glow effect */
+}
+
+/* Placeholder text style */
+#locationInput::placeholder {
+    font-style: italic;
+    color: #aaa;
+}
+   
+   </style>
 </head>
 
 <body>
@@ -2227,8 +2254,11 @@ span {
                                 <p class="post-date"><%= new Date(post.createdAt).toLocaleDateString('en-US', {
                                     year: 'numeric', month: 'short', day: 'numeric'
                                 }) %></p>
-                                <p class="post-date"><%= post.location%></p>
-
+                                <% if (post.location) { %>
+                                    <p class="post-date"><i class="	fas fa-map-marker-alt"></i>  <%= post.location %></p>
+                                <% } %>
+                                
+                                
                             </div>
                             <% if (post.isOwner) { %>
                                 <button class="post-delete-button" onclick="confirmDelete('post', '<%= post._id %>')">
@@ -2323,7 +2353,7 @@ span {
 
                     <!-- Location Input and Button -->
                     <div class="form-group">
-                        <input type="text" id="locationInput" name="location" placeholder="Location will appear here" >
+                        <input type="text" id="locationInput" name="location" placeholder="Location" >
                     </div>
 
                     <div class="form-group">
