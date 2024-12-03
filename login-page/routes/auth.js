@@ -65,6 +65,7 @@ router.post('/login', async (req, res) => {
   });
   
 
+
 // GET /auth/signup - Render the signup page
 router.get('/signup', (req, res) => {
     res.render('signup'); // This renders the signup.ejs template in views folder
