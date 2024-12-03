@@ -222,7 +222,7 @@ router.get('/active-friends', isAuthenticated, async (req, res) => {
         const activeFriends = await ActiveFriend.find({ user: userId, friend: { $ne: userId } }) // Exclude self
             .populate('friend', 'username profileImage') // Fetch friend details
             .lean();
-            console.log(activeFriends);
+            // console.log("Active",activeFriends);
         if (!activeFriends.length) {
             return res.json({ message: "No active friends found", activeFriends: [] });
         }
@@ -236,7 +236,7 @@ router.get('/active-friends', isAuthenticated, async (req, res) => {
 
         // Get the top 3 most active friends
         const top3ActiveFriends = sortedFriends.slice(0, 3);
-
+        // console.log("top",top3ActiveFriends);
         res.json(top3ActiveFriends);
     } catch (error) {
         console.error("Error fetching active friends:", error);

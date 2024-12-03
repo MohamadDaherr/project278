@@ -40,7 +40,7 @@ app.use(session({
     saveUninitialized: true,  // Save session even if it's not initialized
     cookie: { secure: false }  // Set to true if using https, false for http
 }));
-
+ 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -107,7 +107,7 @@ app.get('/chat', isAuthenticated, (req, res) => {
             msg.timestampFormatted = `${hours}:${minutes}`; // Add the formatted time to the message object
             return msg;
         });
-
+        console.log("mess",formattedMessages);
         res.json(formattedMessages);  // Return messages with formatted timestamps
     })
     .catch(err => {
