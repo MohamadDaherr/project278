@@ -2,8 +2,14 @@ const express = require('express');
 const Message = require('../../models/Message');
 const User = require('../../models/User'); 
 const router = express.Router();
+
 const isAuthenticated = require('../middleware/authMiddleware'); 
 let io;
+const path = require('path'); // Import path module to join paths
+const app = express();
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 router.setSocket = (socket) => {
   io = socket;
