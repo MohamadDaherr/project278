@@ -24,44 +24,42 @@ router.get('/login', (req, res) => {
 });
 
 // POST /auth/login - Handle login form submission
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+ // Assuming you have a User model
 
-  try {
-      // Step 1: Find the user by email
+ router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      // Step 1: Find the user by email and select the password field
       const user = await User.findOne({ email }).select('+password'); // Ensure password field is selected
       if (!user) {
-          console.log("User not found");
-          return res.status(400).json({ message: 'Invalid credentials' });
+        console.log("User not found");
+        return res.status(400).json({ message: 'Invalid credentials' });
       }
-
-      // Step 2: Log the plain text password and hashed password for debugging
-      console.log("Entered plain text password:", password);
-      console.log("Hashed password from DB:", user.password);
-
-      // Step 3: Compare the entered password with the hashed password from the database
-      const isMatch = await user.comparePassword(password);
+  
+      // Step 2: Compare the entered password with the hashed password from the database
+      const isMatch = await user.comparePassword(password); // Assuming `comparePassword` is defined on the user model
       console.log("Password comparison result:", isMatch); // This will log true or false
-
+  
       if (!isMatch) {
-          console.log("Invalid password");
-          return res.status(400).json({ message: 'Invalid credentials' });
+        console.log("Invalid password");
+        return res.status(400).json({ message: 'Invalid credentials' });
       }
-      user.isDeactivated = false;
-
-      // Step 4: If email and password match, generate a token
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '9h' });
-      // Step 5: Send the token as a cookie or in the response
-      
-      
-      res.cookie('token', token, { httpOnly: true, maxAge: 3600000 });
-      res.redirect('/home');
-
-  } catch (error) {
+  
+      // Step 3: If email and password match, generate a token
+      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.cookie('token', token, { httpOnly: true, maxAge: 3600000 });  // 1 hour expiration
+  
+      // Step 4: Redirect to the home page
+      res.redirect('/home');  // This redirects the user to the home page
+    } catch (error) {
       console.error('Login error:', error);
       res.status(500).json({ message: 'Server error' });
-  }
-});
+    }
+  });
+  
+  
+  
 
 
 // GET /auth/signup - Render the signup page
