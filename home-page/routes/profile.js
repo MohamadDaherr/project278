@@ -150,11 +150,15 @@ router.get('/user/:userId', isAuthenticated, async (req, res) => {
 
       // Find the viewed user's details
       const viewedUser = await User.findById(viewedUserId)
-      .select('username profileImage bio gender address dateOfBirth friends friendRequests');
+
+      .select('firstName lastName username profileImage bio gender address dateOfBirth friends friendRequests isDeactivated');
+
+
 
       if (!viewedUser) {
           return res.status(404).send('User not found');
       }
+      
 
       if (viewedUser.dateOfBirth) {
         viewedUser.formattedDateOfBirth = new Date(viewedUser.dateOfBirth).toLocaleDateString('en-US', {
@@ -170,7 +174,7 @@ router.get('/user/:userId', isAuthenticated, async (req, res) => {
       const isPending = viewedUser.friendRequests.includes(req.user.userId);
 
       // Filter posts based on privacy
-      const posts = await Post.find({
+      let posts = await Post.find({
           user: viewedUserId,
           $or: [
               { privacy: 'public' },
@@ -179,12 +183,14 @@ router.get('/user/:userId', isAuthenticated, async (req, res) => {
           ],
       }).sort({ createdAt: -1 });
 
+
       res.render('viewuserprofile', {
           viewedUser,
           isFriend,
           isOwner,
           posts,
           isPending,
+          isDeactivated: viewedUser.isDeactivated
       });
   } catch (error) {
       console.error('Error loading user profile:', error);

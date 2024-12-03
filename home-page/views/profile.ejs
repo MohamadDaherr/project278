@@ -21,7 +21,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #e0e7f8;
+            background-color: #e4e4e4;
             display: flex;
             justify-content: center;
             padding-top: 20px;
@@ -353,7 +353,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
         }
 
         .modal-content .close {
@@ -389,8 +388,8 @@
         }
 
         .tab-button.active {
-            border-bottom: 2px solid #0095f6;
-            color: #0095f6;
+            border-bottom: 2px solid #830131;
+            color: #830131;
         }
 
         .tab-content {
@@ -488,12 +487,12 @@
 
         /* Confirm Delete Button */
         #confirm-delete {
-            background-color: #e74c3c;
+            background-color: #830131;
             color: white;
         }
 
         #confirm-delete:hover {
-            background-color: #c0392b;
+            background-color: #6c0329;
         }
 
         /* Cancel Button */
@@ -729,7 +728,7 @@
 
 
         #commentsModal .comment-footer button:hover {
-            background-color: #007bb5;
+            background-color: #6c0329;
         }
 
         .comment-footer {
@@ -742,7 +741,7 @@
 
         .comment-footer button {
             padding: 10px 20px;
-            background-color: #0095f6;
+            background-color: #830131;
             /* Blue for the "Post" button */
             color: white;
             border: none;
@@ -752,7 +751,7 @@
         }
 
         .comment-footer button:hover {
-            background-color: #007bb5;
+            background-color: #6c0329;
             /* Slightly darker blue on hover */
         }
 
@@ -866,13 +865,13 @@
 
         /* Focus Effect for Input Field */
         .reply-box input[type="text"]:focus {
-            border-color: #0095f6;
+            border-color: #830131;
             /* Blue border on focus */
         }
 
         /* Reply Post Button */
         .reply-box button {
-            background-color: #0095f6;
+            background-color: #830131;
             color: white;
             border: none;
             border-radius: 4px;
@@ -884,7 +883,7 @@
         }
 
         .reply-box button:hover {
-            background-color: #007bb5;
+            background-color: #6c0329;
             /* Slightly darker blue on hover */
         }
 
@@ -1188,14 +1187,14 @@
         }
 
         #change-photo form input[type="file"]:hover {
-            border-color: #0095f6;
+            border-color: #830131;
             /* Blue border on hover */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             /* Subtle shadow on hover */
         }
 
         #change-photo form input[type="file"]:focus {
-            border-color: #007bb5;
+            border-color: #6c0329;
             /* Darker blue border on focus */
             outline: none;
             /* Remove default outline */
@@ -1203,7 +1202,7 @@
 
         /* Upload Button */
         #change-photo form button {
-            background-color: #0095f6;
+            background-color: #830131;
             /* Primary blue */
             color: #fff;
             /* White text for contrast */
@@ -1228,14 +1227,14 @@
         }
 
         #change-photo form button:hover {
-            background-color: #007bb5;
+            background-color: #6c0329;
             /* Darker blue on hover */
             transform: scale(1.05);
             /* Slight zoom effect */
         }
 
         #change-photo form button:active {
-            background-color: #005f99;
+            background-color: #830131;
             /* Even darker blue on active */
             transform: scale(1);
             /* Remove zoom on click */
@@ -1325,11 +1324,11 @@
         /* Focus Effect */
         #edit-info form input:focus,
         #edit-info form select:focus {
-            border-color: #0095f6;
+            border-color: #830131;
             /* Blue border on focus */
             outline: none;
             /* Remove default outline */
-            box-shadow: 0 0 5px rgba(0, 149, 246, 0.2);
+            box-shadow: 0 0 5px #a91f51;
             /* Subtle glow effect */
         }
 
@@ -1363,18 +1362,18 @@
 
         /* Focus Effect for Fixed Size Textarea */
         #edit-info form textarea:focus {
-            border-color: #0095f6;
+            border-color: #830131;
             /* Blue border on focus */
             outline: none;
             /* Remove default outline */
-            box-shadow: 0 0 5px rgba(0, 149, 246, 0.2);
+            box-shadow: 0 0 5px #6c0329;
             /* Subtle glow effect */
         }
 
 
         /* Submit Button Styling */
         #edit-info form button[type="submit"] {
-            background-color: #0095f6;
+            background-color: #830131;
             /* Vibrant blue for call-to-action */
             color: white;
             /* White text for contrast */
@@ -1399,14 +1398,14 @@
         }
 
         #edit-info form button[type="submit"]:hover {
-            background-color: #007bb5;
+            background-color: #6c0329;
             /* Slightly darker blue on hover */
             transform: scale(1.05);
             /* Slight zoom effect */
         }
 
         #edit-info form button[type="submit"]:active {
-            background-color: #005f99;
+            background-color: #6c0329;
             /* Even darker blue on click */
             transform: scale(1);
             /* Remove zoom effect on click */
@@ -1429,24 +1428,24 @@
             }
         }
 
-        /* Reaction Modal Styling */
         #reaction-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-            width: 40%;
-            max-width: 500px;
-            height: 70%;
-            max-height: 600px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-        }
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Ensure it is above all other elements */
+    width: 40%;
+    max-width: 500px;
+    height: 70%;
+    max-height: 600px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
 
         /* Modal Content */
         #reaction-modal .modal-content {
@@ -1496,12 +1495,12 @@
         }
 
         #reaction-modal .tabs button:hover {
-            color: #007bb5;
+            color: #830131;
         }
 
         #reaction-modal .tabs button.active {
-            color: #007bb5;
-            border-bottom: 2px solid #007bb5;
+            color: #830131;
+            border-bottom: 2px solid #830131;
         }
 
         /* Tab Content */
@@ -1707,7 +1706,7 @@
 
             .modal-content,
             #commentsModal {
-                max-width: 80vw;
+                max-width: 40vw;
                 /* Reduce width */
                 padding: 15px;
                 /* Decrease padding */
@@ -1732,7 +1731,7 @@
             #commentsModal {
                 width: 95%;
                 /* Take almost full width */
-                max-width: 95vw;
+                max-width: 40vw;
                 max-height: 70vh;
                 padding: 10px;
                 font-size: 14px;
@@ -1856,6 +1855,48 @@
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
+
+
+        /* Pop-up animation */
+@keyframes like-pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3); /* Enlarge slightly */
+    }
+    100% {
+        transform: scale(1); /* Return to original size */
+    }
+}
+
+.like-active {
+    animation: like-pop 0.3s ease-in-out; /* Apply animation */
+    color: blue; /* Optional: Change color during animation */
+}
+span {
+    cursor: alias; /* Sets the cursor to alias */
+}
+.modal-content {
+    position: relative; /* Ensure the modal content is the relative parent */
+    display: flex;
+    flex-direction: column; /* Stack the content vertically */
+    justify-content: space-between; /* Push actions to the bottom */
+}
+
+.post-actions {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    width: 100%; /* Ensure the actions span the modal width */
+    padding: 10px;
+    background-color: #fff; /* Optional: match modal background */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Optional: shadow effect */
+    display: flex;
+    justify-content: space-around; /* Space items evenly */
+    align-items: center;
+}
+
     </style>
 
 </head>
@@ -1880,7 +1921,7 @@
                         <%= user.username %>
                     </span>
                     <span class="profile-stats">
-                        <p><strong>Posts</strong>: <%= user.postsCount || 0 %>
+                        <p style="cursor: default;"><strong>Posts</strong>: <%= user.postsCount || 0 %>
                         </p>
                         <a href="/friend">
                             <p><strong>Friends</strong>: <%= user.friends.length || 0 %>
@@ -1893,7 +1934,7 @@
                 <div class="profile-bio">
 
                     <p class="dateOfBirth">
-                        <i class="far fa-calendar-alt" style="color: #389c9c;"></i>
+                        <i class="far fa-calendar-alt" style="color: #830131;"></i>
                         <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6" style="width: 17px; ">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0L3 16.5m15-3.379a48.474 48.474 0 0 0-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 0 1 3 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 0 1 6 13.12M12.265 3.11a.375.375 0 1 1-.53 0L12 2.845l.265.265Zm-3 0a.375.375 0 1 1-.53 0L9 2.845l.265.265Zm6 0a.375.375 0 1 1-.53 0L15 2.845l.265.265Z" />
                           </svg>
@@ -1901,15 +1942,15 @@
                         <%= user.formattedDateOfBirth || "Date of birth not provided" %>
                     </p>
                     <p class="gender">
-                        <i class="glyphicon glyphicon-user" style="color: #389c9c;"></i>
+                        <i class="glyphicon glyphicon-user" style="color: #830131;"></i>
                         <%= user.gender || "Gender not specified" %>
                     </p>
                     <p class="address">
-                        <i class="fa fa-map-marker" style="color: #389c9c;"></i>
+                        <i class="fa fa-map-marker" style="color: #830131;"></i>
                         <%= user.address || "Address not provided" %>
                     </p>
                     <p class="bio">
-                        <i class="	far fa-newspaper" style="color: #389c9c;"></i>
+                        <i class="	far fa-newspaper" style="color: #830131;"></i>
                         <%= user.bio || "Bio not provided" %>
                     </p>
                 </div>
@@ -1923,7 +1964,7 @@
 
             <!-- Dropdown menu -->
             <div class="dropdown-menu" id="dropdownMenu">
-                <a href="#" id="deactivateAccount">Deactivate Account</a>
+                <a href="#" id="deactivateAccount" > <%= user.isDeactivated ? 'Activate Account' : 'Deactivate Account'%></a>
                 <a href="#" id="deleteAccount">Delete Account</a>
                 <a href="/home/logout" id="logout">Logout</a>
             </div>
@@ -2255,7 +2296,7 @@
     <ul class="comments-list" id="comments-list-${postId}">
         ${data.comments.map(comment => `
             <li>
-                <div class="comment-container" onclick="toggleReplies('${comment._id}')">
+                <di v class="comment-container" onclick="toggleReplies('${comment._id}')">
                     <!-- Comment Header -->
                     <div class="comment-header" style="display: flex; align-items: center; justify-content: space-between;">
                         <div class="comment-user" style="display: flex; align-items: center; gap: 10px;">
@@ -2381,16 +2422,8 @@
                     loadComments(postId);
 
                     // Update the comment count in the modal
-                    const commentCountElement = document.querySelector(`#postModal .commentcount`);
-                    if (commentCountElement) {
-                        commentCountElement.textContent = `${data.updatedCommentCount}`;
-                    }
-
-                    // Update the comment count on the main post
-                    const postCommentCountElement = document.querySelector(`#post-${postId} .commentcount`);
-                    if (postCommentCountElement) {
-                        postCommentCountElement.textContent = `${data.updatedCommentCount}`;
-                    }
+                    document.querySelector(".commentcount").innerHTML = `${data.CommentCount} `; // Update comment count
+            document.getElementById(`new-comment-${postId}`).value = ''; // Clear input field after posting
 
                     // Clear the input field
                     commentInput.value = '';
@@ -2436,9 +2469,23 @@
                                  style="width: 25px; height: 25px; border-radius: 50%;" />
                             <div>
                                 <strong>${newReply.user.username}</strong>
+                                
                                 <span>${newReply.content}</span>
                             </div>
                         </div>
+                        <div class="reply-actions" style="display: flex; gap: 10px; align-items: center;">
+                                                    <i class="fa fa-thumbs-up" id="reply-thumb-up-${newReply._id}" 
+                                                       onclick="toggleReplyLike('${commentId}', '${newReply._id}', event); event.stopPropagation()"></i>
+                                                    <span id="reply-likes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'likes')">0</span>
+        
+                                                    <i class="fa fa-thumbs-down" id="reply-thumb-down-${newReply._id}" 
+                                                       onclick="toggleReplydisLike('${commentId}', '${newReply._id}', event); event.stopPropagation()"></i>
+                                                    <span id="reply-dislikes-${newReply._id}" onclick="openReactionModal('reply','${newReply._id}', 'dislikes')">0</span>
+        
+                                                    ${newReply.isOwner ? `
+                                                    <i class="fa fa-trash" id="reply-trash-${newReply._id}" 
+                                                       onclick="confirmDelete('reply', '${newReply._id}', event); event.stopPropagation()"></i>` : ''}
+                                </div>
                     </li>
                 `;
                         repliesContainer.insertAdjacentHTML('beforeend', replyHTML);
@@ -2543,19 +2590,39 @@
         }
 
 
-        document.getElementById('deactivateAccount').addEventListener('click', async () => {
+        // document.getElementById('deactivateAccount').addEventListener('click', async () => {
+        //     try {
+        //         const response = await fetch('/account/deactivate-account', { method: 'POST' });
+        //         if (response.ok) {
+        //             alert('Account deactivated successfully');
+        //             window.location.href = '/home/logout'; // Redirect the user to logout
+        //         } else {
+        //             alert('Failed to deactivate account');
+        //         }
+        //     } catch (error) {
+        //         console.error("Error deactivating account:", error);
+        //     }
+        // });
+
+        document.getElementById('deactivateAccount').addEventListener('click', async function(event) {
+            event.preventDefault(); // Prevent the default anchor tag behavior
+
             try {
-                const response = await fetch('/account/deactivate-account', { method: 'POST' });
-                if (response.ok) {
-                    alert('Account deactivated successfully');
-                    window.location.href = '/home/logout'; // Redirect the user to logout
-                } else {
-                    alert('Failed to deactivate account');
-                }
+                const response = await fetch('/account/deactivate-account', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await response.json();
+
+                alert(data.message); // Display the success/failure message
+                window.location.href = '/home/logout'; // Redirect the user to logout
             } catch (error) {
-                console.error("Error deactivating account:", error);
+                alert("Error toggling account status.");
+                console.error(error);
             }
         });
+
 
         document.getElementById('deleteAccount').addEventListener('click', async () => {
             if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) return;
@@ -2684,57 +2751,68 @@
 
 
         async function toggleLike(event, postId) {
-            const likeIcon = event.target;
-            const dislikeIcon = document.querySelector(`#dislikes-count-${postId}`).previousElementSibling;
-            const likesCountElement = document.getElementById(`likes-count-${postId}`);
-            const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
+    const likeIcon = event.target;
+    const likesCountElement = document.getElementById(`likes-count-${postId}`);
 
-            try {
-                const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
-                const data = await response.json();
+    try {
+        const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+        const data = await response.json();
 
-                if (response.ok) {
-                    // Update counts
-                    likesCountElement.textContent = `${data.likesCount}`;
-                    dislikesCountElement.textContent = `${data.dislikesCount}`;
+        console.log('Response data:', data); // Debug the API response
 
-                    // Toggle like/dislike classes
-                    likeIcon.classList.toggle('like-active', data.isLiked);
-                    dislikeIcon.classList.toggle('dislike-active', data.isDisliked);
-                } else {
-                    console.error("Failed to like the post:", data.message);
-                }
-            } catch (error) {
-                console.error("Error toggling like:", error);
+        if (response.ok && data) {
+            // Update the likes count
+            if (data.likesCount !== undefined) {
+                likesCountElement.textContent = `${data.likesCount}`;
+            } else {
+                console.error('likesCount is missing in response.');
             }
+
+            // Toggle the like-active class
+            const isLiked = likeIcon.classList.contains('like-active');
+            likeIcon.classList.toggle('like-active', !isLiked);
+        } else {
+            console.error("Failed to like the post:", data?.message || "Unknown error");
         }
+    } catch (error) {
+        console.error("Error toggling like:", error);
+    }
+}
 
 
-        async function toggleDislike(event, postId) {
-            const dislikeIcon = event.target;
-            const likeIcon = document.querySelector(`#likes-count-${postId}`).previousElementSibling;
-            const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
-            const likesCountElement = document.getElementById(`likes-count-${postId}`);
 
-            try {
-                const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
-                const data = await response.json();
 
-                if (response.ok) {
-                    // Update counts
-                    dislikesCountElement.textContent = `${data.dislikesCount}`;
-                    likesCountElement.textContent = `${data.likesCount}`;
+async function toggleDislike(event, postId) {
+    const dislikeIcon = event.target;
+    const dislikesCountElement = document.getElementById(`dislikes-count-${postId}`);
 
-                    // Toggle dislike/like classes
-                    dislikeIcon.classList.toggle('dislike-active', data.isDisliked);
-                    likeIcon.classList.toggle('like-active', data.isLiked);
-                } else {
-                    console.error("Failed to dislike the post:", data.message);
-                }
-            } catch (error) {
-                console.error("Error toggling dislike:", error);
+    try {
+        const response = await fetch(`/posts/${postId}/dislike`, { method: 'POST' });
+        const data = await response.json();
+
+        console.log('Response data:', data); // Debug the API response
+
+        if (response.ok && data) {
+            // Update the dislikes count
+            if (data.dislikesCount !== undefined) {
+                dislikesCountElement.textContent = `${data.dislikesCount}`;
+            } else {
+                console.error('dislikesCount is missing in response.');
             }
+
+            // Toggle the dislike-active class
+            const isDisliked = dislikeIcon.classList.contains('dislike-active');
+            dislikeIcon.classList.toggle('dislike-active', !isDisliked);
+        } else {
+            console.error("Failed to dislike the post:", data?.message || "Unknown error");
         }
+    } catch (error) {
+        console.error("Error toggling dislike:", error);
+    }
+}
+
+
+
 
 
 
@@ -2751,7 +2829,7 @@
                     if (deleteType == 'comment' || deleteType == 'reply') {
                         loadComments(postid);
                         if (deleteType == 'comment')
-                            document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} Comments`
+                            document.querySelector(".commentcount").innerHTML = `${data.updatedCommentCount} `
                     }
                     else
                         location.reload();

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            text-align: center;
+            padding: 10px;
+        }
+        .modal-content {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="text-center mb-4">Admin Dashboard</h1>
+        <h2>User List</h2>
+        
+        <button class="btn btn-success mb-4" style="background-color: #830131; border-color: #830131;"><a href="/auth/signup" class="text-white text-decoration-none" >Create User</a></button>
+
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Profile Image</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><img src="<%= user.profileImage %>" alt="Profile" width="50" height="50"></td>
+                        <td><%= user.username %></td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <a href="/admin/login-as-user?email=<%= user.email %>" class="btn btn-primary btn-sm" style="background-color: #6c0329; border-color: #6c0329;">View</a> 
+                            <button class="btn btn-danger btn-sm delete-btn" style="background-color: #830131; border-color: #830131;"data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<%= user._id %>">Delete</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this user?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a id="confirmDelete" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Add event listener to delete buttons
+        const deleteBtns = document.querySelectorAll('.delete-btn');
+        
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const userId = this.getAttribute('data-id');
+                const confirmDeleteLink = document.getElementById('confirmDelete');
+                confirmDeleteLink.href = `/admin/delete-user/${userId}`;
+            });
+        });
+    </script>
+
+</body>
+</html>

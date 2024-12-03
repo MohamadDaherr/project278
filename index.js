@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const connectDB = require('./config/db');
 const authRoutes = require('./login-page/routes/auth');
+const adminRoute = require('./login-page/routes/admin');
 const homeRoutes = require('./home-page/routes/home');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -50,6 +51,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Routes
 app.use('/auth', authRoutes); // Authentication routes
+app.use('/admin', adminRoute); // Authentication routes
 app.use('/home', homeRoutes); // Home page routes
 app.use('/home/profile', profileRoute);
 app.use('/friend', friendRequestRoutes);
