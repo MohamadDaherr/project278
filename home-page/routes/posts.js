@@ -269,7 +269,7 @@ router.get('/:type/:id/reactions', isAuthenticated, async (req, res) => {
         const post = await Post.findById(id)
           .populate('likes.user', 'username profileImage')
           .populate('dislikes.user', 'username profileImage');
-  
+        
         if (!post) return res.status(404).json({ message: 'Post not found' });
   
         likedBy = post.likes.map(like => ({
