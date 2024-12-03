@@ -185,7 +185,8 @@
             margin: 0;
         }
     
-        .gallery-item img {
+        .gallery-item img, 
+        .gallery-item video {
             width: 95%;
             /* Maintain specified size */
             height: 95%;
@@ -1589,6 +1590,16 @@
             /* Set top margin to 0 */
             margin-bottom: 0px;
         }
+        .post-media-video {
+            width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            margin: 0 auto;
+            /* Center horizontally */
+            margin-top: 13%;
+            /* Set top margin to 0 */
+            margin-bottom: 0px;
+        }
     
         .fa-thumbs-up.like-active {
             color: blue;
@@ -1820,11 +1831,13 @@
             /* Use the same color as the parent */
         }
     
-        .profile-gallery .gallery-item img {
+        .profile-gallery .gallery-item img, 
+        .profile-gallery .gallery-item video {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
     
-        .profile-gallery .gallery-item img:hover {
+        .profile-gallery .gallery-item img:hover, 
+        .profile-gallery .gallery-item video:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
@@ -2001,7 +2014,14 @@
                 <% if (!isDeactivated) { %>
                     <% posts.forEach(post=> { %>
                         <div class="gallery-item" onclick="openPostModal('<%= post._id %>')">
-                            <img src="<%= post.mediaUrl %>" alt="User's Post">
+                            <% if (post.mediaType === 'image') { %>
+                                <img src="<%= post.mediaUrl %>" alt="Post image" class="post-media">
+                            <% } else if (post.mediaType === 'video') { %>
+                                <video class="post-media">
+                                    <source src="<%= post.mediaUrl %>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            <% } %>
                         </div>
     
                         <div id="delete-modal" class="modal" style="display: none;">
@@ -2149,7 +2169,15 @@ function copyToClipboard(userId) {
         
                         postDetails.innerHTML = `
 
-                    <img src="${data.mediaUrl}" alt="Post Media" class="post-media">
+                    ${data.mediaType === 'image' 
+                        ? `<img src="${data.mediaUrl}" alt="Post image" class="post-media">` 
+                        : data.mediaType === 'video' 
+                        ? `<video controls class="post-media-video">
+                                <source src="${data.mediaUrl}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>`
+                        : ''
+                    } 
                     <div id="postCaption-${data._id}" class="post-caption">
                         ${data.content || 'No caption provided'}
                     </div>
