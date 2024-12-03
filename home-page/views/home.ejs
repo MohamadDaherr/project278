@@ -400,10 +400,11 @@ li {
 
 /* Arrows for navigation */
 .nav-arrow {
+    background: none; /* Remove the background */
+
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
     color: #fff;
     border: none;
     border-radius: 50%;
@@ -426,6 +427,7 @@ li {
 
 .nav-arrow:hover {
     background: rgba(0, 0, 0, 0.8);
+
 }
  
 
@@ -2138,8 +2140,8 @@ span {
                         <source src="" type="video/mp4">
                     </video>
                     <div class="story-reactions">
-                        <button id="likeButton" class="reaction-button" onclick="likeStory()">❤️ <span id="likesCount">0</span></button>
-                        <button id="dislikeButton" class="reaction-button" onclick="dislikeStory()">👎 <span id="dislikesCount">0</span></button>
+                        <i id="likeButton" class="fa fa-thumbs-up" onclick="likeStory()"> <span id="likesCount">0</span></i>
+                        <i id="dislikeButton" class="fa fa-thumbs-down" onclick="dislikeStory()"><span id="dislikesCount">0</span></i>
                     </div>
                     <button id="nextStory" class="nav-arrow right-arrow" onclick="navigateStory(1)">&#10095;</button>
                     
