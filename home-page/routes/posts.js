@@ -219,6 +219,7 @@ router.get('/:postId', isAuthenticated, async (req, res) => {
             _id: post._id,
             content: post.content,
             mediaUrl: post.mediaUrl,
+            mediaType: post.mediaType,
             isOwner: post.user._id.toString() === userId,
             likesCount: post.likes.length,
             dislikesCount: post.dislikes.length,
