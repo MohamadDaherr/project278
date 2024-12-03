@@ -67,7 +67,7 @@ router.get('/messages/:userId', isAuthenticated, async (req, res) => {
     })
       .sort({ timestamp: 1 })
       .populate('senderId receiverId', 'firstName lastName username profileImage');
-
+ 
     res.json(messages);
   } catch (err) {
     console.error('Error fetching messages:', err);

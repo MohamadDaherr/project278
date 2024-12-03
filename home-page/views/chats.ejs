@@ -6,7 +6,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
+ 
   <title>Chat</title>
   <style>
     /* Global Styles */
@@ -387,12 +387,14 @@ body {
             messageElement.classList.add('message', msg.senderId._id === currentUserId ? 'sent' : 'received');
     
             // Correctly reference the message's formatted timestamp
-            const messageTime = msg.timestampFormatted; // Use the timestamp from the backend
-            console.log(messageTime); // This should show the formatted timestamp
+            const messageTime = new Date(msg.timestamp);
+          const hours = messageTime.getHours().toString().padStart(2, '0');
+          const minutes = messageTime.getMinutes().toString().padStart(2, '0');
+          const formattedTime = `${hours}:${minutes}`;
     
             messageElement.innerHTML = `
               <strong>${msg.senderId.firstName}:</strong> ${msg.message}
-              <span class="message-time">${messageTime}</span>
+              <span class="message-time">${formattedTime}</span>
             `;
             
             messageContainer.appendChild(messageElement);
